@@ -32,9 +32,9 @@ class RequestHandlerController @Inject()(dataRepository: DataRepository,
 
   def getRequestHandler(url: String): Action[AnyContent] = Action.async { implicit request =>
 
-    val dataNotUsingQueryStringParameters =
+    lazy val dataNotUsingQueryStringParameters =
       dataRepository.find("_id" -> s"""${request.uri.takeWhile(_ != '?')}""", "method" -> GET)
-    val dataUsingQueryStringParameters =
+    lazy val dataUsingQueryStringParameters =
       dataRepository.find("_id" -> request.uri, "method" -> GET)
 
     def getResult(data: Option[DataModel]): Result = data match {

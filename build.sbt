@@ -1,6 +1,8 @@
-import sbt.{EvictionWarningOptions, ModuleID, Resolver}
-import uk.gov.hmrc.DefaultBuildSettings.{defaultSettings, scalaSettings}
+import uk.gov.hmrc.DefaultBuildSettings._
+import uk.gov.hmrc.SbtAutoBuildPlugin
+import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin
 import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin.publishingSettings
+import uk.gov.hmrc.versioning.SbtGitVersioning
 
 val appName = "income-tax-submission-stub"
 
@@ -42,8 +44,6 @@ lazy val microservice = Project(appName, file("."))
   .settings(publishingSettings: _*)
   .settings(defaultSettings(): _*)
   .settings(PlayKeys.playDefaultPort := 9159)
-  .settings(fork in Test := true)
-  .settings(parallelExecution in Test := true)
   .settings(
     majorVersion := 0,
     scalaVersion := "2.12.11",
@@ -51,6 +51,15 @@ lazy val microservice = Project(appName, file("."))
     retrieveManaged := true,
     evictionWarningOptions in update := EvictionWarningOptions.default.withWarnScalaVersionEviction(false)
   )
+  .settings(
+    Keys.fork in Test := true,
+    parallelExecution in Test := false
+  )
+  .settings(
+    Keys.fork in IntegrationTest := false,
+    unmanagedSourceDirectories in IntegrationTest := (baseDirectory in IntegrationTest) (base => Seq(base / "it")).value,
+    addTestReportOption(IntegrationTest, "int-test-reports"),
+    parallelExecution in IntegrationTest := false)
   .settings(resolvers ++= Seq(
     Resolver.bintrayRepo("hmrc", "releases"),
     Resolver.jcenterRepo

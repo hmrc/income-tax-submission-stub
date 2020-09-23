@@ -16,7 +16,6 @@
 
 package testUtils
 
-import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.mvc.{AnyContentAsEmpty, ControllerComponents}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.stubControllerComponents
@@ -25,9 +24,9 @@ import uk.gov.hmrc.play.test.UnitSpec
 
 import scala.concurrent.ExecutionContext
 
-trait TestSupport extends UnitSpec with GuiceOneServerPerSuite with MaterializerSupport {
+trait TestSupport extends UnitSpec with MaterializerSupport {
 
-  implicit val ec: ExecutionContext = app.injector.instanceOf[ExecutionContext]
+  implicit val ec: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
 
   implicit val headerCarrier: HeaderCarrier = HeaderCarrier()
 

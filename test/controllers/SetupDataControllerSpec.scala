@@ -31,70 +31,20 @@ class SetupDataControllerSpec extends TestSupport with MockDataRepository {
 
     "request body is valid" when {
 
-      "method is GET or POST" when {
+      "method is GET or POST" should {
 
-        "request has a schema ID" when {
+        val model: DataModel = DataModel(
+          _id = "1234",
+          method = "GET",
+          response = Some(Json.parse("{}")),
+          status = Status.OK
+        )
 
-          val model: DataModel = DataModel(
-            _id = "1234",
-            method = "GET",
-            response = Some(Json.parse("{}")),
-            status = Status.OK
-          )
+        lazy val request = FakeRequest().withBody(Json.toJson(model)).withHeaders(("Content-Type", "application/json"))
+        lazy val result = TestSetupDataController.addData(request)
 
-          "response json is valid" when {
-
-            "adding data to DB is successful" should {
-
-              lazy val request = FakeRequest().withBody(Json.toJson(model)).withHeaders(("Content-Type", "application/json"))
-              lazy val result = TestSetupDataController.addData(request)
-
-              "return 200" in {
-                mockAddEntry(model)(successWriteResult)
-
-                status(result) shouldBe Status.OK
-              }
-            }
-
-            "adding data to DB is unsuccessful" should {
-
-              lazy val request = FakeRequest().withBody(Json.toJson(model)).withHeaders(("Content-Type", "application/json"))
-              lazy val result = TestSetupDataController.addData(request)
-
-              "return 500" in {
-                mockAddEntry(model)(errorWriteResult)
-
-                status(result) shouldBe Status.INTERNAL_SERVER_ERROR
-              }
-            }
-          }
-
-          "response json is not valid" should {
-
-            lazy val request = FakeRequest().withBody(Json.toJson(model)).withHeaders(("Content-Type", "application/json"))
-            lazy val result = TestSetupDataController.addData(request)
-
-            "return 400" in {
-              status(result) shouldBe Status.BAD_REQUEST
-            }
-          }
-        }
-
-        "request has no schema ID" should {
-
-          val model: DataModel = DataModel(
-            _id = "1234",
-            method = "GET",
-            response = Some(Json.parse("{}")),
-            status = Status.OK
-          )
-
-          lazy val request = FakeRequest().withBody(Json.toJson(model)).withHeaders(("Content-Type", "application/json"))
-          lazy val result = TestSetupDataController.addData(request)
-
-          "return a not found" in {
-            status(result) shouldBe Status.NOT_FOUND
-          }
+        "return a not found" in {
+          status(result) shouldBe Status.NOT_FOUND
         }
       }
 

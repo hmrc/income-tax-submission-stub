@@ -26,7 +26,7 @@ import testUtils.TestSupport
 
 class RequestHandlerControllerSpec extends TestSupport with MockDataRepository {
 
-  object TestRequestHandlerController extends RequestHandlerController(mockDataRepository, cc)
+  lazy val TestRequestHandlerController: RequestHandlerController = new RequestHandlerController(mockDataRepository, cc)
 
   lazy val successModel = DataModel(
     _id = "test",
@@ -45,16 +45,18 @@ class RequestHandlerControllerSpec extends TestSupport with MockDataRepository {
   "The getRequestHandler method" should {
 
     "return the status code specified in the model" in {
-      lazy val result = TestRequestHandlerController.getRequestHandler("/test")(FakeRequest())
+      lazy val result = {
+        mockFind(Some(successModel)).twice()
+        TestRequestHandlerController.getRequestHandler("/test")(FakeRequest())
+      }
 
-      mockFind(Some(successModel)).once()
       status(result) shouldBe Status.OK
     }
 
     "return the status and body" in {
       lazy val result = TestRequestHandlerController.getRequestHandler("/test")(FakeRequest())
 
-      mockFind(Some(successWithBodyModel)).once()
+      mockFind(Some(successWithBodyModel)).twice()
       status(result) shouldBe Status.OK
       await(bodyOf(result)) shouldBe s"${successWithBodyModel.response.get}"
     }
@@ -62,7 +64,7 @@ class RequestHandlerControllerSpec extends TestSupport with MockDataRepository {
     "return a 404 status when the endpoint cannot be found" in {
       lazy val result = TestRequestHandlerController.getRequestHandler("/test")(FakeRequest())
 
-      mockFind(None).once()
+      mockFind(None).twice()
       status(result) shouldBe Status.NOT_FOUND
     }
   }
@@ -85,10 +87,12 @@ class RequestHandlerControllerSpec extends TestSupport with MockDataRepository {
             )
 
             lazy val request = FakeRequest("POST", "/").withBody(Json.obj("" -> ""))
-            lazy val result = call(TestRequestHandlerController.postRequestHandler("url"), request)
+            lazy val result = {
+              mockFind(Some(model))
+              call(TestRequestHandlerController.postRequestHandler("url"), request)
+            }
 
             "return the status" in {
-              mockFind(Some(model))
               await(status(result)) shouldBe Status.OK
             }
 
@@ -107,49 +111,15 @@ class RequestHandlerControllerSpec extends TestSupport with MockDataRepository {
             )
 
             lazy val request = FakeRequest("POST", "/").withBody(Json.toJson(model))
-            lazy val result = call(TestRequestHandlerController.postRequestHandler("url"), request)
+            lazy val result = {
+              mockFind(Some(model))
+              call(TestRequestHandlerController.postRequestHandler("url"), request)
+            }
 
             "return the status" in {
-              mockFind(Some(model))
               await(status(result)) shouldBe Status.OK
             }
           }
-        }
-
-        "request JSON does not validate against schema" should {
-
-          val model = DataModel(
-            _id = "test",
-            method = "POST",
-            status = Status.OK,
-            response = None
-          )
-
-          lazy val request = FakeRequest("POST", "/").withBody(Json.obj("" -> ""))
-          lazy val result = call(TestRequestHandlerController.postRequestHandler("url"), request)
-
-          "return 400" in {
-            mockFind(Some(model))
-            await(status(result)) shouldBe Status.BAD_REQUEST
-          }
-        }
-      }
-
-      "the matching data has no schemaId" when {
-
-        val model = DataModel(
-          _id = "test",
-          method = "POST",
-          status = Status.OK,
-          response = None
-        )
-
-        lazy val request = FakeRequest("POST", "/").withBody(Json.obj("" -> ""))
-        lazy val result = call(TestRequestHandlerController.postRequestHandler("url"), request)
-
-        "return 400" in {
-          mockFind(Some(model))
-          await(status(result)) shouldBe Status.BAD_REQUEST
         }
       }
     }
@@ -157,10 +127,12 @@ class RequestHandlerControllerSpec extends TestSupport with MockDataRepository {
     "no matching data is found" should {
 
       lazy val request = FakeRequest("POST", "/").withBody(Json.obj("" -> ""))
-      lazy val result = call(TestRequestHandlerController.postRequestHandler("url"), request)
+      lazy val result = {
+        mockFind(None)
+        call(TestRequestHandlerController.postRequestHandler("url"), request)
+      }
 
       "return 404" in {
-        mockFind(None)
         await(status(result)) shouldBe Status.BAD_REQUEST
       }
     }
