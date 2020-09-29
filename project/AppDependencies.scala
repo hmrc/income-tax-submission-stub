@@ -13,7 +13,7 @@ object AppDependencies {
     "com.github.fge" % "json-schema-validator" % "2.2.6"
   )
 
-  def test(scope: String = "test"): Seq[ModuleID] = Seq(
+  def test(scope: String = "test,it"): Seq[ModuleID] = Seq(
     "uk.gov.hmrc" %% "hmrctest" % "3.9.0-play-26" % scope,
     "org.scalatest" %% "scalatest" % "3.0.8" % scope,
     "org.pegdown" % "pegdown" % "1.6.0" % scope,

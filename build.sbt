@@ -55,11 +55,8 @@ lazy val microservice = Project(appName, file("."))
     Keys.fork in Test := true,
     parallelExecution in Test := false
   )
-  .settings(
-    Keys.fork in IntegrationTest := false,
-    unmanagedSourceDirectories in IntegrationTest := (baseDirectory in IntegrationTest) (base => Seq(base / "it")).value,
-    addTestReportOption(IntegrationTest, "int-test-reports"),
-    parallelExecution in IntegrationTest := false)
+  .configs(IntegrationTest)
+  .settings(integrationTestSettings(): _*)
   .settings(resolvers ++= Seq(
     Resolver.bintrayRepo("hmrc", "releases"),
     Resolver.jcenterRepo
