@@ -33,8 +33,7 @@ class SetupDataController @Inject()(dataRepository: DataRepository,
   val addData: Action[JsValue] = Action.async(parse.json) { implicit request =>
     withJsonBody[DataModel]( json =>
       json.method.toUpperCase match {
-        case GET | POST =>
-            Future.successful(NotFound("Stub data contained no schema id."))
+        case GET | POST => addStubDataToDB(json)
         case x => Future.successful(MethodNotAllowed(s"The method: $x is currently unsupported"))
       }
     ) recover {
