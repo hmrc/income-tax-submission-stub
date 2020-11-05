@@ -40,11 +40,14 @@ class SetupDataControllerSpec extends TestSupport with MockDataRepository {
           status = Status.OK
         )
 
+
+        mockAddEntry(model)(successWriteResult)
+
         lazy val request = FakeRequest().withBody(Json.toJson(model)).withHeaders(("Content-Type", "application/json"))
         lazy val result = TestSetupDataController.addData(request)
 
-        "return a not found" in {
-          status(result) shouldBe Status.NOT_FOUND
+        "return an OK" in {
+          status(result) shouldBe Status.OK
         }
       }
 
