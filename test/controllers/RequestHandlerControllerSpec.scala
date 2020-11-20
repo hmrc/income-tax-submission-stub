@@ -17,7 +17,7 @@
 package controllers
 
 import mocks.MockDataRepository
-import models.DataModel
+import models.{DataModel, SubmissionModel}
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers.call
@@ -30,16 +30,18 @@ class RequestHandlerControllerSpec extends TestSupport with MockDataRepository {
 
   lazy val successModel = DataModel(
     _id = "test",
+    SubmissionModel(uri = "test",
     method = "GET",
     status = Status.OK,
-    response = None
+    response = None)
   )
 
   lazy val successWithBodyModel = DataModel(
     _id = "test",
+    SubmissionModel(uri = "test",
     method = "GET",
     status = Status.OK,
-    response = Some(Json.parse("""{"something" : "hello"}"""))
+    response = Some(Json.parse("""{"something" : "hello"}""")))
   )
 
   "The getRequestHandler method" should {
@@ -58,7 +60,7 @@ class RequestHandlerControllerSpec extends TestSupport with MockDataRepository {
 
       mockFind(Some(successWithBodyModel)).twice()
       status(result) shouldBe Status.OK
-      await(bodyOf(result)) shouldBe s"${successWithBodyModel.response.get}"
+      await(bodyOf(result)) shouldBe s"${successWithBodyModel.submission.response.get}"
     }
 
     "return a 404 status when the endpoint cannot be found" in {
@@ -81,9 +83,10 @@ class RequestHandlerControllerSpec extends TestSupport with MockDataRepository {
 
             val model = DataModel(
               _id = "test",
+              SubmissionModel(uri = "test",
               method = "POST",
               status = Status.OK,
-              response = Some(Json.obj("hello" -> "world"))
+              response = Some(Json.obj("hello" -> "world")))
             )
 
             lazy val request = FakeRequest("POST", "/").withBody(Json.obj("" -> ""))
@@ -97,7 +100,7 @@ class RequestHandlerControllerSpec extends TestSupport with MockDataRepository {
             }
 
             "return the body" in {
-              await(jsonBodyOf(result)) shouldBe Json.toJson(model.response)
+              await(jsonBodyOf(result)) shouldBe Json.toJson(model.submission.response)
             }
           }
 
@@ -105,9 +108,10 @@ class RequestHandlerControllerSpec extends TestSupport with MockDataRepository {
 
             val model = DataModel(
               _id = "test",
+              SubmissionModel(uri = "test",
               method = "POST",
               status = Status.OK,
-              response = None
+              response = None)
             )
 
             lazy val request = FakeRequest("POST", "/").withBody(Json.toJson(model))

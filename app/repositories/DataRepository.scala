@@ -36,11 +36,11 @@ class DataRepository @Inject()(reactiveMongoComponent: ReactiveMongoComponent) {
 
   def removeAll()(implicit ec: ExecutionContext): Future[WriteResult] = repository.removeAll(WriteConcern.Acknowledged)
 
-  def removeById(url: String)(implicit ec: ExecutionContext): Future[WriteResult] = repository.remove("_id" -> url)
+  def removeById(id: String)(implicit ec: ExecutionContext): Future[WriteResult] = repository.remove("_id" -> id)
 
   def addEntry(document: DataModel)(implicit ec: ExecutionContext): Future[WriteResult] = repository.insert(document)
 
-  def findById(url: String)(implicit ec: ExecutionContext): Future[DataModel] = repository.find("_id" -> url).map(_.last)
+  def findById(id: String)(implicit ec: ExecutionContext): Future[DataModel] = repository.find("_id" -> id).map(_.last)
 
   def find(query: (String, JsValueWrapper)*)(implicit ec: ExecutionContext): Future[Option[DataModel]] =
     repository.find(query: _*).map(_.headOption)

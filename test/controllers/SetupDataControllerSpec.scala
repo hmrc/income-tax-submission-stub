@@ -17,7 +17,7 @@
 package controllers
 
 import mocks.MockDataRepository
-import models.DataModel
+import models.{DataModel, SubmissionModel}
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.mvc.Http.Status
@@ -33,15 +33,19 @@ class SetupDataControllerSpec extends TestSupport with MockDataRepository {
 
       "method is GET or POST" should {
 
-        val model: DataModel = DataModel(
-          _id = "1234",
+        val model: SubmissionModel = SubmissionModel(
+          uri = "1234",
           method = "GET",
           response = Some(Json.parse("{}")),
           status = Status.OK
         )
+        val dataModel: DataModel = DataModel(
+          _id = "1234GET",
+          submission = model
+        )
 
 
-        mockAddEntry(model)(successWriteResult)
+        mockAddEntry(dataModel)(successWriteResult)
 
         lazy val request = FakeRequest().withBody(Json.toJson(model)).withHeaders(("Content-Type", "application/json"))
         lazy val result = TestSetupDataController.addData(request)
@@ -53,11 +57,15 @@ class SetupDataControllerSpec extends TestSupport with MockDataRepository {
 
       "method is PUT" should {
 
-        val model: DataModel = DataModel(
-          _id = "1234",
+        val model: SubmissionModel = SubmissionModel(
+          uri = "1234",
           method = "PUT",
           response = Some(Json.parse("{}")),
           status = Status.OK
+        )
+        val dataModel: DataModel = DataModel(
+          _id = "1234PUT",
+          submission = model
         )
 
         lazy val request = FakeRequest().withBody(Json.toJson(model)).withHeaders(("Content-Type", "application/json"))

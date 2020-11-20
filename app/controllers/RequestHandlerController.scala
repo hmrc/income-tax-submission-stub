@@ -33,13 +33,13 @@ class RequestHandlerController @Inject()(dataRepository: DataRepository,
   def getRequestHandler(url: String): Action[AnyContent] = Action.async { implicit request =>
 
     lazy val dataNotUsingQueryStringParameters =
-      dataRepository.find("_id" -> s"""${request.uri.takeWhile(_ != '?')}""", "method" -> GET)
+      dataRepository.find("submission.uri" -> s"""${request.uri.takeWhile(_ != '?')}""", "submission.method" -> GET)
     lazy val dataUsingQueryStringParameters =
-      dataRepository.find("_id" -> request.uri, "method" -> GET)
+      dataRepository.find("submission.uri" -> request.uri, "submission.method" -> GET)
 
     def getResult(data: Option[DataModel]): Result = data match {
-      case Some(result) if result.response.nonEmpty => Status(result.status)(result.response.get)
-      case Some(result) => Status(result.status)
+      case Some(result) if result.submission.response.nonEmpty => Status(result.submission.status)(result.submission.response.get)
+      case Some(result) => Status(result.submission.status)
       case _ => NotFound(
         Json.toJson(ErrorResponse(
           NOT_FOUND.toString,
@@ -57,8 +57,8 @@ class RequestHandlerController @Inject()(dataRepository: DataRepository,
   }
 
   def postRequestHandler(url: String): Action[AnyContent] = Action.async { implicit request =>
-    dataRepository.find("_id" -> request.uri, "method" -> POST) flatMap {
-      case Some(stubData) => Future.successful(Status(stubData.status)(stubData.response.getOrElse(JsObject(Seq.empty))))
+    dataRepository.find("submission.uri" -> request.uri, "submission.method" -> POST) flatMap {
+      case Some(stubData) => Future.successful(Status(stubData.submission.status)(stubData.submission.response.getOrElse(JsObject(Seq.empty))))
       case None => Future.successful(BadRequest(
         Json.toJson(ErrorResponse(
           NOT_FOUND.toString,

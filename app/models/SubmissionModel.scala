@@ -18,10 +18,11 @@ package models
 
 import play.api.libs.json.{JsValue, Json, OFormat}
 
-case class DataModel(_id: String,
-                     submission: SubmissionModel)
+case class SubmissionModel(uri: String,
+                           method: String,
+                           status: Int,
+                           response: Option[JsValue])
 
-object DataModel {
-  implicit val formats: OFormat[DataModel] = Json.format[DataModel]
+object SubmissionModel {
+  implicit val formats: OFormat[SubmissionModel] = Json.format[SubmissionModel]
 }
-
