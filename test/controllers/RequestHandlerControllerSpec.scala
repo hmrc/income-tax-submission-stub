@@ -30,13 +30,15 @@ class RequestHandlerControllerSpec extends TestSupport with MockDataRepository {
 
   lazy val successModel = DataModel(
     _id = "test",
+    uri = "test",
     method = "GET",
     status = Status.OK,
     response = None
   )
 
   lazy val successWithBodyModel = DataModel(
-    _id = "test",
+    _id = "test2",
+    uri = "test",
     method = "GET",
     status = Status.OK,
     response = Some(Json.parse("""{"something" : "hello"}"""))
@@ -81,6 +83,7 @@ class RequestHandlerControllerSpec extends TestSupport with MockDataRepository {
 
             val model = DataModel(
               _id = "test",
+              uri = "test",
               method = "POST",
               status = Status.OK,
               response = Some(Json.obj("hello" -> "world"))
@@ -105,6 +108,7 @@ class RequestHandlerControllerSpec extends TestSupport with MockDataRepository {
 
             val model = DataModel(
               _id = "test",
+              uri = "test",
               method = "POST",
               status = Status.OK,
               response = None

@@ -33,9 +33,9 @@ class RequestHandlerController @Inject()(dataRepository: DataRepository,
   def getRequestHandler(url: String): Action[AnyContent] = Action.async { implicit request =>
 
     lazy val dataNotUsingQueryStringParameters =
-      dataRepository.find("_id" -> s"""${request.uri.takeWhile(_ != '?')}""", "method" -> GET)
+      dataRepository.find("uri" -> s"""${request.uri.takeWhile(_ != '?')}""", "method" -> GET)
     lazy val dataUsingQueryStringParameters =
-      dataRepository.find("_id" -> request.uri, "method" -> GET)
+      dataRepository.find("uri" -> request.uri, "method" -> GET)
 
     def getResult(data: Option[DataModel]): Result = data match {
       case Some(result) if result.response.nonEmpty => Status(result.status)(result.response.get)
@@ -57,7 +57,7 @@ class RequestHandlerController @Inject()(dataRepository: DataRepository,
   }
 
   def postRequestHandler(url: String): Action[AnyContent] = Action.async { implicit request =>
-    dataRepository.find("_id" -> request.uri, "method" -> POST) flatMap {
+    dataRepository.find("uri" -> request.uri, "method" -> POST) flatMap {
       case Some(stubData) => Future.successful(Status(stubData.status)(stubData.response.getOrElse(JsObject(Seq.empty))))
       case None => Future.successful(BadRequest(
         Json.toJson(ErrorResponse(

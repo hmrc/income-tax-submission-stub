@@ -17,7 +17,7 @@
 package controllers
 
 import javax.inject.Inject
-import models.DataModel
+import models.{DataModel, SubmissionModel}
 import models.HttpMethod._
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Result}
@@ -31,7 +31,7 @@ class SetupDataController @Inject()(dataRepository: DataRepository,
                                     cc: ControllerComponents) extends BackendController(cc) {
 
   val addData: Action[JsValue] = Action.async(parse.json) { implicit request =>
-    withJsonBody[DataModel]( json =>
+    withJsonBody[SubmissionModel]( json =>
       json.method.toUpperCase match {
         case GET | POST => addStubDataToDB(json)
         case x => Future.successful(MethodNotAllowed(s"The method: $x is currently unsupported"))
@@ -41,8 +41,9 @@ class SetupDataController @Inject()(dataRepository: DataRepository,
     }
   }
 
-  private def addStubDataToDB(json: DataModel): Future[Result] = {
-    dataRepository.addEntry(json).map {
+  private def addStubDataToDB(json: SubmissionModel): Future[Result] = {
+    val dataJson = new DataModel(json.uri + json.method, json.uri, json.method, json.status, json.response)
+    dataRepository.addEntry(dataJson).map {
       case result if result.ok => Ok(s"The following JSON was added to the stub: \n\n ${Json.toJson(json)}")
       case _ => InternalServerError(s"Failed to add data to Stub.")
     }

@@ -1,7 +1,17 @@
 
 # income-tax-submission-stub
 
-This is a placeholder README.md for a new repository
+##Typical Json setup should look like
+
+http://localhost:9303/setup/data
+{
+	"uri": "/income-tax/nino/1234567890/income-source/dividends/annual/2020",
+	"method":"POST",
+	"status":200,
+	"response": {
+	  "string": "ok"
+	}
+}
 
 ### License
 
