@@ -1,9 +1,10 @@
 
 # income-tax-submission-stub
 
-##Typical Json setup should look like
+### Typical Json setup should look like
 
-http://localhost:9303/setup/data
+
+`http://localhost:9303/setup/data
 {
 	"uri": "/income-tax/nino/1234567890/income-source/dividends/annual/2020",
 	"method":"POST",
@@ -11,9 +12,11 @@ http://localhost:9303/setup/data
 	"response": {
 	  "string": "ok"
 	}
-}
+}`
+
 Or
-http://localhost:9303/setup/data
+
+`http://localhost:9303/setup/data
 {
 	"uri": "/income-tax/nino/1234567890/income-source/dividends/annual/2020",
 	"method":"GET",
@@ -21,7 +24,7 @@ http://localhost:9303/setup/data
 	"response": {
 	  "string": "ok"
 	}
-}
+}`
 
 ### License
 
