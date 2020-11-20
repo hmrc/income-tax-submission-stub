@@ -12,6 +12,16 @@ http://localhost:9303/setup/data
 	  "string": "ok"
 	}
 }
+Or
+http://localhost:9303/setup/data
+{
+	"uri": "/income-tax/nino/1234567890/income-source/dividends/annual/2020",
+	"method":"GET",
+	"status":200,
+	"response": {
+	  "string": "ok"
+	}
+}
 
 ### License
 

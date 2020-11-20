@@ -37,7 +37,7 @@ class RequestHandlerControllerSpec extends TestSupport with MockDataRepository {
   )
 
   lazy val successWithBodyModel = DataModel(
-    _id = "test2",
+    _id = "test",
     uri = "test",
     method = "GET",
     status = Status.OK,
