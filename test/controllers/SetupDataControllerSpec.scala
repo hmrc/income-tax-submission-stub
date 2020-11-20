@@ -41,10 +41,7 @@ class SetupDataControllerSpec extends TestSupport with MockDataRepository {
         )
         val dataModel: DataModel = DataModel(
           _id = "1234GET",
-          uri = "1234",
-          method = "GET",
-          response = Some(Json.parse("{}")),
-          status = Status.OK
+          submission = model
         )
 
 
@@ -68,10 +65,7 @@ class SetupDataControllerSpec extends TestSupport with MockDataRepository {
         )
         val dataModel: DataModel = DataModel(
           _id = "1234PUT",
-          uri = "1234",
-          method = "PUT",
-          response = Some(Json.parse("{}")),
-          status = Status.OK
+          submission = model
         )
 
         lazy val request = FakeRequest().withBody(Json.toJson(model)).withHeaders(("Content-Type", "application/json"))

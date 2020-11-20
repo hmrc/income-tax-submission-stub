@@ -42,7 +42,7 @@ class SetupDataController @Inject()(dataRepository: DataRepository,
   }
 
   private def addStubDataToDB(json: SubmissionModel): Future[Result] = {
-    val dataJson = new DataModel(json.uri + json.method, json.uri, json.method, json.status, json.response)
+    val dataJson = new DataModel(json.uri + json.method, json)
     dataRepository.addEntry(dataJson).map {
       case result if result.ok => Ok(s"The following JSON was added to the stub: \n\n ${Json.toJson(json)}")
       case _ => InternalServerError(s"Failed to add data to Stub.")
