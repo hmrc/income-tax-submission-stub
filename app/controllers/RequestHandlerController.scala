@@ -26,9 +26,15 @@ import uk.gov.hmrc.play.bootstrap.controller.BackendController
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import java.util.UUID.randomUUID
 
 class RequestHandlerController @Inject()(dataRepository: DataRepository,
                                          cc: ControllerComponents) extends BackendController(cc) {
+
+  def test(nino: String): Action[AnyContent] = Action.async { implicit request =>
+
+    Future(Ok(Json.parse(s""""incomeSourceId": "${randomUUID.toString}"""".stripMargin)))
+  }
 
   def getRequestHandler(url: String): Action[AnyContent] = Action.async { implicit request =>
 
