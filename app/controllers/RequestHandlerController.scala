@@ -31,8 +31,10 @@ import java.util.UUID.randomUUID
 class RequestHandlerController @Inject()(dataRepository: DataRepository,
                                          cc: ControllerComponents) extends BackendController(cc) {
 
+  def randomId: String = s"ZZIS${randomUUID.toString.replaceAll("-","").take(15)}".toUpperCase()
+
   def generateInterestIncomeSource(nino: String): Action[AnyContent] = Action.async { implicit request =>
-    Future(Ok(Json.parse(s"""{"incomeSourceId": "${randomUUID.toString}"}""".stripMargin)))
+    Future(Ok(Json.parse(s"""{"incomeSourceId": "$randomId"}""".stripMargin)))
   }
 
   def getRequestHandler(url: String): Action[AnyContent] = Action.async { implicit request =>
