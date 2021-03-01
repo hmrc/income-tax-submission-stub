@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,18 @@
 
 package testUtils
 
+import org.scalamock.scalatest.MockFactory
+import org.scalatestplus.play.PlaySpec
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.mvc.{AnyContentAsEmpty, ControllerComponents}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.stubControllerComponents
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.test.UnitSpec
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.duration.Duration
+import scala.concurrent.{Await, Awaitable, ExecutionContext}
 
-trait TestSupport extends UnitSpec with MaterializerSupport {
+trait TestSupport extends PlaySpec with MockFactory with GuiceOneAppPerSuite with MaterializerSupport {
 
   implicit val ec: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
 
@@ -33,4 +36,7 @@ trait TestSupport extends UnitSpec with MaterializerSupport {
   lazy val cc: ControllerComponents = stubControllerComponents()
 
   def fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("", "")
+
+  def await[T](awaitable: Awaitable[T]): T = Await.result(awaitable, Duration.Inf)
+
 }

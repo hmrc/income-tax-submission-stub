@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,11 @@ import mocks.MockDataRepository
 import models.{DataModel, SubmissionModel}
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
-import play.api.test.Helpers.call
+import play.api.test.Helpers.{call, contentAsJson, contentAsString, defaultAwaitTimeout, status}
 import play.mvc.Http.Status
 import testUtils.TestSupport
+
+import scala.concurrent.Future
 
 class RequestHandlerControllerSpec extends TestSupport with MockDataRepository {
 
@@ -48,26 +50,26 @@ class RequestHandlerControllerSpec extends TestSupport with MockDataRepository {
 
     "return the status code specified in the model" in {
       lazy val result = {
-        mockFind(Some(successModel)).twice()
+        mockFind(Future.successful(Some(successModel))).twice()
         TestRequestHandlerController.getRequestHandler("/test")(FakeRequest())
       }
 
-      status(result) shouldBe Status.OK
+      status(result) mustBe Status.OK
     }
 
     "return the status and body" in {
       lazy val result = TestRequestHandlerController.getRequestHandler("/test")(FakeRequest())
 
-      mockFind(Some(successWithBodyModel)).twice()
-      status(result) shouldBe Status.OK
-      await(bodyOf(result)) shouldBe s"${successWithBodyModel.submission.response.get}"
+      mockFind(Future.successful(Some(successWithBodyModel))).twice()
+      status(result) mustBe Status.OK
+      contentAsString(result) mustBe s"${successWithBodyModel.submission.response.get}"
     }
 
     "return a 404 status when the endpoint cannot be found" in {
       lazy val result = TestRequestHandlerController.getRequestHandler("/test")(FakeRequest())
 
-      mockFind(None).twice()
-      status(result) shouldBe Status.NOT_FOUND
+      mockFind(Future.successful(None)).twice()
+      status(result) mustBe Status.NOT_FOUND
     }
   }
 
@@ -91,16 +93,16 @@ class RequestHandlerControllerSpec extends TestSupport with MockDataRepository {
 
             lazy val request = FakeRequest("POST", "/").withBody(Json.obj("" -> ""))
             lazy val result = {
-              mockFind(Some(model))
+              mockFind(Future.successful(Some(model)))
               call(TestRequestHandlerController.postRequestHandler("url"), request)
             }
 
             "return the status" in {
-              await(status(result)) shouldBe Status.OK
+              status(result) mustBe Status.OK
             }
 
             "return the body" in {
-              await(jsonBodyOf(result)) shouldBe Json.toJson(model.submission.response)
+              contentAsJson(result) mustBe Json.toJson(model.submission.response)
             }
           }
 
@@ -116,12 +118,12 @@ class RequestHandlerControllerSpec extends TestSupport with MockDataRepository {
 
             lazy val request = FakeRequest("POST", "/").withBody(Json.toJson(model))
             lazy val result = {
-              mockFind(Some(model))
+              mockFind(Future.successful(Some(model)))
               call(TestRequestHandlerController.postRequestHandler("url"), request)
             }
 
             "return the status" in {
-              await(status(result)) shouldBe Status.OK
+              status(result) mustBe Status.OK
             }
           }
         }
@@ -132,12 +134,12 @@ class RequestHandlerControllerSpec extends TestSupport with MockDataRepository {
 
       lazy val request = FakeRequest("POST", "/").withBody(Json.obj("" -> ""))
       lazy val result = {
-        mockFind(None)
+        mockFind(Future.successful(None))
         call(TestRequestHandlerController.postRequestHandler("url"), request)
       }
 
       "return 404" in {
-        await(status(result)) shouldBe Status.BAD_REQUEST
+        status(result) mustBe Status.BAD_REQUEST
       }
     }
   }

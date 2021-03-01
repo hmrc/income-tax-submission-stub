@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ class AuthActionSpec extends TestSupport{
         val authAction = new AuthActionImpl(new FakeFailingAuthConnector(new MissingBearerToken), cc)
         val controller = new Harness(authAction)
         val result = controller.someAction()(fakeRequest)
-        status(result) shouldBe UNAUTHORIZED
+        status(result) mustBe UNAUTHORIZED
       }
     }
 
@@ -48,7 +48,7 @@ class AuthActionSpec extends TestSupport{
         val authAction = new AuthActionImpl(new FakeFailingAuthConnector(new BearerTokenExpired), cc)
         val controller = new Harness(authAction)
         val result = controller.someAction()(fakeRequest)
-        status(result) shouldBe UNAUTHORIZED
+        status(result) mustBe UNAUTHORIZED
       }
     }
 
@@ -57,7 +57,7 @@ class AuthActionSpec extends TestSupport{
         val authAction = new AuthActionImpl(new FakeFailingAuthConnector(new InsufficientEnrolments), cc)
         val controller = new Harness(authAction)
         val result = controller.someAction()(fakeRequest)
-        status(result) shouldBe FORBIDDEN
+        status(result) mustBe FORBIDDEN
       }
     }
 
@@ -66,7 +66,7 @@ class AuthActionSpec extends TestSupport{
         val authAction = new AuthActionImpl(new FakeFailingAuthConnector(new InsufficientConfidenceLevel), cc)
         val controller = new Harness(authAction)
         val result = controller.someAction()(fakeRequest)
-        status(result) shouldBe FORBIDDEN
+        status(result) mustBe FORBIDDEN
       }
     }
 
@@ -75,7 +75,7 @@ class AuthActionSpec extends TestSupport{
         val authAction = new AuthActionImpl(new FakeFailingAuthConnector(new UnsupportedAuthProvider), cc)
         val controller = new Harness(authAction)
         val result = controller.someAction()(fakeRequest)
-        status(result) shouldBe FORBIDDEN
+        status(result) mustBe FORBIDDEN
       }
     }
 
@@ -84,7 +84,7 @@ class AuthActionSpec extends TestSupport{
         val authAction = new AuthActionImpl(new FakeFailingAuthConnector(new UnsupportedAffinityGroup), cc)
         val controller = new Harness(authAction)
         val result = controller.someAction()(fakeRequest)
-        status(result) shouldBe FORBIDDEN
+        status(result) mustBe FORBIDDEN
       }
     }
 
@@ -93,7 +93,7 @@ class AuthActionSpec extends TestSupport{
         val authAction = new AuthActionImpl(new FakeFailingAuthConnector(new UnsupportedCredentialRole), cc)
         val controller = new Harness(authAction)
         val result = controller.someAction()(fakeRequest)
-        status(result) shouldBe FORBIDDEN
+        status(result) mustBe FORBIDDEN
       }
     }
   }
