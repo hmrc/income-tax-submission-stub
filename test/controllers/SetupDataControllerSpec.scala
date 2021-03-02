@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,12 @@ package controllers
 import mocks.MockDataRepository
 import models.{DataModel, SubmissionModel}
 import play.api.libs.json.Json
+import play.api.test.Helpers.{defaultAwaitTimeout, status}
 import play.api.test.FakeRequest
 import play.mvc.Http.Status
 import testUtils.TestSupport
+
+import scala.concurrent.Future
 
 class SetupDataControllerSpec extends TestSupport with MockDataRepository {
 
@@ -45,13 +48,13 @@ class SetupDataControllerSpec extends TestSupport with MockDataRepository {
         )
 
 
-        mockAddEntry(dataModel)(successWriteResult)
+        mockAddEntry(dataModel)(Future.successful(successWriteResult))
 
         lazy val request = FakeRequest().withBody(Json.toJson(model)).withHeaders(("Content-Type", "application/json"))
         lazy val result = TestSetupDataController.addData(request)
 
         "return an OK" in {
-          status(result) shouldBe Status.OK
+          status(result) mustBe Status.OK
         }
       }
 
@@ -63,16 +66,12 @@ class SetupDataControllerSpec extends TestSupport with MockDataRepository {
           response = Some(Json.parse("{}")),
           status = Status.OK
         )
-        val dataModel: DataModel = DataModel(
-          _id = "1234PUT",
-          submission = model
-        )
 
         lazy val request = FakeRequest().withBody(Json.toJson(model)).withHeaders(("Content-Type", "application/json"))
         lazy val result = TestSetupDataController.addData(request)
 
         "return 405" in {
-          status(result) shouldBe Status.METHOD_NOT_ALLOWED
+          status(result) mustBe Status.METHOD_NOT_ALLOWED
         }
       }
     }
@@ -83,7 +82,7 @@ class SetupDataControllerSpec extends TestSupport with MockDataRepository {
       lazy val result = TestSetupDataController.addData(request)
 
       "return 400" in {
-        status(result) shouldBe Status.BAD_REQUEST
+        status(result) mustBe Status.BAD_REQUEST
       }
     }
   }
@@ -96,9 +95,9 @@ class SetupDataControllerSpec extends TestSupport with MockDataRepository {
       lazy val result = TestSetupDataController.removeAll(request)
 
       "return 200" in {
-        mockRemoveAll()(successWriteResult)
+        mockRemoveAll()(Future.successful(successWriteResult))
 
-        status(result) shouldBe Status.OK
+        status(result) mustBe Status.OK
       }
     }
 
@@ -108,9 +107,9 @@ class SetupDataControllerSpec extends TestSupport with MockDataRepository {
       lazy val result = TestSetupDataController.removeAll(request)
 
       "return 500" in {
-        mockRemoveAll()(errorWriteResult)
+        mockRemoveAll()(Future.successful(errorWriteResult))
 
-        status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+        status(result) mustBe Status.INTERNAL_SERVER_ERROR
       }
     }
   }

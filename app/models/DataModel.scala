@@ -16,7 +16,7 @@
 
 package models
 
-import play.api.libs.json.{JsValue, Json, OFormat}
+import play.api.libs.json.{Json, OFormat}
 
 case class DataModel(_id: String,
                      submission: SubmissionModel)
