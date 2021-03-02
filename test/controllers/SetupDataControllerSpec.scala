@@ -66,10 +66,6 @@ class SetupDataControllerSpec extends TestSupport with MockDataRepository {
           response = Some(Json.parse("{}")),
           status = Status.OK
         )
-        val dataModel: DataModel = DataModel(
-          _id = "1234PUT",
-          submission = model
-        )
 
         lazy val request = FakeRequest().withBody(Json.toJson(model)).withHeaders(("Content-Type", "application/json"))
         lazy val result = TestSetupDataController.addData(request)

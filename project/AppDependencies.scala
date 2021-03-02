@@ -15,7 +15,7 @@ object AppDependencies {
 
   def test(scope: String = "test,it"): Seq[ModuleID] = Seq(
     "uk.gov.hmrc"   %% "bootstrap-test-play-27"  % "3.4.0"  % scope,
-    "org.scalatest" %% "scalatest" % "3.0.8" % scope,
+    "org.scalatest" %% "scalatest" % "3.0.9" % scope,
     "org.pegdown" % "pegdown" % "1.6.0" % scope,
     "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % scope,
     "com.typesafe.play" %% "play-test" % PlayVersion.current % scope,
