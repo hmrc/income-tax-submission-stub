@@ -37,6 +37,10 @@ class RequestHandlerController @Inject()(dataRepository: DataRepository,
     Future(Ok(Json.parse(s"""{"incomeSourceId": "$randomId"}""".stripMargin)))
   }
 
+  def generateCalculationId(nino: String, taxYear: Int): Action[AnyContent] = Action.async { implicit request =>
+    Future(Ok(Json.parse(s"""{"id": "$randomId"}""".stripMargin)))
+  }
+
   def getRequestHandler(url: String): Action[AnyContent] = Action.async { implicit request =>
 
     lazy val dataNotUsingQueryStringParameters =
