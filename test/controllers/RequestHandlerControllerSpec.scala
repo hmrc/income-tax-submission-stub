@@ -143,4 +143,17 @@ class RequestHandlerControllerSpec extends TestSupport with MockDataRepository {
       }
     }
   }
+
+  "The .generateCalculationId"  should {
+    "return a json body with id " in {
+      lazy val request = FakeRequest("POST", "/")
+      lazy val result = {
+        TestRequestHandlerController.generateCalculationId("12345", 2020)(request)
+      }
+      status(result) mustBe Status.OK
+      bodyOf(result).contains("id") mustBe true
+
+
+    }
+  }
 }

@@ -1,6 +1,7 @@
 # Add all the application routes to the app.routes file
 
-POST    /income-tax/income-sources/nino/:nino       controllers.RequestHandlerController.generateInterestIncomeSource(nino:String)
+POST    /income-tax/income-sources/nino/:nino                       controllers.RequestHandlerController.generateInterestIncomeSource(nino:String)
+POST    /income-tax/nino/:nino/taxYear/:taxYear/tax-calculation     controllers.RequestHandlerController.generateCalculationId(nino:String, taxYear:Int)
 
 ->	/setup			    setup.Routes
 ->	/			        health.Routes
