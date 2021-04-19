@@ -37,6 +37,7 @@ class DividendsService @Inject()(validateRequestService: ValidateRequestService)
   }
 
   def validateCreateUpdateIncomeSource(implicit request: Request[JsValue], executionContext: ExecutionContext, APINumber: Int): Either[Result,Boolean] ={
+    //TODO Replace with actual error responses
     validateRequestService.validateRequest(ErrorModel(400,ErrorBodyModel("ERROR","FAIL")), APINumber)
   }
 
