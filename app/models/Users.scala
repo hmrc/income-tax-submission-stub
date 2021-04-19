@@ -68,6 +68,25 @@ object Users {
           Some(99999999999.99),
           None
         )
+      ),
+      giftAid = Seq(
+        GiftAid(
+          2022,
+          giftAidPayments = Some(GiftAidPayments(
+            Some(Seq("Rick Owens Charity")),
+            Some(99999999999.99),
+            Some(99999999999.99),
+            Some(99999999999.99),
+            Some(99999999999.99),
+            Some(99999999999.99)
+          )),
+          gifts = Some(Gifts(
+            Some(Seq("Rick Owens Non-UK Charity")),
+            Some(99999999999.99),
+            Some(99999999999.99),
+            Some(99999999999.99)
+          ))
+        )
       )
     ),
     APIUser(

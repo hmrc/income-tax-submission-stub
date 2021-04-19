@@ -17,16 +17,16 @@
 package services
 
 import javax.inject.Inject
-import models.APIUser
 import models.DESModels.DividendsDetail
-import play.api.libs.json.Json
-import play.api.mvc.Result
+import models.{APIUser, ErrorBodyModel, ErrorModel}
+import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Results._
+import play.api.mvc.{Request, Result}
 import utils.ErrorResponses.notFound
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class DividendsService @Inject()(){
+class DividendsService @Inject()(validateRequestService: ValidateRequestService){
 
   def getIncomeSourceDividends(taxYear: Int)(implicit ec: ExecutionContext): APIUser => Future[Result] = {
     user =>
@@ -34,6 +34,10 @@ class DividendsService @Inject()(){
         dividends =>
           Future(Ok(Json.toJson(DividendsDetail(dividends.ukDividends,dividends.otherUkDividends))))
       }
+  }
+
+  def validateCreateUpdateIncomeSource(implicit request: Request[JsValue], executionContext: ExecutionContext, APINumber: Int): Either[Result,Boolean] ={
+    validateRequestService.validateRequest(ErrorModel(400,ErrorBodyModel("ERROR","FAIL")), APINumber)
   }
 
 }

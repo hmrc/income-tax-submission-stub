@@ -1,0 +1,141 @@
+{
+ "$schema": "http://json-schema.org/draft-04/schema#",
+ "title": "Create/Update Annual Income Source",
+ "type": "object",
+ "oneOf": [
+  {
+   "$ref": "#/definitions/ukSavingsInterestAnnual"
+  },
+  {
+   "anyOf": [
+    {
+     "$ref": "#/definitions/ukDividendsAnnual"
+    }
+   ]
+  },
+  {
+   "$ref": "#/definitions/charitableGivingAnnual"
+  }
+ ],
+ "definitions": {
+  "ukSavingsInterestAnnual": {
+   "type": "object",
+   "properties": {
+    "incomeSourceId": {
+     "type": "string",
+     "pattern": "^[A-Za-z0-9]{15}$",
+     "description": "The unique identifier of the income source."
+    },
+    "taxedUkInterest": {
+     "$ref": "#/definitions/monetary",
+     "description": "The Taxed uk interest income"
+    },
+    "untaxedUkInterest": {
+     "$ref": "#/definitions/monetary",
+     "description": "The Untaxed uk interest income"
+    }
+   },
+   "required": [
+    "incomeSourceId"
+   ],
+   "additionalProperties": false
+  },
+  "ukDividendsAnnual": {
+   "type": "object",
+   "properties": {
+    "ukDividends": {
+     "$ref": "#/definitions/monetary",
+     "description": "The total Uk dividends income"
+    },
+    "otherUkDividends": {
+     "$ref": "#/definitions/monetary",
+     "description": "The total Other uk dividends income"
+    }
+   },
+   "additionalProperties": false
+  },
+  "charitableGivingAnnual": {
+   "type": "object",
+   "properties": {
+    "giftAidPayments": {
+     "$ref": "#/definitions/giftAidPayments"
+    },
+    "gifts": {
+     "$ref": "#/definitions/gifts"
+    }
+   },
+   "additionalProperties": false
+  },
+  "giftAidPayments": {
+   "type": "object",
+   "description": "Gift-aid payments made in the tax year.",
+   "properties": {
+    "nonUkCharitiesCharityNames": {
+     "type": "array",
+     "minItems": 1,
+     "items": {
+      "type": "string",
+      "pattern": "^[^|]{1,75}$",
+      "description": "Name of the non UK Charities Charity"
+     }
+    },
+    "currentYear": {
+     "$ref": "#/definitions/monetary",
+     "description": "Total value of gift-aid payments made in the current tax year."
+    },
+    "oneOffCurrentYear": {
+     "$ref": "#/definitions/monetary",
+     "description": "Total value of one-off gift-aid payments made in the current tax year."
+    },
+    "currentYearTreatedAsPreviousYear": {
+     "$ref": "#/definitions/monetary",
+     "description": "Total value of gift-aid payments made in the current tax year that were accounted for in the previous tax year."
+    },
+    "nextYearTreatedAsCurrentYear": {
+     "$ref": "#/definitions/monetary",
+     "description": "Total value of gift-aid payments brought forward from the next tax year."
+    },
+    "nonUkCharities": {
+     "$ref": "#/definitions/monetary",
+     "description": "Total value of non-UK charity gift-aid payments made in the current tax year."
+    }
+   },
+   "additionalProperties": false
+  },
+  "gifts": {
+   "type": "object",
+   "description": "Gifts made in the tax year.",
+   "properties": {
+    "investmentsNonUkCharitiesCharityNames": {
+     "type": "array",
+     "minItems": 1,
+     "items": {
+      "type": "string",
+      "pattern": "^[^|]{1,75}$",
+      "description": "Name of the investments Non UK Charities"
+     }
+    },
+    "landAndBuildings": {
+     "$ref": "#/definitions/monetary",
+     "description": "Total value of gifts of land and buildings to charity for the current tax year."
+    },
+    "sharesOrSecurities": {
+     "$ref": "#/definitions/monetary",
+     "description": "Total value of gifts of shares or securities to charity for the current tax year."
+    },
+    "investmentsNonUkCharities": {
+     "$ref": "#/definitions/monetary",
+     "description": "Total value of investments (land and buildings, shares or securities) given to non-UK charities for athe current tax year."
+    }
+   },
+   "additionalProperties": false
+  },
+  "monetary": {
+   "type": "number",
+   "minimum": 0,
+   "maximum": 99999999999.99,
+   "multipleOf": 0.01,
+   "description": "Defines a monetary value (to 2 decimal places), between 0 and 99999999999.99"
+  }
+ }
+}

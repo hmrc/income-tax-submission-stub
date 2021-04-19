@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,16 +17,16 @@
 package services
 
 import javax.inject.Inject
-import models.APIUser
+import models.{APIUser, ErrorBodyModel, ErrorModel}
 import models.DESModels.{DividendsDetail, GiftAidDetail}
-import play.api.libs.json.Json
-import play.api.mvc.Result
+import play.api.libs.json.{JsValue, Json}
+import play.api.mvc.{Request, Result}
 import play.api.mvc.Results.Ok
 import utils.ErrorResponses.notFound
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class GiftAidService @Inject()(){
+class GiftAidService @Inject()(validateRequestService: ValidateRequestService){
 
   def getIncomeSourceGiftAid(taxYear: Int)(implicit ec: ExecutionContext): APIUser => Future[Result] = {
     user =>
@@ -37,6 +37,10 @@ class GiftAidService @Inject()(){
             giftAid.gifts
           ))))
       }
+  }
+
+  def validateCreateUpdateIncomeSource(implicit request: Request[JsValue], executionContext: ExecutionContext, APINumber: Int): Either[Result,Boolean] ={
+    validateRequestService.validateRequest(ErrorModel(400,ErrorBodyModel("ERROR","FAIL")), APINumber)
   }
 
 }

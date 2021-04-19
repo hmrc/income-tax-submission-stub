@@ -17,16 +17,16 @@
 package services
 
 import javax.inject.Inject
-import models.APIUser
+import models.{APIUser, ErrorBodyModel, ErrorModel}
 import models.DESModels.{IncomeSourceModel, InterestDetail, InterestDetails}
-import play.api.libs.json.Json
-import play.api.mvc.Result
+import play.api.libs.json.{JsValue, Json}
+import play.api.mvc.{Request, Result}
 import play.api.mvc.Results._
 import utils.ErrorResponses.notFound
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class InterestService @Inject()(){
+class InterestService @Inject()(validateRequestService: ValidateRequestService){
 
   def getListOfIncomeSourcesInterest(nino: String,incomeSourceType: String)(implicit ec: ExecutionContext): APIUser => Future[Result] = {
     user =>
@@ -53,6 +53,11 @@ class InterestService @Inject()(){
       }.headOption
 
       interestIncomeSource.fold(Future(notFound))(incomeSource => Future(Ok(Json.toJson(incomeSource))))
+  }
+
+
+  def validateCreateUpdateIncomeSource(implicit request: Request[JsValue], executionContext: ExecutionContext, APINumber: Int): Either[Result,Boolean] ={
+    validateRequestService.validateRequest(ErrorModel(400,ErrorBodyModel("ERROR","FAIL")), APINumber)
   }
 
 }

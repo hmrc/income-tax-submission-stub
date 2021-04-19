@@ -44,7 +44,7 @@ object Dividends {
   implicit val formats: OFormat[Dividends] = Json.format[Dividends]
 }
 
-case class GiftAidPayments(nonUkCharitiesCharityNames: Option[List[String]] = None,
+case class GiftAidPayments(nonUkCharitiesCharityNames: Option[Seq[String]] = None,
                            currentYear: Option[BigDecimal] = None,
                            oneOffCurrentYear: Option[BigDecimal] = None,
                            currentYearTreatedAsPreviousYear: Option[BigDecimal] = None,
@@ -55,7 +55,7 @@ object GiftAidPayments {
   implicit val format: OFormat[GiftAidPayments] = Json.format[GiftAidPayments]
 }
 
-case class Gifts(investmentsNonUkCharitiesCharityNames: Option[List[String]] = None,
+case class Gifts(investmentsNonUkCharitiesCharityNames: Option[Seq[String]] = None,
                  landAndBuildings: Option[BigDecimal] = None,
                  sharesOrSecurities: Option[BigDecimal] = None,
                  investmentsNonUkCharities: Option[BigDecimal] = None)

@@ -19,9 +19,8 @@ package controllers
 import javax.inject.Inject
 import models.Users.findUser
 import play.api.Logging
-import play.api.libs.json.Json
-import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import repositories.DataRepository
+import play.api.libs.json.{JsValue, Json}
+import play.api.mvc.{Action, AnyContent, ControllerComponents, Result}
 import services.{DividendsService, GiftAidService, InterestService}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import utils.ErrorResponses._
@@ -31,8 +30,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 
-class IncomeSourcesController @Inject()(dataRepository: DataRepository,
-                                        interestService: InterestService,
+class IncomeSourcesController @Inject()(interestService: InterestService,
                                         dividendsService: DividendsService,
                                         giftAidService: GiftAidService,
                                         cc: ControllerComponents) extends BackendController(cc) with Logging {
@@ -65,13 +63,13 @@ class IncomeSourcesController @Inject()(dataRepository: DataRepository,
     incomeSourceType match {
       case INTEREST => findUser(nino)(interestService.getIncomeSourceInterest(incomeSourceId,taxYear))
       case DIVIDENDS => findUser(nino)(dividendsService.getIncomeSourceDividends(taxYear))
-      case GIFT_AID => findUser(nino)(giftAidService.)
+      case GIFT_AID => findUser(nino)(giftAidService.getIncomeSourceGiftAid(taxYear))
       case _ => Future(notFound)
     }
   }
 
   // DES #1393 //
-  def createIncomeSource(nino: String): Action[AnyContent] = Action.async { implicit request =>
+  def createIncomeSource(nino: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
 
     logger.info(s"Creating income source for nino: $nino")
     Future(Ok(Json.parse(s"""{"incomeSourceId": "$randomId"}""".stripMargin)))
@@ -80,9 +78,23 @@ class IncomeSourcesController @Inject()(dataRepository: DataRepository,
   // DES #1390 //
   def createUpdateAnnualIncomeSource(nino: String,
                                      incomeSourceType: String,
-                                     taxYear: Int): Action[AnyContent] = Action.async { implicit request =>
+                                     taxYear: Int): Action[JsValue] = Action.async(parse.json) { implicit request =>
+
+    implicit val APINumber: Int = 1390
+
+    import models.IncomeSourceTypes.IncomeSourceTypeA._
 
     logger.info(s"Creating/Updating annual income source for nino: $nino, incomeSourceType: $incomeSourceType, taxYear: $taxYear")
-    Future(Ok(Json.parse(s"""{"transactionReference": "$randomId"}""".stripMargin)))
+
+    val outcome: Either[Result, Boolean] = incomeSourceType match {
+      case DIVIDENDS => dividendsService.validateCreateUpdateIncomeSource
+      case INTEREST => interestService.validateCreateUpdateIncomeSource
+      case GIFT_AID => giftAidService.validateCreateUpdateIncomeSource
+    }
+
+    outcome match {
+      case Left(error) => Future(error)
+      case Right(_) => Future(Ok(Json.parse(s"""{"transactionReference": "$randomId"}""".stripMargin)))
+    }
   }
 }

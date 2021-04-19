@@ -20,15 +20,13 @@ import javax.inject.Inject
 import play.api.Logging
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import repositories.DataRepository
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import utils.RandomIdGenerator.randomId
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class CalculationController @Inject()(dataRepository: DataRepository,
-                                      cc: ControllerComponents) extends BackendController(cc) with Logging {
+class CalculationController @Inject()(cc: ControllerComponents) extends BackendController(cc) with Logging {
 
   def generateCalculationId(nino: String, taxYear: Int): Action[AnyContent] = Action.async { implicit request =>
 

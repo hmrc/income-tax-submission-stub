@@ -57,12 +57,16 @@ lazy val microservice = Project(appName, file("."))
       "com.github.ghik" % "silencer-lib" % silencerVersion % Provided cross CrossVersion.full
     )
   )
-  .settings(
-    Keys.fork in Test := true,
-    parallelExecution in Test := false
-  )
   .configs(IntegrationTest)
   .settings(integrationTestSettings(): _*)
+  .settings(
+    Keys.fork in Test := true,
+    parallelExecution in Test := false,
+    unmanagedClasspath in IntegrationTest += baseDirectory.value / "resources",
+    unmanagedClasspath in Test += baseDirectory.value / "resources",
+    unmanagedClasspath in Runtime += baseDirectory.value / "resources"
+  )
+  .settings(unmanagedResourceDirectories in Compile += baseDirectory.value / "resources")
   .settings(resolvers ++= Seq(
     Resolver.bintrayRepo("hmrc", "releases"),
     Resolver.jcenterRepo
