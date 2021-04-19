@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-package models.requests
+package utils
+import play.api.mvc.Result
+import play.api.mvc.Results._
 
-import play.api.mvc.{Request, WrappedRequest}
-
-case class AuthenticatedRequest[A] (request: Request[A], externalId: String) extends WrappedRequest[A](request)
+object ErrorResponses {
+  val notFound: Result = NotFound
+}

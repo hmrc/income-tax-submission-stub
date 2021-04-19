@@ -1,7 +1,20 @@
 # Add all the application routes to the app.routes file
 
-POST    /income-tax/income-sources/nino/:nino                       controllers.RequestHandlerController.generateInterestIncomeSource(nino:String)
-POST    /income-tax/nino/:nino/taxYear/:taxYear/tax-calculation     controllers.RequestHandlerController.generateCalculationId(nino:String, taxYear:Int)
+### DES #1392 ###
+GET     /income-tax/income-sources/nino/:nino                                   controllers.IncomeSourcesController.getListOfIncomeSources(nino: String, incomeSourceType: String, taxYear: Option[Int])
+
+### DES #1393 ###
+POST    /income-tax/income-sources/nino/:nino                                   controllers.IncomeSourcesController.createIncomeSource(nino:String)
+
+### DES #1391 ###
+GET     /income-tax/nino/:nino/income-source/:incomeSourceType/annual/:taxYear  controllers.IncomeSourcesController.getIncomeSource(nino: String, incomeSourceType: String, taxYear: Int, incomeSourceId: Option[String])
+
+### DES #1390 ###
+POST    /income-tax/nino/:nino/income-source/:incomeSourceType/annual/:taxYear  controllers.IncomeSourcesController.createUpdateAnnualIncomeSource(nino: String, incomeSourceType: String, taxYear: Int)
+
+### DES #1426 ###
+POST    /income-tax/nino/:nino/taxYear/:taxYear/tax-calculation                 controllers.CalculationController.generateCalculationId(nino:String, taxYear:Int)
+
 
 ->	/setup			    setup.Routes
 ->	/			        health.Routes
