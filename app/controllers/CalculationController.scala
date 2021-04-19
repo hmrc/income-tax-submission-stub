@@ -18,8 +18,8 @@ package controllers
 
 import javax.inject.Inject
 import play.api.Logging
-import play.api.libs.json.Json
-import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import play.api.libs.json.{JsValue, Json}
+import play.api.mvc.{Action, ControllerComponents}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import utils.RandomIdGenerator.randomId
 
@@ -28,10 +28,15 @@ import scala.concurrent.Future
 
 class CalculationController @Inject()(cc: ControllerComponents) extends BackendController(cc) with Logging {
 
-  def generateCalculationId(nino: String, taxYear: Int): Action[AnyContent] = Action.async { implicit request =>
+  def generateCalculationId(nino: String, taxYear: Int): Action[JsValue] = Action.async(parse.json) { implicit request =>
 
     logger.info(s"Generating calculation id for nino: $nino, taxYear: $taxYear")
-    Future(Ok(Json.parse(s"""{"id": "$randomId"}""".stripMargin)))
+
+    if(request.body != Json.parse("{}")){
+      Future(BadRequest("API needs empty json supplied."))
+    } else {
+      Future(Ok(Json.parse(s"""{"id": "$randomId"}""".stripMargin)))
+    }
   }
 
 }

@@ -109,6 +109,7 @@ object Users {
     )
   )
 
+  //TODO Update with actual error response for 404
   def findUser(nino: String, notFoundResult: Future[Result] = Future(notFound))
               (function: APIUser => Future[Result]): Future[Result] = {
 
