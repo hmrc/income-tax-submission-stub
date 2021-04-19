@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "ITSD - API 1393 - Request Create a non-business income source",
+  "type": "object",
+  "required": [
+    "incomeSourceType",
+    "incomeSourceName"
+  ],
+  "properties": {
+    "incomeSourceType": {
+      "type": "string",
+      "enum": [
+        "self-employment",
+        "uk-property",
+        "fhl-property-eea",
+        "fhl-property-uk",
+        "employment",
+        "foreign-income",
+        "dividends-from-foreign-companies",
+        "trusts-and-estates",
+        "interest-from-uk-banks",
+        "dividends-uk",
+        "uk-pension-benefits",
+        "gains-on-life-insurance-policies",
+        "share-schemes",
+        "partnership",
+        "relief-for-charity",
+        "other-income"
+      ],
+      "description": "Indicates the income source type"
+    },
+    "incomeSourceName": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9 \\-,.&']{1,105}$",
+      "description": "Customer friendly name of the Income Source"
+    }
+  },
+  "additionalProperties": false
+}

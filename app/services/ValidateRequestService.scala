@@ -31,6 +31,7 @@ class ValidateRequestService @Inject()() extends JsonValidation {
 
     val schemaFile = APINumber match {
       case 1390 => "1390_CreateUpdateIncomeSourceSchema.json"
+      case 1393 => "1393_CreateIncomeSourceSchema.json"
     }
 
     if (isValidJsonAccordingToJsonSchema(request.body, s"/jsonSchemas/$schemaFile")) {

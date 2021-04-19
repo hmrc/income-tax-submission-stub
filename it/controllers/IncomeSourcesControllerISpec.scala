@@ -26,6 +26,36 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
 
   implicit val application: Application = app
 
+  "POST /income-tax/income-sources/nino/AA123456A" should {
+    s"return ${Status.OK} with json" in {
+
+      val url = "income-tax/income-sources/nino/AA123456A"
+
+      val res = await(buildClient(url).post(Json.parse(
+        """{
+          |    "incomeSourceType": "interest-from-uk-banks",
+          |    "incomeSourceName": "Santander Business"
+          |}""".stripMargin)))
+
+      res.status mustBe Status.OK
+      res.json.toString() must include("""{"incomeSourceId":"""")
+    }
+
+    s"return ${Status.BAD_REQUEST} with json" in {
+
+      val url = "income-tax/income-sources/nino/AA123456A"
+
+      val res = await(buildClient(url).post(Json.parse(
+        """{
+          |    "incomeSourceWHAT?": "interest-from-uk-banks",
+          |    "incomeSourceName": "Santander Business"
+          |}""".stripMargin)))
+
+      res.status mustBe Status.BAD_REQUEST
+      res.json.toString() must include("""{"code":"ERROR","reason":"FAIL"}""")
+    }
+  }
+
   "POST /income-tax/nino/AA123456A/income-source/dividends/annual/2020" should {
     s"return ${Status.OK} with json" in {
 

@@ -71,8 +71,16 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
   // DES #1393 //
   def createIncomeSource(nino: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
 
+    implicit val APINumber: Int = 1393
+
     logger.info(s"Creating income source for nino: $nino")
-    Future(Ok(Json.parse(s"""{"incomeSourceId": "$randomId"}""".stripMargin)))
+
+    val outcome: Either[Result, Boolean] = interestService.validateCreateIncomeSource
+
+    outcome match {
+      case Left(error) => Future(error)
+      case Right(_) => Future(Ok(Json.parse(s"""{"incomeSourceId": "$randomId"}""".stripMargin)))
+    }
   }
 
   // DES #1390 //
