@@ -27,7 +27,12 @@ lazy val coverageSettings: Seq[Setting[_]] = {
     "prod.*",
     "config.*",
     "testOnlyDoNotUseInAppConf.*",
-    "partials.*")
+    "partials.*",
+    "controllers.javascript.*",
+    "com.*",
+    ".*Routes*",
+    ".*RoutesPrefix*"
+  )
 
   Seq(
     ScoverageKeys.coverageExcludedPackages := excludedPackages.mkString(";"),
