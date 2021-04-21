@@ -45,7 +45,7 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
     logger.info(s"Get income source list for nino: $nino, taxYear: $taxYear, incomeSourceType: $incomeSourceType")
 
     incomeSourceType match {
-      case INTEREST_FROM_UK_BANKS => findUser(nino)(interestService.getListOfIncomeSourcesInterest(nino,incomeSourceType))
+      case INTEREST_FROM_UK_BANKS => findUser(nino)(interestService.getListOfIncomeSourcesInterest(nino,incomeSourceType,taxYear))
       case _ => Future(notFound)
     }
   }

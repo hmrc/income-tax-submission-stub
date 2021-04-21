@@ -28,15 +28,24 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class InterestService @Inject()(validateRequestService: ValidateRequestService){
 
-  def getListOfIncomeSourcesInterest(nino: String,incomeSourceType: String)(implicit ec: ExecutionContext): APIUser => Future[Result] = {
+  def getListOfIncomeSourcesInterest(nino: String,incomeSourceType: String, taxYear:Option[Int])(implicit ec: ExecutionContext): APIUser => Future[Result] = {
     user =>
 
-      val incomeSources: Seq[IncomeSourceModel] = user.interest.map {
+      val incomeSources: Seq[IncomeSourceModel] = user.interest.flatMap {
         interest =>
-          IncomeSourceModel(interest.incomeSourceId, interest.incomeSourceName, nino, incomeSourceType)
+
+          if(taxYear.isEmpty || interest.interestSubmissions.exists(sub => taxYear.contains(sub.taxYear))){
+            Some(IncomeSourceModel(interest.incomeSourceId, interest.incomeSourceName, nino, incomeSourceType))
+          } else {
+            None
+          }
       }
 
-      Future(Ok(Json.toJson(incomeSources)))
+      if(incomeSources.isEmpty){
+        Future(notFound)
+      } else {
+        Future(Ok(Json.toJson(incomeSources)))
+      }
   }
 
   def getIncomeSourceInterest(incomeSourceId: Option[String],taxYear: Int)(implicit ec: ExecutionContext): APIUser => Future[Result] = {
