@@ -16,32 +16,80 @@
 
 package models
 
+import filters.StubErrorFilter.{DES_500_NINO, DES_503_NINO}
 import play.api.mvc.Result
-import utils.RandomIdGenerator
-import scala.concurrent.Future
 import utils.ErrorResponses._
+import utils.RandomIdGenerator
+
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 object Users {
 
   val users = Seq(
     APIUser(
-      "BB777777B",
-      interest =
-        (1 to 11).map {
-          num =>
-            Interest(
-              num.toString,
-              RandomIdGenerator.randomId,
-              interestSubmissions = Seq(
-                InterestSubmission(
-                  2022,
-                  None,
-                  Some(100)
-                )
-              )
+      "AA123459A",
+      interest = Seq(
+        Interest(
+          "Rick Owens Bank", //TODO THIS TEST CASE SHOULD WORK AFTER SASS-536 IS COMPLETED https://jira.tools.tax.service.gov.uk/browse/SASS-536
+          RandomIdGenerator.randomId,
+          interestSubmissions = Seq(
+            InterestSubmission(
+              2022,
+              Some(99999999999.99),
+              Some(99999999999.99)
             )
-        }
+          )
+        ),
+        Interest(
+          "Rick Owens Taxed Bank",
+          RandomIdGenerator.randomId,
+          interestSubmissions = Seq(
+            InterestSubmission(
+              2022,
+              Some(99999999999.99),
+              None
+            )
+          )
+        ),
+        Interest(
+          "Rick Owens Untaxed Bank",
+          RandomIdGenerator.randomId,
+          interestSubmissions = Seq(
+            InterestSubmission(
+              2022,
+              None,
+              Some(99999999999.99)
+            )
+          )
+        )
+      ),
+      dividends = Seq(
+        Dividends(
+          2022,
+          Some(99999999999.99),
+          None
+        )
+      ),
+      giftAid = Seq(
+        GiftAid(
+          2022,
+          giftAidPayments = Some(GiftAidPayments(
+            Some(Seq("Rick Owens Charity")),
+            Some(99999999999.99),
+            Some(99999999999.99),
+            Some(99999999999.99),
+            Some(99999999999.99),
+            Some(99999999999.99)
+          )),
+          gifts = Some(Gifts(
+            Some(Seq("Rick Owens Non-UK Charity")),
+            Some(99999999999.99),
+            Some(99999999999.99),
+            Some(99999999999.99)
+          ))
+        )
+      )
     ),
     APIUser(
       "AA000001A",
@@ -63,6 +111,7 @@ object Users {
         )
       )
     ),
+
     APIUser(
       "AA000003A",
       interest = Seq(
@@ -115,14 +164,33 @@ object Users {
         Dividends(
           2022,
           Some(46985.99),
-          Some(15071993.01)
+          Some(15071993.01),
         )
       )
-    )
+    ),
+    APIUser(
+      "BB777777B",
+      interest =
+        (1 to 11).map {
+          num =>
+            Interest(
+              num.toString,
+              RandomIdGenerator.randomId,
+              interestSubmissions = Seq(
+                InterestSubmission(
+                  2022,
+                  None,
+                  Some(100)
+                )
+              )
+            )
+        }
+    ),
+    APIUser(DES_500_NINO),
+    APIUser(DES_503_NINO)
   )
 
-  //TODO Update with actual error response for 404
-  def findUser(nino: String, notFoundResult: Future[Result] = Future(notFound))
+  def findUser(nino: String, notFoundResult: Future[Result] = Future(userNotFound))
               (function: APIUser => Future[Result]): Future[Result] = {
 
     Users.users.find(_.nino.equals(nino)).fold(notFoundResult)(function)
