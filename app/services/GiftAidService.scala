@@ -17,11 +17,11 @@
 package services
 
 import javax.inject.Inject
+import models.DESModels.GiftAidDetail
 import models.{APIUser, ErrorBodyModel, ErrorModel}
-import models.DESModels.{DividendsDetail, GiftAidDetail}
 import play.api.libs.json.{JsValue, Json}
-import play.api.mvc.{Request, Result}
 import play.api.mvc.Results.Ok
+import play.api.mvc.{Request, Result}
 import utils.ErrorResponses.notFound
 
 import scala.concurrent.{ExecutionContext, Future}
