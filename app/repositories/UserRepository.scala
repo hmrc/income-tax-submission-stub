@@ -45,9 +45,13 @@ class UserRepository @Inject()(reactiveMongoComponent: ReactiveMongoComponent) {
     repository.findAndUpdate(query = ninoSelector, update = modifier, upsert = true, fetchNewObject = true).map(result => result.result[APIUser])
   }
 
-  def findByNino(nino: String)(implicit ec: ExecutionContext): Future[APIUser] = repository.find("nino" -> nino).map(_.last)
+  def findByNino(nino: String)(implicit ec: ExecutionContext): Future[Option[APIUser]] = find("nino" -> nino)
 
   def find(query: (String, JsValueWrapper)*)(implicit ec: ExecutionContext): Future[Option[APIUser]] =
     repository.find(query: _*).map(_.headOption)
+
+  def bulkInsert(users: Seq[APIUser])(implicit ec: ExecutionContext): Future[MultiBulkWriteResult] = {
+    repository.bulkInsert(users)
+  }
 
 }

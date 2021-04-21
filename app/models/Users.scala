@@ -16,11 +16,7 @@
 
 package models
 
-import play.api.mvc.Result
 import utils.RandomIdGenerator
-import scala.concurrent.Future
-import utils.ErrorResponses._
-import scala.concurrent.ExecutionContext.Implicits.global
 
 object Users {
 
@@ -108,11 +104,4 @@ object Users {
         }
     )
   )
-
-  //TODO Update with actual error response for 404
-  def findUser(nino: String, notFoundResult: Future[Result] = Future(notFound))
-              (function: APIUser => Future[Result]): Future[Result] = {
-
-    Users.users.find(_.nino.equals(nino)).fold(notFoundResult)(function)
-  }
 }

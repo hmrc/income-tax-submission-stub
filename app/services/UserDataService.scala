@@ -21,14 +21,16 @@ import play.api.Logging
 import play.api.mvc.Result
 import play.api.mvc.Results._
 import repositories.UserRepository
+import utils.ErrorResponses.notFound
 import utils.JsonValidation
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class UserDataService @Inject()(dataRepository: UserRepository) extends JsonValidation with Logging {
+class UserDataService @Inject()(dataRepository: UserRepository,
+                                implicit val ec: ExecutionContext) extends JsonValidation with Logging {
 
-   def insertUser(user: APIUser)(implicit ec: ExecutionContext): Future[Result] = {
+   def insertUser(user: APIUser): Future[Result] = {
      dataRepository.insertUser(user).map {
        case Some(value) =>
          logger.info(s"New user created (${value.nino})")
@@ -38,4 +40,13 @@ class UserDataService @Inject()(dataRepository: UserRepository) extends JsonVali
          InternalServerError(s"Failed to add data to Stub.")
      }
     }
+
+  //TODO Update with actual error response for 404
+  def findUser(nino: String, notFoundResult: Future[Result] = Future(notFound))
+              (function: APIUser => Future[Result]): Future[Result] = {
+
+   dataRepository.findByNino(nino).flatMap{
+     _.fold(notFoundResult)(function)
+   }
+  }
 }

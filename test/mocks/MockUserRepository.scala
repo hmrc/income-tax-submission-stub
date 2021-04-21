@@ -31,38 +31,38 @@ trait MockUserRepository extends TestSupport with MockFactory {
   val successWriteResult = UpdateWriteResult(ok = true, n = 1, nModified = 0, upserted = Seq(), writeErrors = Seq(), None, None, None)
   val errorWriteResult = UpdateWriteResult(ok = false, n = 1, nModified = 0, upserted = Seq(), writeErrors = Seq(WriteError(1,1,"Error")), None, None, None)
 
-  lazy val mockNewDataRepository: UserRepository = mock[UserRepository]
+  lazy val mockUserRepository: UserRepository = mock[UserRepository]
 
   def mockAddEntry(document: APIUser)
                   (response: Future[WriteResult]): CallHandler2[APIUser, ExecutionContext, Future[WriteResult]] = {
-    (mockNewDataRepository.addEntry(_: APIUser)(_: ExecutionContext))
+    (mockUserRepository.addEntry(_: APIUser)(_: ExecutionContext))
       .expects(document, *)
       .returning(response)
   }
 
   def mockRemoveById(url: String)
                     (response: Future[WriteResult]): CallHandler2[String, ExecutionContext, Future[WriteResult]] = {
-    (mockNewDataRepository.removeById(_: String)(_: ExecutionContext))
+    (mockUserRepository.removeById(_: String)(_: ExecutionContext))
       .expects(url, *)
       .returning(response)
   }
 
   def mockRemoveAll()
                    (response: Future[WriteResult]): CallHandler1[ExecutionContext, Future[WriteResult]] = {
-    (mockNewDataRepository.removeAll()(_: ExecutionContext))
+    (mockUserRepository.removeAll()(_: ExecutionContext))
       .expects(*)
       .returning(response)
   }
 
   def mockFindById(url: String)
                   (response: Future[APIUser]): CallHandler2[String, ExecutionContext, Future[APIUser]] = {
-    (mockNewDataRepository.findById(_: String)(_: ExecutionContext))
+    (mockUserRepository.findById(_: String)(_: ExecutionContext))
       .expects(*, *)
       .returning(response)
   }
 
   def mockFind(response: Future[Option[APIUser]]): CallHandler2[(String, JsValueWrapper), ExecutionContext, Future[Option[APIUser]]] = {
-    (mockNewDataRepository.find(_: (String, JsValueWrapper))(_: ExecutionContext))
+    (mockUserRepository.find(_: (String, JsValueWrapper))(_: ExecutionContext))
       .expects(*, *)
       .returning(response)
   }
