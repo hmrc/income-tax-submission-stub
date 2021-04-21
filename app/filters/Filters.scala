@@ -14,8 +14,14 @@
  * limitations under the License.
  */
 
-package models.requests
+package filters
 
-import play.api.mvc.{Request, WrappedRequest}
+import play.api.http.DefaultHttpFilters
+import uk.gov.hmrc.play.bootstrap.backend.filters.BackendFilters
 
-case class AuthenticatedRequest[A] (request: Request[A], externalId: String) extends WrappedRequest[A](request)
+import javax.inject.Inject
+
+class Filters @Inject() (
+                          stubErrorFilter: StubErrorFilter,
+                          backendFilters: BackendFilters
+                        ) extends DefaultHttpFilters(backendFilters.filters :+ stubErrorFilter :_*)

@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package modules
+package utils
 
-import com.google.inject.AbstractModule
-import controllers.actions.{AuthAction, AuthActionImpl}
+import java.util.UUID.randomUUID
 
-class AuthModule extends AbstractModule {
-  override def configure(): Unit = bind(classOf[AuthAction]).to(classOf[AuthActionImpl])
+object RandomIdGenerator {
+  def randomId: String = s"ZZIS${randomUUID.toString.replaceAll("-","").take(11)}".toUpperCase()
 }

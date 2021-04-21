@@ -14,14 +14,21 @@
  * limitations under the License.
  */
 
-package models
+package utils
+import play.api.libs.json.Json
+import play.api.mvc.Result
+import play.api.mvc.Results._
 
-import play.api.libs.json.{Format, Json}
+object ErrorResponses {
+  val notFound: Result = NotFound
 
-case class ErrorResponse(code: String, reason: String)
+  val userNotFound: Result = NotFound(Json.obj(
+    "code" -> "NOT_FOUND",
+    "message" -> "The remote endpoint has indicated that no data can be found.")
+  )
 
-object ErrorResponse {
-
-  implicit val format: Format[ErrorResponse] = Json.format[ErrorResponse]
-
+  val incomeSourceTypeNotFound: Result = BadRequest(Json.obj(
+    "code" -> "INVALID_TYPE",
+    "message" -> "Submission has not passed validation. Invalid parameter type.")
+  )
 }

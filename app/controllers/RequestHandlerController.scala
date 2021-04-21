@@ -18,7 +18,7 @@ package controllers
 
 import javax.inject.Inject
 import models.HttpMethod._
-import models.{DataModel, ErrorResponse}
+import models.{DataModel, ErrorBodyModel}
 import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Result}
 import repositories.DataRepository
@@ -26,20 +26,9 @@ import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import java.util.UUID.randomUUID
 
 class RequestHandlerController @Inject()(dataRepository: DataRepository,
                                          cc: ControllerComponents) extends BackendController(cc) {
-
-  def randomId: String = s"ZZIS${randomUUID.toString.replaceAll("-","").take(15)}".toUpperCase()
-
-  def generateInterestIncomeSource(nino: String): Action[AnyContent] = Action.async { implicit request =>
-    Future(Ok(Json.parse(s"""{"incomeSourceId": "$randomId"}""".stripMargin)))
-  }
-
-  def generateCalculationId(nino: String, taxYear: Int): Action[AnyContent] = Action.async { implicit request =>
-    Future(Ok(Json.parse(s"""{"id": "$randomId"}""".stripMargin)))
-  }
 
   def getRequestHandler(url: String): Action[AnyContent] = Action.async { implicit request =>
 
@@ -52,7 +41,7 @@ class RequestHandlerController @Inject()(dataRepository: DataRepository,
       case Some(result) if result.submission.response.nonEmpty => Status(result.submission.status)(result.submission.response.get)
       case Some(result) => Status(result.submission.status)
       case _ => NotFound(
-        Json.toJson(ErrorResponse(
+        Json.toJson(ErrorBodyModel(
           NOT_FOUND.toString,
           s"Could not find endpoint in Dynamic Stub matching the URI: ${request.uri}"
         ))
@@ -71,7 +60,7 @@ class RequestHandlerController @Inject()(dataRepository: DataRepository,
     dataRepository.find("submission.uri" -> request.uri, "submission.method" -> POST) flatMap {
       case Some(stubData) => Future.successful(Status(stubData.submission.status)(stubData.submission.response.getOrElse(JsObject(Seq.empty))))
       case None => Future.successful(BadRequest(
-        Json.toJson(ErrorResponse(
+        Json.toJson(ErrorBodyModel(
           NOT_FOUND.toString,
           s"Could not find endpoint in Dynamic Stub matching the URI: ${request.uri}"
         ))
