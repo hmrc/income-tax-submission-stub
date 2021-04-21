@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-package utils
-import play.api.libs.json.Json
-import play.api.mvc.Result
-import play.api.mvc.Results._
+package filters
 
-object ErrorResponses {
-  val notFound: Result = NotFound
+import play.api.http.DefaultHttpFilters
+import uk.gov.hmrc.play.bootstrap.backend.filters.BackendFilters
 
-  val userNotFound: Result = NotFound(Json.obj(
-    "code" -> "NOT_FOUND",
-    "message" -> "The remote endpoint has indicated that no data can be found.")
-  )
-}
+import javax.inject.Inject
+
+class Filters @Inject() (
+                          stubErrorFilter: StubErrorFilter,
+                          backendFilters: BackendFilters
+                        ) extends DefaultHttpFilters(backendFilters.filters :+ stubErrorFilter :_*)

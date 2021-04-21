@@ -16,11 +16,13 @@
 
 package models
 
+import filters.StubErrorFilter.{DES_500_NINO, DES_503_NINO}
 import play.api.mvc.Result
-import utils.RandomIdGenerator
-import scala.concurrent.Future
 import utils.ErrorResponses._
+import utils.RandomIdGenerator
+
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 object Users {
 
@@ -106,11 +108,12 @@ object Users {
               )
             )
         }
-    )
+    ),
+    APIUser(DES_500_NINO),
+    APIUser(DES_503_NINO)
   )
 
-  //TODO Update with actual error response for 404
-  def findUser(nino: String, notFoundResult: Future[Result] = Future(notFound))
+  def findUser(nino: String, notFoundResult: Future[Result] = Future(userNotFound))
               (function: APIUser => Future[Result]): Future[Result] = {
 
     Users.users.find(_.nino.equals(nino)).fold(notFoundResult)(function)
