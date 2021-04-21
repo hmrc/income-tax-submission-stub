@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package utils
-import play.api.libs.json.Json
-import play.api.mvc.Result
-import play.api.mvc.Results._
+package models.errors
 
-object ErrorResponses {
-  val notFound: Result = NotFound
+import models.{ErrorBodyModel, ErrorsBodyModel}
 
-  val userNotFound: Result = NotFound(Json.obj(
-    "code" -> "NOT_FOUND",
-    "message" -> "The remote endpoint has indicated that no data can be found.")
+object StubErrors {
+
+  val DES_500_ERROR_MODEL: ErrorBodyModel = ErrorBodyModel("SERVER_ERROR", "DES is currently experiencing problems that require live service intervention.")
+  val DES_503_ERRORS_MODEL: ErrorsBodyModel = ErrorsBodyModel(
+    Seq(ErrorBodyModel("SERVICE_UNAVAILABLE", "Service A is Down"), ErrorBodyModel("SERVICE_UNAVAILABLE", "Service B is Down"))
   )
+
 }
