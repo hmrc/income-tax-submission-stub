@@ -72,7 +72,7 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
       case INTEREST => findUser(nino)(interestService.getIncomeSourceInterest(incomeSourceId, taxYear))
       case DIVIDENDS => findUser(nino)(dividendsService.getIncomeSourceDividends(taxYear))
       case GIFT_AID => findUser(nino)(giftAidService.getIncomeSourceGiftAid(taxYear))
-      case _ => Future(notFound)
+      case _ => Future(incomeSourceTypeNotFound)
     }
   }
 
@@ -87,7 +87,7 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
 
     incomeSourceType match {
       case INTEREST_FROM_UK_BANKS => findUser(nino)(interestService.getListOfIncomeSourcesInterest(nino, incomeSourceType))
-      case _ => Future(notFound)
+      case _ => Future(incomeSourceTypeNotFound)
     }
   }
 
