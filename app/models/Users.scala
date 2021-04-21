@@ -26,70 +26,6 @@ object Users {
 
   val users = Seq(
     APIUser(
-      "AA123456A",
-      interest = Seq(
-        Interest(
-          "Rick Owens Bank", //TODO THIS TEST CASE SHOULD WORK AFTER SASS-536 IS COMPLETED https://jira.tools.tax.service.gov.uk/browse/SASS-536
-          RandomIdGenerator.randomId,
-          interestSubmissions = Seq(
-            InterestSubmission(
-              2022,
-              Some(99999999999.99),
-              Some(99999999999.99)
-            )
-          )
-        ),
-        Interest(
-          "Rick Owens Taxed Bank",
-          RandomIdGenerator.randomId,
-          interestSubmissions = Seq(
-            InterestSubmission(
-              2022,
-              Some(99999999999.99),
-              None
-            )
-          )
-        ),
-        Interest(
-          "Rick Owens Untaxed Bank",
-          RandomIdGenerator.randomId,
-          interestSubmissions = Seq(
-            InterestSubmission(
-              2022,
-              None,
-              Some(99999999999.99)
-            )
-          )
-        )
-      ),
-      dividends = Seq(
-        Dividends(
-          2022,
-          Some(99999999999.99),
-          None
-        )
-      ),
-      giftAid = Seq(
-        GiftAid(
-          2022,
-          giftAidPayments = Some(GiftAidPayments(
-            Some(Seq("Rick Owens Charity")),
-            Some(99999999999.99),
-            Some(99999999999.99),
-            Some(99999999999.99),
-            Some(99999999999.99),
-            Some(99999999999.99)
-          )),
-          gifts = Some(Gifts(
-            Some(Seq("Rick Owens Non-UK Charity")),
-            Some(99999999999.99),
-            Some(99999999999.99),
-            Some(99999999999.99)
-          ))
-        )
-      )
-    ),
-    APIUser(
       "BB777777B",
       interest =
         (1 to 11).map {
@@ -106,7 +42,85 @@ object Users {
               )
             )
         }
+    ),
+    APIUser(
+      "AA000001A",
+      dividends = Seq(
+        Dividends(
+          2022,
+          Some(55844806400.99),
+          Some(60267421355.99)
+        )
+      )
+    ),
+    APIUser(
+      "AA000002A",
+      dividends = Seq(
+        Dividends(
+          2022,
+          Some(750.50),
+          Some(225.25)
+        )
+      )
+    ),
+    APIUser(
+      "AA000003A",
+      interest = Seq(
+        Interest(
+          "Halifax",
+          "first",
+          interestSubmissions = Seq(
+            InterestSubmission(
+              2022,
+              None,
+              Some(4000)
+            )
+          )
+        ),
+        Interest(
+          "Nationwide",
+          "second",
+          interestSubmissions = Seq(
+            InterestSubmission(
+              2022,
+              None,
+              Some(4000)
+            )
+          )
+        ),
+        Interest(
+          "Monzo",
+          "third",
+          interestSubmissions = Seq(
+            InterestSubmission(
+              2022,
+              Some(4000),
+              None
+            )
+          )
+        ),
+        Interest(
+          "TSB Account",
+          "fourth",
+          interestSubmissions = Seq(
+            InterestSubmission(
+              2022,
+              Some(4000),
+              None
+            )
+          )
+        )
+      ),
+      dividends = Seq(
+        Dividends(
+          2022,
+          Some(46985.99),
+          Some(15071993.01)
+        )
+      )
     )
+
+
   )
 
   //TODO Update with actual error response for 404
