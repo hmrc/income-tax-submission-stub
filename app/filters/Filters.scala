@@ -14,10 +14,14 @@
  * limitations under the License.
  */
 
-package utils
+package filters
 
-import java.util.UUID.randomUUID
+import play.api.http.DefaultHttpFilters
+import uk.gov.hmrc.play.bootstrap.backend.filters.BackendFilters
 
-object RandomIdGenerator {
-  def randomId: String = s"ZZIS${randomUUID.toString.replaceAll("-","").take(11)}".toUpperCase()
-}
+import javax.inject.Inject
+
+class Filters @Inject() (
+                          stubErrorFilter: StubErrorFilter,
+                          backendFilters: BackendFilters
+                        ) extends DefaultHttpFilters(backendFilters.filters :+ stubErrorFilter :_*)

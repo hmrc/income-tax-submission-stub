@@ -15,9 +15,20 @@
  */
 
 package utils
+import play.api.libs.json.Json
 import play.api.mvc.Result
 import play.api.mvc.Results._
 
 object ErrorResponses {
   val notFound: Result = NotFound
+
+  val userNotFound: Result = NotFound(Json.obj(
+    "code" -> "NOT_FOUND",
+    "message" -> "The remote endpoint has indicated that no data can be found.")
+  )
+
+  val incomeSourceTypeNotFound: Result = BadRequest(Json.obj(
+    "code" -> "INVALID_TYPE",
+    "message" -> "Submission has not passed validation. Invalid parameter type.")
+  )
 }

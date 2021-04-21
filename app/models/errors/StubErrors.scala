@@ -14,10 +14,15 @@
  * limitations under the License.
  */
 
-package utils
+package models.errors
 
-import java.util.UUID.randomUUID
+import models.{ErrorBodyModel, ErrorsBodyModel}
 
-object RandomIdGenerator {
-  def randomId: String = s"ZZIS${randomUUID.toString.replaceAll("-","").take(11)}".toUpperCase()
+object StubErrors {
+
+  val DES_500_ERROR_MODEL: ErrorBodyModel = ErrorBodyModel("SERVER_ERROR", "DES is currently experiencing problems that require live service intervention.")
+  val DES_503_ERRORS_MODEL: ErrorsBodyModel = ErrorsBodyModel(
+    Seq(ErrorBodyModel("SERVICE_UNAVAILABLE", "Service A is Down"), ErrorBodyModel("SERVICE_UNAVAILABLE", "Service B is Down"))
+  )
+
 }

@@ -20,7 +20,6 @@ import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 import com.github.fge.jsonschema.core.report.ProcessingReport
 import com.github.fge.jsonschema.main.{JsonSchemaFactory, JsonValidator}
 import play.api.libs.json.JsValue
-import play.api.mvc.AnyContentAsJson
 
 trait JsonValidation {
   def isValidJsonAccordingToJsonSchema(inputRequestAsJson: JsValue, jsonSchemaFile: String): Boolean = {
@@ -35,7 +34,7 @@ trait JsonValidation {
       val report: ProcessingReport = validator.validate(jsonSchema, inputJson)
       report.isSuccess
     } catch {
-      case e: Exception => false
+      case _: Exception => false
     }
   }
 }
