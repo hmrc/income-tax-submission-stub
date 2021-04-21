@@ -28,7 +28,7 @@ object Users {
 
   val users = Seq(
     APIUser(
-      "AA123456A",
+      "AA123459A",
       interest = Seq(
         Interest(
           "Rick Owens Bank", //TODO THIS TEST CASE SHOULD WORK AFTER SASS-536 IS COMPLETED https://jira.tools.tax.service.gov.uk/browse/SASS-536
@@ -88,6 +88,83 @@ object Users {
             Some(99999999999.99),
             Some(99999999999.99)
           ))
+        )
+      )
+    ),
+    APIUser(
+      "AA000001A",
+      dividends = Seq(
+        Dividends(
+          2022,
+          Some(55844806400.99),
+          Some(60267421355.99)
+        )
+      )
+    ),
+    APIUser(
+      "AA000002A",
+      dividends = Seq(
+        Dividends(
+          2022,
+          Some(750.50),
+          Some(225.25)
+        )
+      )
+    ),
+
+    APIUser(
+      "AA000003A",
+      interest = Seq(
+        Interest(
+          "Halifax",
+          RandomIdGenerator.randomId,
+          interestSubmissions = Seq(
+            InterestSubmission(
+              2022,
+              None,
+              Some(4000)
+            )
+          )
+        ),
+        Interest(
+          "Nationwide",
+          RandomIdGenerator.randomId,
+          interestSubmissions = Seq(
+            InterestSubmission(
+              2022,
+              None,
+              Some(4000)
+            )
+          )
+        ),
+        Interest(
+          "Monzo",
+          RandomIdGenerator.randomId,
+          interestSubmissions = Seq(
+            InterestSubmission(
+              2022,
+              Some(4000),
+              None
+            )
+          )
+        ),
+        Interest(
+          "TSB Account",
+          RandomIdGenerator.randomId,
+          interestSubmissions = Seq(
+            InterestSubmission(
+              2022,
+              Some(4000),
+              None
+            )
+          )
+        )
+      ),
+      dividends = Seq(
+        Dividends(
+          2022,
+          Some(46985.99),
+          Some(15071993.01),
         )
       )
     ),
