@@ -68,7 +68,7 @@ object Users {
       interest = Seq(
         Interest(
           "Halifax",
-          "first",
+          RandomIdGenerator.randomId,
           interestSubmissions = Seq(
             InterestSubmission(
               2022,
@@ -79,7 +79,7 @@ object Users {
         ),
         Interest(
           "Nationwide",
-          "second",
+          RandomIdGenerator.randomId,
           interestSubmissions = Seq(
             InterestSubmission(
               2022,
@@ -90,7 +90,7 @@ object Users {
         ),
         Interest(
           "Monzo",
-          "third",
+          RandomIdGenerator.randomId,
           interestSubmissions = Seq(
             InterestSubmission(
               2022,
@@ -101,7 +101,7 @@ object Users {
         ),
         Interest(
           "TSB Account",
-          "fourth",
+          RandomIdGenerator.randomId,
           interestSubmissions = Seq(
             InterestSubmission(
               2022,
@@ -119,8 +119,6 @@ object Users {
         )
       )
     )
-
-
   )
 
   //TODO Update with actual error response for 404
