@@ -21,7 +21,7 @@ import play.api.Logging
 import play.api.mvc.Result
 import play.api.mvc.Results._
 import repositories.UserRepository
-import utils.ErrorResponses.notFound
+import utils.ErrorResponses.userNotFound
 import utils.JsonValidation
 
 import javax.inject.Inject
@@ -41,8 +41,7 @@ class UserDataService @Inject()(dataRepository: UserRepository,
      }
     }
 
-  //TODO Update with actual error response for 404
-  def findUser(nino: String, notFoundResult: Future[Result] = Future(notFound))
+  def findUser(nino: String, notFoundResult: Future[Result] = Future(userNotFound))
               (function: APIUser => Future[Result]): Future[Result] = {
 
    dataRepository.findByNino(nino).flatMap{

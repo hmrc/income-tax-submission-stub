@@ -33,16 +33,16 @@ trait MockUserRepository extends TestSupport with MockFactory {
 
   lazy val mockUserRepository: UserRepository = mock[UserRepository]
 
-  def mockAddEntry(document: APIUser)
+  def mockInsertUser(document: APIUser)
                   (response: Future[WriteResult]): CallHandler2[APIUser, ExecutionContext, Future[WriteResult]] = {
-    (mockUserRepository.addEntry(_: APIUser)(_: ExecutionContext))
+    (mockUserRepository.insertUser(_: APIUser)(_: ExecutionContext))
       .expects(document, *)
       .returning(response)
   }
 
   def mockRemoveById(url: String)
                     (response: Future[WriteResult]): CallHandler2[String, ExecutionContext, Future[WriteResult]] = {
-    (mockUserRepository.removeById(_: String)(_: ExecutionContext))
+    (mockUserRepository.removeByNino(_: String)(_: ExecutionContext))
       .expects(url, *)
       .returning(response)
   }
@@ -55,8 +55,8 @@ trait MockUserRepository extends TestSupport with MockFactory {
   }
 
   def mockFindById(url: String)
-                  (response: Future[APIUser]): CallHandler2[String, ExecutionContext, Future[APIUser]] = {
-    (mockUserRepository.findById(_: String)(_: ExecutionContext))
+                  (response: Future[APIUser]): CallHandler2[String, ExecutionContext, Future[Option[APIUser]]] = {
+    (mockUserRepository.findByNino(_: String)(_: ExecutionContext))
       .expects(*, *)
       .returning(response)
   }
