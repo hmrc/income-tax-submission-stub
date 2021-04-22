@@ -53,7 +53,9 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
     }
 
     outcome match {
-      case Left(error) => Future(error)
+      case Left(error) =>
+        logger.error(s"[createUpdateAnnualIncomeSource] The request body provided does not conform to the schema. Nino with request: $nino")
+        Future(error)
       case Right(_) => Future(Ok(Json.parse(s"""{"transactionReference": "$randomId"}""".stripMargin)))
     }
   }
@@ -72,7 +74,9 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
       case INTEREST => findUser(nino)(interestService.getIncomeSourceInterest(incomeSourceId, taxYear))
       case DIVIDENDS => findUser(nino)(dividendsService.getIncomeSourceDividends(taxYear))
       case GIFT_AID => findUser(nino)(giftAidService.getIncomeSourceGiftAid(taxYear))
-      case _ => Future(incomeSourceTypeInvalid)
+      case _ =>
+        logger.error(s"[getIncomeSource] Income source type invalid. Nino with request: $nino")
+        Future(incomeSourceTypeInvalid)
     }
   }
 
@@ -89,7 +93,9 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
     IncomeSourceTypeB.validType(incomeSourceType) match {
       case Right(INTEREST_FROM_UK_BANKS) => findUser(nino)(interestService.getListOfIncomeSourcesInterest(nino, incomeSourceType, taxYear))
       case Right(_) => Future(notFound)
-      case Left(_) => Future(incomeSourceTypeInvalid)
+      case Left(_) =>
+        logger.error(s"[getListOfIncomeSources] Income source type invalid. Nino with request: $nino")
+        Future(incomeSourceTypeInvalid)
     }
   }
 
@@ -103,7 +109,9 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
     val outcome: Either[Result, Boolean] = interestService.validateCreateIncomeSource
 
     outcome match {
-      case Left(error) => Future(error)
+      case Left(error) =>
+        logger.error(s"[createIncomeSource] The request body provided does not conform to the schema. Nino with request: $nino")
+        Future(error)
       case Right(_) => Future(Ok(Json.parse(s"""{"incomeSourceId": "$randomId"}""".stripMargin)))
     }
   }
