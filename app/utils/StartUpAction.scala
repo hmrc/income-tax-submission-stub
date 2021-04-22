@@ -16,15 +16,23 @@
 
 package utils
 
-import models.Users
+import models.{APIUser, Users}
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 import repositories.UserRepository
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{Await, ExecutionContext, Future}
+import scala.concurrent.duration._
 
+@Singleton
 class StartUpAction @Inject()(userRepository: UserRepository,
                               implicit val ec: ExecutionContext) {
-  Users.users.map{ user =>
-    userRepository.insertUser(user) }
+
+//TODO - Does this need changing (await.result part) ?
+  def initialiseUsers(): Seq[Option[APIUser]] = {
+    Await.result(Future.sequence(Users.users.map(user => userRepository.insertUser(user))), 5.seconds)
+  }
+
+  initialiseUsers()
+
 }

@@ -37,15 +37,21 @@ class UserDataService @Inject()(dataRepository: UserRepository,
          Created
        case None =>
          logger.error(s"Failed to add user to Stub (${user.nino})")
-         InternalServerError(s"Failed to add data to Stub.")
+         InternalServerError(s"Failed to add user to Stub.")
+     } recoverWith {
+       case t: Throwable =>
+         logger.error(s"Failed to add user to Stub (${user.nino})", t)
+         Future.successful(InternalServerError(s"Failed to add user to Stub."))
      }
     }
 
-  def findUser(nino: String, notFoundResult: Future[Result] = Future(userNotFound))
-              (function: APIUser => Future[Result]): Future[Result] = {
-
-   dataRepository.findByNino(nino).flatMap{
-     _.fold(notFoundResult)(function)
-   }
+  def findUser(nino: String)(function: APIUser => Future[Result]): Future[Result] = {
+    dataRepository.findByNino(nino).flatMap {
+      _.fold(Future(userNotFound))(function)
+    } recoverWith {
+      case t: Throwable =>
+        logger.error(s"Failed to find user due to an exception", t)
+        Future.successful(InternalServerError(s"Failed to find user."))
+    }
   }
 }

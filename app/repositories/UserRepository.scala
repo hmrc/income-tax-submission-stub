@@ -50,8 +50,4 @@ class UserRepository @Inject()(reactiveMongoComponent: ReactiveMongoComponent) {
   def find(query: (String, JsValueWrapper)*)(implicit ec: ExecutionContext): Future[Option[APIUser]] =
     repository.find(query: _*).map(_.headOption)
 
-  def bulkInsert(users: Seq[APIUser])(implicit ec: ExecutionContext): Future[MultiBulkWriteResult] = {
-    repository.bulkInsert(users)
-  }
-
 }

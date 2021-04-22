@@ -23,7 +23,6 @@ import services.UserDataService
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext.Implicits.global
 
 
 class UserDataController @Inject()(dataService: UserDataService,
@@ -31,9 +30,6 @@ class UserDataController @Inject()(dataService: UserDataService,
 
   val postUser: Action[JsValue] = Action.async(parse.json) { implicit request =>
     withJsonBody[APIUser]( model => dataService.insertUser(model)
-    ) recover {
-      case ex => BadRequest(s"Error Parsing Json DataModel: \n $ex")
-    }
+    )
   }
-
 }

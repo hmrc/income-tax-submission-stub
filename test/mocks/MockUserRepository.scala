@@ -28,22 +28,22 @@ import scala.concurrent.{ExecutionContext, Future}
 
 trait MockUserRepository extends TestSupport with MockFactory {
 
-  val successWriteResult = UpdateWriteResult(ok = true, n = 1, nModified = 0, upserted = Seq(), writeErrors = Seq(), None, None, None)
-  val errorWriteResult = UpdateWriteResult(ok = false, n = 1, nModified = 0, upserted = Seq(), writeErrors = Seq(WriteError(1,1,"Error")), None, None, None)
+  val successWriteResult: UpdateWriteResult = UpdateWriteResult(ok = true, n = 1, nModified = 0, upserted = Seq(), writeErrors = Seq(), None, None, None)
+  val errorWriteResult: UpdateWriteResult = UpdateWriteResult(ok = false, n = 1, nModified = 0, upserted = Seq(), writeErrors = Seq(WriteError(1,1,"Error")), None, None, None)
 
   lazy val mockUserRepository: UserRepository = mock[UserRepository]
 
-  def mockInsertUser(document: APIUser)
-                  (response: Future[WriteResult]): CallHandler2[APIUser, ExecutionContext, Future[WriteResult]] = {
+  def mockInsertUser(user: APIUser)
+                    (response: Future[Option[APIUser]]): CallHandler2[APIUser, ExecutionContext, Future[Option[APIUser]]] = {
     (mockUserRepository.insertUser(_: APIUser)(_: ExecutionContext))
-      .expects(document, *)
+      .expects(user, *)
       .returning(response)
   }
 
-  def mockRemoveById(url: String)
+  def mockRemoveByNino(nino: String)
                     (response: Future[WriteResult]): CallHandler2[String, ExecutionContext, Future[WriteResult]] = {
     (mockUserRepository.removeByNino(_: String)(_: ExecutionContext))
-      .expects(url, *)
+      .expects(nino, *)
       .returning(response)
   }
 
@@ -54,8 +54,8 @@ trait MockUserRepository extends TestSupport with MockFactory {
       .returning(response)
   }
 
-  def mockFindById(url: String)
-                  (response: Future[APIUser]): CallHandler2[String, ExecutionContext, Future[Option[APIUser]]] = {
+  def mockFindByNino(nino: String)
+                  (response: Future[Option[APIUser]]): CallHandler2[String, ExecutionContext, Future[Option[APIUser]]] = {
     (mockUserRepository.findByNino(_: String)(_: ExecutionContext))
       .expects(*, *)
       .returning(response)
