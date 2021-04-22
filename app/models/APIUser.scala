@@ -18,6 +18,8 @@ package models
 
 import play.api.libs.json.{Json, OFormat}
 
+import java.util.Date
+
 trait IncomeSource
 
 case class InterestSubmission(taxYear: Int,
@@ -72,10 +74,36 @@ object GiftAid {
   implicit val formats: OFormat[GiftAid] = Json.format[GiftAid]
 }
 
+case class Employment(employmentId: String,
+                       employerName: String,
+                       employerRef: Option[String] = None,
+                       payRollId: Option[String] = None,
+                       startDate: Option[Date] = None,
+                       cessationDate: Option[Date] = None,
+                       dateIgnored: Option[String] = None)
+
+object Employment {
+  implicit val formats: OFormat[Employment] = Json.format[Employment]
+}
+
+case class CustomerEmployment(employmentId: String,
+                              employerName: String,
+                              employerRef: Option[String] = None,
+                              payRollId: Option[String] = None,
+                              startDate: Option[Date] = None,
+                              cessationDate: Option[Date] = None,
+                              submittedOn: String)
+
+object CustomerEmployment {
+  implicit val formats: OFormat[CustomerEmployment] = Json.format[CustomerEmployment]
+}
+
 case class APIUser(nino: String,
                    dividends: Seq[Dividends] = Seq(),
                    interest: Seq[Interest] = Seq(),
-                   giftAid: Seq[GiftAid] = Seq())
+                   giftAid: Seq[GiftAid] = Seq(),
+                   allEmployments: (Seq[Employment], Seq[CustomerEmployment]) = (Seq(),Seq())
+                  )
 
 object APIUser {
   implicit val formats: OFormat[APIUser] = Json.format[APIUser]

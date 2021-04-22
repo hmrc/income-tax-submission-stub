@@ -16,11 +16,13 @@
 
 package models
 
+import akka.http.scaladsl.model.headers.Date
 import filters.StubErrorFilter.{DES_500_NINO, DES_503_NINO}
 import play.api.mvc.Result
 import utils.ErrorResponses._
 import utils.RandomIdGenerator
 
+import java.util.{Calendar, Date}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -185,6 +187,14 @@ object Users {
               )
             )
         }
+    ),
+    APIUser("PB133742J",
+      allEmployments = (
+        Seq(Employment("00000000-0000-1000-8000-000000000000", "Vera Lynn", Some("123/abc 001<Q>"), Some("123345657"),
+          Some(Date), Some(Date), Some("2020-06-17T10:53:38Z"))),
+       Seq(CustomerEmployment("00000000-0000-1000-8000-000000000002", "Vera Lynn",
+         Some("123/abc 001<Q>"), Some("123345657"), Some(Date), Some(Date), submittedOn = "2020-06-17T10:53:38Z"))
+      )
     ),
     APIUser(DES_500_NINO),
     APIUser(DES_503_NINO)

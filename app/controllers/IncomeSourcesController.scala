@@ -21,7 +21,7 @@ import models.Users.findUser
 import play.api.Logging
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Result}
-import services.{DividendsService, GiftAidService, InterestService}
+import services.{DividendsService, EmploymentsService, GiftAidService, InterestService}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import utils.ErrorResponses._
 import utils.RandomIdGenerator.randomId
@@ -33,6 +33,7 @@ import scala.concurrent.Future
 class IncomeSourcesController @Inject()(interestService: InterestService,
                                         dividendsService: DividendsService,
                                         giftAidService: GiftAidService,
+                                        employmentsService: EmploymentsService,
                                         cc: ControllerComponents) extends BackendController(cc) with Logging {
 
   // DES #1390 //
@@ -104,5 +105,14 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
       case Left(error) => Future(error)
       case Right(_) => Future(Ok(Json.parse(s"""{"incomeSourceId": "$randomId"}""".stripMargin)))
     }
+  }
+
+  // DES #1645 //
+  def getEmployments(nino: String, taxYear: Int, employmentId: Option[String]) : Action[JsValue] = Action.async(parse.json) {
+    implicit request =>
+
+    logger.info(s"Getting employments list for ninp: $nino")
+
+    findUser(nino)(employmentsService.getListOfEmployments(taxYear, employmentId))
   }
 }
