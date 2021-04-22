@@ -78,8 +78,8 @@ case class Employment(employmentId: String,
                        employerName: String,
                        employerRef: Option[String] = None,
                        payRollId: Option[String] = None,
-                       startDate: Option[Date] = None,
-                       cessationDate: Option[Date] = None,
+                       startDate: Option[String] = None,
+                       cessationDate: Option[String] = None,
                        dateIgnored: Option[String] = None)
 
 object Employment {
@@ -90,8 +90,8 @@ case class CustomerEmployment(employmentId: String,
                               employerName: String,
                               employerRef: Option[String] = None,
                               payRollId: Option[String] = None,
-                              startDate: Option[Date] = None,
-                              cessationDate: Option[Date] = None,
+                              startDate: Option[String] = None,
+                              cessationDate: Option[String] = None,
                               submittedOn: String)
 
 object CustomerEmployment {
