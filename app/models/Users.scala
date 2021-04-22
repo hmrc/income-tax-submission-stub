@@ -16,13 +16,12 @@
 
 package models
 
-import akka.http.scaladsl.model.headers.Date
 import filters.StubErrorFilter.{DES_500_NINO, DES_503_NINO}
 import play.api.mvc.Result
 import utils.ErrorResponses._
 import utils.RandomIdGenerator
 
-import java.util.{Calendar, Date}
+import java.util.{Date}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
