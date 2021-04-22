@@ -24,11 +24,9 @@ import play.api.mvc.Results.Status
 import play.api.mvc.{Request, Result}
 import utils.JsonValidation
 
-import scala.concurrent.ExecutionContext
-
 class ValidateRequestService @Inject()() extends JsonValidation with Logging {
 
-  def validateRequest(error: ErrorModel, APINumber: Int)(implicit request: Request[JsValue], ec: ExecutionContext): Either[Result, Boolean] = {
+  def validateRequest(error: ErrorModel, APINumber: Int)(implicit request: Request[JsValue]): Either[Result, Boolean] = {
 
     val schemaFile = APINumber match {
       case 1390 => "1390_CreateUpdateIncomeSourceSchema.json"

@@ -34,7 +34,7 @@ trait JsonValidation {
       val report: ProcessingReport = validator.validate(jsonSchema, inputJson)
       report.isSuccess
     } catch {
-      case e: Exception => false
+      case _: Exception => false
     }
   }
 }

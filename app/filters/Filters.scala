@@ -14,17 +14,14 @@
  * limitations under the License.
  */
 
-import play.api.libs.json.{Format, JsResult, JsValue}
-import uk.gov.hmrc.domain.Vrn
+package filters
 
-package object models {
+import play.api.http.DefaultHttpFilters
+import uk.gov.hmrc.play.bootstrap.backend.filters.BackendFilters
 
-  type OptEither[T] = Option[Either[String, T]]
+import javax.inject.Inject
 
-  val vrnFormat: Format[Vrn] = new Format[Vrn] {
-    override def reads(json: JsValue): JsResult[Vrn] = Vrn.vrnRead.reads(json)
-
-    override def writes(o: Vrn): JsValue = Vrn.vrnWrite.writes(o)
-  }
-
-}
+class Filters @Inject() (
+                          stubErrorFilter: StubErrorFilter,
+                          backendFilters: BackendFilters
+                        ) extends DefaultHttpFilters(backendFilters.filters :+ stubErrorFilter :_*)

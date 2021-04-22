@@ -26,22 +26,32 @@ object IncomeSourceTypes {
     val GIFT_AID = "charity"
   }
 
-  object IncomeSourceTypeB extends IncomeSourceType {
-    val SELF_EMPLOYMENT = "self-employment"
-    val UK_PROPERTY = "uk-property"
-    val FHL_PROPERTY_EEA = "fhl-property-eea"
-    val FHL_PROPERTY_UK = "fhl-property-uk"
-    val EMPLOYMENT = "employment"
-    val FOREIGN_INCOME = "foreign-income"
-    val DIVIDENDS_FROM_FOREIGN_COMPANIES = "dividends-from-foreign-companies"
-    val TRUSTS_AND_ESTATES = "trusts-and-estates"
-    val INTEREST_FROM_UK_BANKS = "interest-from-uk-banks"
-    val DIVIDENDS_UK = "dividends-uk"
-    val UK_PENSION_BENEFITS = "uk-pension-benefits"
-    val GAINS_ON_LIFE_INSURANCE_POLICIES = "gains-on-life-insurance-policies"
-    val SHARE_SCHEMES = "share-schemes"
-    val PARTNERSHIP = "partnership"
-    val RELIEF_FOR_CHARITY = "relief-for-charity"
-    val OTHER_INCOME = "other-income"
+  //noinspection TypeAnnotation
+  object IncomeSourceTypeB extends Enumeration with IncomeSourceType {
+    type IncomeSourceTypeB = Value
+    val SELF_EMPLOYMENT = Value("self-employment")
+    val UK_PROPERTY = Value("uk-property")
+    val FHL_PROPERTY_EEA = Value("fhl-property-eea")
+    val FHL_PROPERTY_UK = Value("fhl-property-uk")
+    val EMPLOYMENT = Value("employment")
+    val FOREIGN_INCOME = Value("foreign-income")
+    val DIVIDENDS_FROM_FOREIGN_COMPANIES = Value("dividends-from-foreign-companies")
+    val TRUSTS_AND_ESTATES = Value("trusts-and-estates")
+    val INTEREST_FROM_UK_BANKS = Value("interest-from-uk-banks")
+    val DIVIDENDS_UK = Value("dividends-uk")
+    val UK_PENSION_BENEFITS = Value("uk-pension-benefits")
+    val GAINS_ON_LIFE_INSURANCE_POLICIES = Value("gains-on-life-insurance-policies")
+    val SHARE_SCHEMES = Value("share-schemes")
+    val PARTNERSHIP = Value("partnership")
+    val RELIEF_FOR_CHARITY = Value("relief-for-charity")
+    val OTHER_INCOME = Value("other-income")
+
+    def validType(incomeSourceType: String): Either[NoSuchElementException,IncomeSourceTypeB.Value] = {
+      try {
+        Right(IncomeSourceTypeB.withName(incomeSourceType))
+      } catch {
+        case e: NoSuchElementException => Left(e)
+      }
+    }
   }
 }

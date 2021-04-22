@@ -17,20 +17,22 @@
 package controllers
 
 import models.IncomeSourceTypes.IncomeSourceTypeB.{INTEREST_FROM_UK_BANKS, UK_PENSION_BENEFITS}
+import filters.StubErrorFilter.{DES_500_NINO, DES_503_NINO}
+import models.errors.StubErrors.{DES_500_ERROR_MODEL, DES_503_ERRORS_MODEL}
 import play.api.Application
 import play.api.http.Status
 import play.api.libs.json.Json
 import play.api.test.{DefaultAwaitTimeout, FutureAwaits}
 import utils.IntegrationTest
 
-class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits with DefaultAwaitTimeout {
+class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits with DefaultAwaitTimeout with Status {
 
   implicit val application: Application = app
 
-  "GET /income-tax/nino/AA123456A/income-source/savings/annual/2022?incomeSourceId=000000000000002" should {
+  "GET /income-tax/nino/AA123459A/income-source/savings/annual/2022?incomeSourceId=000000000000002" should {
     s"return ${Status.OK} with json" in {
 
-      val url = s"income-tax/nino/AA123456A/income-source/savings/annual/2022?incomeSourceId=000000000000002"
+      val url = s"income-tax/nino/AA123459A/income-source/savings/annual/2022?incomeSourceId=000000000000002"
 
       val res = await(buildClient(url).get())
 
@@ -39,7 +41,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
     }
     s"return ${Status.NOT_FOUND}" in {
 
-      val url = s"income-tax/nino/AA123456A/income-source/savings/annual/2022?incomeSourceId=123456789012345"
+      val url = s"income-tax/nino/AA123459A/income-source/savings/annual/2022?incomeSourceId=123456789012345"
 
       val res = await(buildClient(url).get())
 
@@ -47,10 +49,10 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
     }
   }
 
-  "GET /income-tax/nino/AA123456A/income-source/dividends/annual/2022" should {
+  "GET /income-tax/nino/AA123459A/income-source/dividends/annual/2022" should {
     s"return ${Status.OK} with json" in {
 
-      val url = s"income-tax/nino/AA123456A/income-source/dividends/annual/2022"
+      val url = s"income-tax/nino/AA123459A/income-source/dividends/annual/2022"
 
       val res = await(buildClient(url).get())
 
@@ -60,7 +62,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
     }
     s"return ${Status.NOT_FOUND}" in {
 
-      val url = s"income-tax/nino/AA123456A/income-source/dividends/annual/2023"
+      val url = s"income-tax/nino/AA123459A/income-source/dividends/annual/2023"
 
       val res = await(buildClient(url).get())
 
@@ -68,22 +70,23 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
     }
   }
 
-  "GET /income-tax/nino/AA123456A/income-source/rick/annual/2022" should {
+  "GET /income-tax/nino/AA123459A/income-source/rick/annual/2022" should {
     s"return ${Status.OK} with json" in {
 
-      val url = s"income-tax/nino/AA123456A/income-source/rick/annual/2022"
+      val url = s"income-tax/nino/AA123459A/income-source/rick/annual/2022"
 
       val res = await(buildClient(url).get())
 
-      res.status mustBe Status.NOT_FOUND
+      res.status mustBe Status.BAD_REQUEST
+      res.body mustBe """{"code":"INVALID_TYPE","message":"Submission has not passed validation. Invalid parameter type."}"""
 
     }
   }
 
-  "GET /income-tax/nino/AA123456A/income-source/charity/annual/2022" should {
+  "GET /income-tax/nino/AA123459A/income-source/charity/annual/2022" should {
     s"return ${Status.OK} with json" in {
 
-      val url = s"income-tax/nino/AA123456A/income-source/charity/annual/2022"
+      val url = s"income-tax/nino/AA123459A/income-source/charity/annual/2022"
 
       val res = await(buildClient(url).get())
 
@@ -93,7 +96,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
     }
     s"return ${Status.NOT_FOUND}" in {
 
-      val url = s"income-tax/nino/AA123456A/income-source/charity/annual/2023"
+      val url = s"income-tax/nino/AA123459A/income-source/charity/annual/2023"
 
       val res = await(buildClient(url).get())
 
@@ -101,32 +104,32 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
     }
   }
 
-  "GET /income-tax/income-sources/nino/AA123456A" should {
+  "GET /income-tax/income-sources/nino/AA123459A" should {
     s"return ${Status.OK} with json" in {
 
-      val url = s"income-tax/income-sources/nino/AA123456A?incomeSourceType=$INTEREST_FROM_UK_BANKS&taxYear=2022"
+      val url = s"income-tax/income-sources/nino/AA123459A?incomeSourceType=$INTEREST_FROM_UK_BANKS&taxYear=2022"
 
       val res = await(buildClient(url).get())
 
       res.status mustBe Status.OK
-      res.json.toString() must include(""""incomeSourceName":"Rick Owens Bank","identifier":"AA123456A","incomeSourceType":"interest-from-uk-banks"""")
-      res.json.toString() must include(""""incomeSourceName":"Rick Owens Taxed Bank","identifier":"AA123456A","incomeSourceType":"interest-from-uk-banks"""")
-      res.json.toString() must include(""""incomeSourceName":"Rick Owens Untaxed Bank","identifier":"AA123456A","incomeSourceType":"interest-from-uk-banks"""")
+      res.json.toString() must include(""""incomeSourceName":"Rick Owens Bank","identifier":"AA123459A","incomeSourceType":"interest-from-uk-banks"""")
+      res.json.toString() must include(""""incomeSourceName":"Rick Owens Taxed Bank","identifier":"AA123459A","incomeSourceType":"interest-from-uk-banks"""")
+      res.json.toString() must include(""""incomeSourceName":"Rick Owens Untaxed Bank","identifier":"AA123459A","incomeSourceType":"interest-from-uk-banks"""")
     }
     s"return ${Status.OK} with json without year" in {
 
-      val url = s"income-tax/income-sources/nino/AA123456A?incomeSourceType=$INTEREST_FROM_UK_BANKS"
+      val url = s"income-tax/income-sources/nino/AA123459A?incomeSourceType=$INTEREST_FROM_UK_BANKS"
 
       val res = await(buildClient(url).get())
 
       res.status mustBe Status.OK
-      res.json.toString() must include(""""incomeSourceName":"Rick Owens Bank","identifier":"AA123456A","incomeSourceType":"interest-from-uk-banks"""")
-      res.json.toString() must include(""""incomeSourceName":"Rick Owens Taxed Bank","identifier":"AA123456A","incomeSourceType":"interest-from-uk-banks"""")
-      res.json.toString() must include(""""incomeSourceName":"Rick Owens Untaxed Bank","identifier":"AA123456A","incomeSourceType":"interest-from-uk-banks"""")
+      res.json.toString() must include(""""incomeSourceName":"Rick Owens Bank","identifier":"AA123459A","incomeSourceType":"interest-from-uk-banks"""")
+      res.json.toString() must include(""""incomeSourceName":"Rick Owens Taxed Bank","identifier":"AA123459A","incomeSourceType":"interest-from-uk-banks"""")
+      res.json.toString() must include(""""incomeSourceName":"Rick Owens Untaxed Bank","identifier":"AA123459A","incomeSourceType":"interest-from-uk-banks"""")
     }
     s"return ${Status.NOT_FOUND}" in {
 
-      val url = s"income-tax/income-sources/nino/AA123456A?incomeSourceType=$INTEREST_FROM_UK_BANKS&taxYear=2025"
+      val url = s"income-tax/income-sources/nino/AA123459A?incomeSourceType=$INTEREST_FROM_UK_BANKS&taxYear=2025"
 
       val res = await(buildClient(url).get())
 
@@ -134,18 +137,27 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
     }
     s"return ${Status.NOT_FOUND} for other type" in {
 
-      val url = s"income-tax/income-sources/nino/AA123456A?incomeSourceType=$UK_PENSION_BENEFITS"
+      val url = s"income-tax/income-sources/nino/AA123459A?incomeSourceType=$UK_PENSION_BENEFITS"
 
       val res = await(buildClient(url).get())
 
       res.status mustBe Status.NOT_FOUND
     }
+    s"return ${Status.BAD_REQUEST} for invalid type" in {
+
+      val url = s"income-tax/income-sources/nino/AA123459A?incomeSourceType=NotAType"
+
+      val res = await(buildClient(url).get())
+
+      res.status mustBe Status.BAD_REQUEST
+      res.body mustBe """{"code":"INVALID_TYPE","message":"Submission has not passed validation. Invalid parameter type."}"""
+    }
   }
 
-  "POST /income-tax/income-sources/nino/AA123456A" should {
-    s"return ${Status.OK} with json" in {
+  "POST /income-tax/income-sources/nino/AA123459A" should {
+    s"return $OK with json" in {
 
-      val url = "income-tax/income-sources/nino/AA123456A"
+      val url = "income-tax/income-sources/nino/AA123459A"
 
       val res = await(buildClient(url).post(Json.parse(
         """{
@@ -153,13 +165,12 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
           |    "incomeSourceName": "Santander Business"
           |}""".stripMargin)))
 
-      res.status mustBe Status.OK
+      res.status mustBe OK
       res.json.toString() must include("""{"incomeSourceId":"""")
     }
 
-    s"return ${Status.BAD_REQUEST} with json" in {
-
-      val url = "income-tax/income-sources/nino/AA123456A"
+    s"return $BAD_REQUEST with json" in {
+      val url = "income-tax/income-sources/nino/AA123459A"
 
       val res = await(buildClient(url).post(Json.parse(
         """{
@@ -167,15 +178,15 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
           |    "incomeSourceName": "Santander Business"
           |}""".stripMargin)))
 
-      res.status mustBe Status.BAD_REQUEST
-      res.json.toString() must include("""{"code":"ERROR","reason":"FAIL"}""")
+      res.status mustBe BAD_REQUEST
+      res.json.toString() must include("""{"code":"SCHEMA_ERROR","reason":"The request body provided does not conform to the CreateIncomeSourceSchema."}""")
     }
   }
 
-  "POST /income-tax/nino/AA123456A/income-source/dividends/annual/2020" should {
-    s"return ${Status.OK} with json" in {
+  "POST /income-tax/nino/AA123459A/income-source/dividends/annual/2020" should {
+    s"return $OK with json" in {
 
-      val url = "income-tax/nino/AA123456A/income-source/dividends/annual/2020"
+      val url = "income-tax/nino/AA123459A/income-source/dividends/annual/2020"
 
       val res = await(buildClient(url).post(Json.parse(
         """{
@@ -183,13 +194,13 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
           |  "otherUkDividends": 60267421355.99
           |}""".stripMargin)))
 
-      res.status mustBe Status.OK
+      res.status mustBe OK
       res.json.toString() must include("""{"transactionReference":"""")
     }
 
-    s"return ${Status.BAD_REQUEST} with json" in {
+    s"return $BAD_REQUEST with json" in {
 
-      val url = "income-tax/nino/AA123456A/income-source/dividends/annual/2020"
+      val url = "income-tax/nino/AA123459A/income-source/dividends/annual/2020"
 
       val res = await(buildClient(url).post(Json.parse(
         """{
@@ -197,15 +208,67 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
           |  "otherUkDividends": 60267421355.99
           |}""".stripMargin)))
 
-      res.status mustBe Status.BAD_REQUEST
-      res.json.toString() must include("""{"code":"ERROR","reason":"FAIL"}""")
+      res.status mustBe BAD_REQUEST
+      res.json.toString() must include("""{"code":"SCHEMA_ERROR","reason":"The request body provided does not conform to the CreateUpdateIncomeSourceSchema."}""")
     }
   }
 
-  "POST /income-tax/nino/AA123456A/income-source/savings/annual/2020" should {
+  "Stubbing Errors" when {
+
+    "request to getListOfIncomeSources where nino is DES_500_NINO" should {
+
+      s"return $INTERNAL_SERVER_ERROR with json" in {
+        val url = s"income-tax/income-sources/nino/$DES_500_NINO?incomeSourceType=interest-from-uk-banks"
+
+        val res = await(buildClient(url).get())
+
+        println(res.body)
+        res.status mustEqual INTERNAL_SERVER_ERROR
+        res.body mustEqual Json.toJson(DES_500_ERROR_MODEL).toString()
+      }
+    }
+
+    "request to getListOfIncomeSources where nino is DES_503_NINO" should {
+
+      s"return $SERVICE_UNAVAILABLE with json" in {
+        val url = s"income-tax/income-sources/nino/$DES_503_NINO?incomeSourceType=interest-from-uk-banks"
+
+        val res = await(buildClient(url).get())
+
+        res.status mustEqual SERVICE_UNAVAILABLE
+        res.body mustEqual Json.toJson(DES_503_ERRORS_MODEL).toString()
+      }
+    }
+
+    "request to getIncomeSource where nino is DES_500_NINO" should {
+
+      s"return $INTERNAL_SERVER_ERROR with json" in {
+        val url = s"income-tax/nino/$DES_500_NINO/income-source/taxed/annual/2022?incomeSourceType=savings"
+
+        val res = await(buildClient(url).get())
+
+        res.status mustEqual INTERNAL_SERVER_ERROR
+        res.body mustEqual Json.toJson(DES_500_ERROR_MODEL).toString()
+      }
+    }
+
+    "request to getIncomeSource where nino is DES_503_NINO" should {
+
+      s"return $SERVICE_UNAVAILABLE with json" in {
+        val url = s"income-tax/nino/$DES_503_NINO/income-source/taxed/annual/2022?incomeSourceType=savings"
+
+        val res = await(buildClient(url).get())
+
+        res.status mustEqual SERVICE_UNAVAILABLE
+        res.body mustEqual Json.toJson(DES_503_ERRORS_MODEL).toString()
+      }
+    }
+  }
+
+  "POST /income-tax/nino/AA123459A/income-source/savings/annual/2020" should {
     s"return ${Status.OK} with json" in {
 
-      val url = "income-tax/nino/AA123456A/income-source/savings/annual/2020"
+      val url = "income-tax/nino/AA123459A/income-source/savings/annual/2020"
 
       val res = await(buildClient(url).post(Json.parse(
         """{
@@ -220,7 +283,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
 
     s"return ${Status.BAD_REQUEST} with json when id is too small" in {
 
-      val url = "income-tax/nino/AA123456A/income-source/savings/annual/2020"
+      val url = "income-tax/nino/AA123459A/income-source/savings/annual/2020"
 
       val res = await(buildClient(url).post(Json.parse(
         """{
@@ -230,14 +293,14 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
           |}""".stripMargin)))
 
       res.status mustBe Status.BAD_REQUEST
-      res.json.toString() must include("""{"code":"ERROR","reason":"FAIL"}""")
+      res.json.toString() must include("""{"code":"SCHEMA_ERROR","reason":"The request body provided does not conform to the CreateUpdateIncomeSourceSchema."}""")
     }
   }
 
-  "POST /income-tax/nino/AA123456A/income-source/charity/annual/2020" should {
+  "POST /income-tax/nino/AA123459A/income-source/charity/annual/2020" should {
     s"return ${Status.OK} with json" in {
 
-      val url = "income-tax/nino/AA123456A/income-source/charity/annual/2020"
+      val url = "income-tax/nino/AA123459A/income-source/charity/annual/2020"
 
       val res = await(buildClient(url).post(Json.parse(
         """{
@@ -267,7 +330,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
 
     s"return ${Status.BAD_REQUEST} with json when invalid field" in {
 
-      val url = "income-tax/nino/AA123456A/income-source/charity/annual/2020"
+      val url = "income-tax/nino/AA123459A/income-source/charity/annual/2020"
 
       val res = await(buildClient(url).post(Json.parse(
         """{
@@ -288,7 +351,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
           |}""".stripMargin)))
 
       res.status mustBe Status.BAD_REQUEST
-      res.json.toString() must include("""{"code":"ERROR","reason":"FAIL"}""")
+      res.json.toString() must include("""{"code":"SCHEMA_ERROR","reason":"The request body provided does not conform to the CreateUpdateIncomeSourceSchema."}""")
     }
   }
 }

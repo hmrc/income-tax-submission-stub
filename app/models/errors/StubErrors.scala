@@ -14,17 +14,15 @@
  * limitations under the License.
  */
 
-import play.api.libs.json.{Format, JsResult, JsValue}
-import uk.gov.hmrc.domain.Vrn
+package models.errors
 
-package object models {
+import models.{ErrorBodyModel, ErrorsBodyModel}
 
-  type OptEither[T] = Option[Either[String, T]]
+object StubErrors {
 
-  val vrnFormat: Format[Vrn] = new Format[Vrn] {
-    override def reads(json: JsValue): JsResult[Vrn] = Vrn.vrnRead.reads(json)
-
-    override def writes(o: Vrn): JsValue = Vrn.vrnWrite.writes(o)
-  }
+  val DES_500_ERROR_MODEL: ErrorBodyModel = ErrorBodyModel("SERVER_ERROR", "DES is currently experiencing problems that require live service intervention.")
+  val DES_503_ERRORS_MODEL: ErrorsBodyModel = ErrorsBodyModel(
+    Seq(ErrorBodyModel("SERVICE_UNAVAILABLE", "Service A is Down"), ErrorBodyModel("SERVICE_UNAVAILABLE", "Service B is Down"))
+  )
 
 }

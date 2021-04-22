@@ -16,7 +16,6 @@
 
 package services
 
-import javax.inject.Inject
 import models.DESModels.GiftAidDetail
 import models.{APIUser, ErrorBodyModel, ErrorModel}
 import play.api.libs.json.{JsValue, Json}
@@ -24,6 +23,7 @@ import play.api.mvc.Results.Ok
 import play.api.mvc.{Request, Result}
 import utils.ErrorResponses.notFound
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class GiftAidService @Inject()(validateRequestService: ValidateRequestService){
@@ -39,9 +39,8 @@ class GiftAidService @Inject()(validateRequestService: ValidateRequestService){
       }
   }
 
-  def validateCreateUpdateIncomeSource(implicit request: Request[JsValue], executionContext: ExecutionContext, APINumber: Int): Either[Result,Boolean] ={
-    //TODO Replace with actual error responses
-    validateRequestService.validateRequest(ErrorModel(400,ErrorBodyModel("ERROR","FAIL")), APINumber)
+  def validateCreateUpdateIncomeSource(implicit request: Request[JsValue], APINumber: Int): Either[Result,Boolean] = {
+    validateRequestService.validateRequest(ErrorModel(400,ErrorBodyModel("SCHEMA_ERROR", "The request body provided does not conform to the CreateUpdateIncomeSourceSchema.")), APINumber)
   }
 
 }

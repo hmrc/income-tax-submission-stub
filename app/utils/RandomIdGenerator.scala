@@ -19,5 +19,5 @@ package utils
 import java.util.UUID.randomUUID
 
 object RandomIdGenerator {
-  def randomId: String = s"ZZIS${randomUUID.toString.replaceAll("-","").take(15)}".toUpperCase()
+  def randomId: String = s"ZZIS${randomUUID.toString.replaceAll("-","").take(11)}".toUpperCase()
 }

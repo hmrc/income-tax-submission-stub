@@ -64,13 +64,11 @@ class InterestService @Inject()(validateRequestService: ValidateRequestService){
       interestIncomeSource.fold(Future(notFound))(incomeSource => Future(Ok(Json.toJson(incomeSource))))
   }
 
-  def validateCreateUpdateIncomeSource(implicit request: Request[JsValue], executionContext: ExecutionContext, APINumber: Int): Either[Result,Boolean] ={
-    //TODO Replace with actual error responses
-    validateRequestService.validateRequest(ErrorModel(400,ErrorBodyModel("ERROR","FAIL")), APINumber)
+  def validateCreateUpdateIncomeSource(implicit request: Request[JsValue], APINumber: Int): Either[Result,Boolean] = {
+    validateRequestService.validateRequest(ErrorModel(400,ErrorBodyModel("SCHEMA_ERROR", "The request body provided does not conform to the CreateUpdateIncomeSourceSchema.")), APINumber)
   }
-  def validateCreateIncomeSource(implicit request: Request[JsValue], executionContext: ExecutionContext, APINumber: Int): Either[Result,Boolean] ={
-    //TODO Replace with actual error responses
-    validateRequestService.validateRequest(ErrorModel(400,ErrorBodyModel("ERROR","FAIL")), APINumber)
+  def validateCreateIncomeSource(implicit request: Request[JsValue], APINumber: Int): Either[Result,Boolean] = {
+    validateRequestService.validateRequest(ErrorModel(400,ErrorBodyModel("SCHEMA_ERROR", "The request body provided does not conform to the CreateIncomeSourceSchema.")), APINumber)
   }
 
 }

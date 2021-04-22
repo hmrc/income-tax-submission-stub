@@ -16,17 +16,19 @@
 
 package models
 
+import filters.StubErrorFilter.{DES_500_NINO, DES_503_NINO}
 import play.api.mvc.Result
-import utils.RandomIdGenerator
-import scala.concurrent.Future
 import utils.ErrorResponses._
+import utils.RandomIdGenerator
+
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 object Users {
 
   val users = Seq(
     APIUser(
-      "AA123456A",
+      "AA123459A",
       interest = Seq(
         Interest(
           "Rick Owens Bank", //TODO THIS TEST CASE SHOULD WORK AFTER SASS-536 IS COMPLETED https://jira.tools.tax.service.gov.uk/browse/SASS-536
@@ -90,6 +92,83 @@ object Users {
       )
     ),
     APIUser(
+      "AA000001A",
+      dividends = Seq(
+        Dividends(
+          2022,
+          Some(55844806400.99),
+          Some(60267421355.99)
+        )
+      )
+    ),
+    APIUser(
+      "AA000002A",
+      dividends = Seq(
+        Dividends(
+          2022,
+          Some(750.50),
+          Some(225.25)
+        )
+      )
+    ),
+
+    APIUser(
+      "AA000003A",
+      interest = Seq(
+        Interest(
+          "Halifax",
+          RandomIdGenerator.randomId,
+          interestSubmissions = Seq(
+            InterestSubmission(
+              2022,
+              None,
+              Some(4000)
+            )
+          )
+        ),
+        Interest(
+          "Nationwide",
+          RandomIdGenerator.randomId,
+          interestSubmissions = Seq(
+            InterestSubmission(
+              2022,
+              None,
+              Some(4000)
+            )
+          )
+        ),
+        Interest(
+          "Monzo",
+          RandomIdGenerator.randomId,
+          interestSubmissions = Seq(
+            InterestSubmission(
+              2022,
+              Some(4000),
+              None
+            )
+          )
+        ),
+        Interest(
+          "TSB Account",
+          RandomIdGenerator.randomId,
+          interestSubmissions = Seq(
+            InterestSubmission(
+              2022,
+              Some(4000),
+              None
+            )
+          )
+        )
+      ),
+      dividends = Seq(
+        Dividends(
+          2022,
+          Some(46985.99),
+          Some(15071993.01),
+        )
+      )
+    ),
+    APIUser(
       "BB777777B",
       interest =
         (1 to 11).map {
@@ -106,10 +185,11 @@ object Users {
               )
             )
         }
-    )
+    ),
+    APIUser(DES_500_NINO),
+    APIUser(DES_503_NINO)
   )
 
-  //TODO Update with actual error response for 404
   def findUser(nino: String, notFoundResult: Future[Result] = Future(notFound))
               (function: APIUser => Future[Result]): Future[Result] = {
 
