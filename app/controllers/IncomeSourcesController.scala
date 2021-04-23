@@ -108,10 +108,10 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
   }
 
   // DES #1645 //
-  def getEmployments(nino: String, taxYear: Int, employmentId: Option[String]) : Action[JsValue] = Action.async(parse.json) {
+  def getEmploymentsList(nino: String, taxYear: Int, employmentId: Option[String]) : Action[JsValue] = Action.async(parse.json) {
     implicit request =>
 
-    logger.info(s"Getting employments list for ninp: $nino")
+    logger.info(s"Get list of employments for nino: $nino, taxYear: $taxYear, employmentId: ${employmentId.getOrElse("None")}")
 
     findUser(nino)(employmentsService.getListOfEmployments(taxYear, employmentId))
   }

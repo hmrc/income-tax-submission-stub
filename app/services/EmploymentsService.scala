@@ -26,19 +26,33 @@ import utils.ErrorResponses.notFound
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class EmploymentsService @Inject()(validateRequestService: ValidateRequestService){
+class EmploymentsService @Inject()(){
 
   def getListOfEmployments(taxYear: Int, employmentId: Option[String])(implicit ec: ExecutionContext): APIUser => Future[Result] = {
-    user => user.allEmployments match {
+    user =>
+
+      user.employment.find(_.taxYear == taxYear).fold(Future(notFound)){
+        employment =>
+
+          if(employment.hmrcEmployments.isEmpty && employment.customerEmployments.isEmpty){
+            Future(notFound)
+          } else {
+
+          }
+
+          Future(Ok(Json.toJson(DividendsDetail(dividends.ukDividends,dividends.otherUkDividends))))
+      }
+
+      user.employment match {
       case (Seq(), Seq()) => Future(notFound)
       case _ =>
         if(employmentId.isDefined){
           Future(Ok(Json.toJson(EmploymentsDetail(
-            user.allEmployments._1.filter(_.employmentId.equals(employmentId.get)),
-            user.allEmployments._2.filter(_.employmentId.equals(employmentId.get)))
+            user.employment._1.filter(_.employmentId.equals(employmentId.get)),
+            user.employment._2.filter(_.employmentId.equals(employmentId.get)))
           )))
         }else {
-          Future(Ok(Json.toJson(EmploymentsDetail(user.allEmployments._1, user.allEmployments._2))))
+          Future(Ok(Json.toJson(EmploymentsDetail(user.employment._1, user.employment._2))))
         }
     }
   }
