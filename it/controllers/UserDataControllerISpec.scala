@@ -80,7 +80,6 @@ class UserDataControllerISpec extends IntegrationTest with FutureAwaits with Def
           |	}]
           |}""".stripMargin)))
 
-      println(res.body)
       res.status mustBe CREATED
     }
     s"return $BAD_REQUEST with json" in {
