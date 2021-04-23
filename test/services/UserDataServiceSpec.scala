@@ -87,7 +87,6 @@ class UserDataServiceSpec extends TestSupport with Results {
     }
 
     "return an InternalServerError when the repository query fails" in {
-      mockUserRepository.findByNino("AA123456A")
       (mockUserRepository.findByNino(_: String)(_: ExecutionContext))
         .expects(nino, *)
         .returning(Future.failed(new RuntimeException("Could not connect to mongo")))
