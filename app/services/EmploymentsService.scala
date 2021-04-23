@@ -16,46 +16,38 @@
 
 package services
 
-import models.{APIUser, ErrorBodyModel, ErrorModel}
+import javax.inject.Inject
+import models.APIUser
 import models.DESModels.EmploymentsDetail
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.Json
+import play.api.mvc.Result
 import play.api.mvc.Results.Ok
-import play.api.mvc.{Request, Result}
 import utils.ErrorResponses.notFound
 
-import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class EmploymentsService @Inject()(){
+class EmploymentsService @Inject()() {
 
   def getListOfEmployments(taxYear: Int, employmentId: Option[String])(implicit ec: ExecutionContext): APIUser => Future[Result] = {
     user =>
 
-      user.employment.find(_.taxYear == taxYear).fold(Future(notFound)){
+      user.employment.find(_.taxYear == taxYear).fold(Future(notFound)) {
         employment =>
 
-          if(employment.hmrcEmployments.isEmpty && employment.customerEmployments.isEmpty){
-            Future(notFound)
-          } else {
-
+          val employmentsDetail: EmploymentsDetail = employmentId.fold {
+            EmploymentsDetail(employment.hmrcEmployments, employment.customerEmployments)
+          } {
+            employmentId =>
+              EmploymentsDetail(
+                employment.hmrcEmployments.filter(_.employmentId.equals(employmentId)),
+                employment.customerEmployments.filter(_.employmentId.equals(employmentId))
+              )
           }
 
-          Future(Ok(Json.toJson(DividendsDetail(dividends.ukDividends,dividends.otherUkDividends))))
+          employmentsDetail match {
+            case EmploymentsDetail(hmrc, customer) if hmrc.isEmpty && customer.isEmpty => Future(notFound)
+            case model => Future(Ok(Json.toJson(model)))
+          }
       }
-
-      user.employment match {
-      case (Seq(), Seq()) => Future(notFound)
-      case _ =>
-        if(employmentId.isDefined){
-          Future(Ok(Json.toJson(EmploymentsDetail(
-            user.employment._1.filter(_.employmentId.equals(employmentId.get)),
-            user.employment._2.filter(_.employmentId.equals(employmentId.get)))
-          )))
-        }else {
-          Future(Ok(Json.toJson(EmploymentsDetail(user.employment._1, user.employment._2))))
-        }
-    }
   }
-
-
 }
