@@ -29,6 +29,18 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
 
   implicit val application: Application = app
 
+  "GET /income-tax/nino/AA123459A/not-a-real-endpoint" should {
+    s"return ${Status.NOT_FOUND} default error" in {
+
+      val url = s"income-tax/nino/AA123459A/not-a-real-endpoint"
+
+      val res = await(buildClient(url).get())
+
+      res.status mustBe Status.NOT_FOUND
+      res.json.toString() must include("""{"code":"404","reason":"Could not find endpoint in Dynamic Stub matching the URI: /income-tax/nino/AA123459A/not-a-real-endpoint"}""")
+    }
+  }
+
   "GET /income-tax/nino/AA123459A/income-source/savings/annual/2022?incomeSourceId=000000000000002" should {
     s"return ${Status.OK} with json" in {
 
@@ -39,13 +51,14 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
       res.status mustBe Status.OK
       res.json.toString() must include("""{"savingsInterestAnnualIncome":[{"incomeSourceId":"000000000000002","taxedUkInterest":99999999999.99}]}""")
     }
-    s"return ${Status.NOT_FOUND}" in {
+    s"return ${Status.NOT_FOUND} when the income source id does not exist" in {
 
       val url = s"income-tax/nino/AA123459A/income-source/savings/annual/2022?incomeSourceId=123456789012345"
 
       val res = await(buildClient(url).get())
 
       res.status mustBe Status.NOT_FOUND
+      res.json.toString() must include("""{"code":"NOT_FOUND","message":"The remote endpoint has indicated that no data can be found."}""")
     }
   }
 
@@ -60,13 +73,14 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
       res.json.toString() must include("""{"ukDividends":99999999999.99}""")
 
     }
-    s"return ${Status.NOT_FOUND}" in {
+    s"return ${Status.NOT_FOUND} when not data exists for the tax year" in {
 
       val url = s"income-tax/nino/AA123459A/income-source/dividends/annual/2023"
 
       val res = await(buildClient(url).get())
 
       res.status mustBe Status.NOT_FOUND
+      res.json.toString() must include("""{"code":"NOT_FOUND","message":"The remote endpoint has indicated that no data can be found."}""")
     }
   }
 
@@ -94,13 +108,14 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
       res.json.toString() must include("""{"giftAidPayments":{"nonUkCharitiesCharityNames":["Rick Owens Charity"],"currentYear":99999999999.99,"oneOffCurrentYear":99999999999.99,"currentYearTreatedAsPreviousYear":99999999999.99,"nextYearTreatedAsCurrentYear":99999999999.99,"nonUkCharities":99999999999.99},"gifts":{"investmentsNonUkCharitiesCharityNames":["Rick Owens Non-UK Charity"],"landAndBuildings":99999999999.99,"sharesOrSecurities":99999999999.99,"investmentsNonUkCharities":99999999999.99}}""")
 
     }
-    s"return ${Status.NOT_FOUND}" in {
+    s"return ${Status.NOT_FOUND} when no data exists for the tax year" in {
 
       val url = s"income-tax/nino/AA123459A/income-source/charity/annual/2023"
 
       val res = await(buildClient(url).get())
 
       res.status mustBe Status.NOT_FOUND
+      res.json.toString() must include("""{"code":"NOT_FOUND","message":"The remote endpoint has indicated that no data can be found."}""")
     }
   }
 
@@ -127,21 +142,23 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
       res.json.toString() must include(""""incomeSourceName":"Rick Owens Taxed Bank","identifier":"AA123459A","incomeSourceType":"interest-from-uk-banks"""")
       res.json.toString() must include(""""incomeSourceName":"Rick Owens Untaxed Bank","identifier":"AA123459A","incomeSourceType":"interest-from-uk-banks"""")
     }
-    s"return ${Status.NOT_FOUND}" in {
+    s"return ${Status.NOT_FOUND} when no data exists for the tax year" in {
 
       val url = s"income-tax/income-sources/nino/AA123459A?incomeSourceType=$INTEREST_FROM_UK_BANKS&taxYear=2025"
 
       val res = await(buildClient(url).get())
 
       res.status mustBe Status.NOT_FOUND
+      res.json.toString() must include("""{"code":"NOT_FOUND","message":"The remote endpoint has indicated that no data can be found."}""")
     }
-    s"return ${Status.NOT_FOUND} for other type" in {
+    s"return ${Status.NOT_FOUND} for other type that has not data" in {
 
       val url = s"income-tax/income-sources/nino/AA123459A?incomeSourceType=$UK_PENSION_BENEFITS"
 
       val res = await(buildClient(url).get())
 
       res.status mustBe Status.NOT_FOUND
+      res.json.toString() must include("""{"code":"NOT_FOUND","message":"The remote endpoint has indicated that no data can be found."}""")
     }
     s"return ${Status.BAD_REQUEST} for invalid type" in {
 
