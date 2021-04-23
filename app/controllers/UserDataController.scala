@@ -14,15 +14,22 @@
  * limitations under the License.
  */
 
-package models.errors
+package controllers
 
-import models.{ErrorBodyModel, ErrorsBodyModel}
+import models.APIUser
+import play.api.libs.json.JsValue
+import play.api.mvc.{Action, ControllerComponents}
+import services.UserDataService
+import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
-object StubErrors {
+import javax.inject.Inject
 
-  val DES_500_ERROR_MODEL: ErrorBodyModel = ErrorBodyModel("SERVER_ERROR", "DES is currently experiencing problems that require live service intervention.")
-  val DES_503_ERRORS_MODEL: ErrorsBodyModel = ErrorsBodyModel(
-    Seq(ErrorBodyModel("SERVICE_UNAVAILABLE", "Service A is Down"), ErrorBodyModel("SERVICE_UNAVAILABLE", "Service B is Down"))
-  )
 
+class UserDataController @Inject()(dataService: UserDataService,
+                                   cc: ControllerComponents) extends BackendController(cc) {
+
+  val postUser: Action[JsValue] = Action.async(parse.json) { implicit request =>
+    withJsonBody[APIUser]( model => dataService.insertUser(model)
+    )
+  }
 }

@@ -17,12 +17,7 @@
 package models
 
 import filters.StubErrorFilter.{DES_500_NINO, DES_503_NINO}
-import play.api.mvc.Result
-import utils.ErrorResponses._
 import utils.RandomIdGenerator
-
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
 
 object Users {
 
@@ -189,10 +184,4 @@ object Users {
     APIUser(DES_500_NINO),
     APIUser(DES_503_NINO)
   )
-
-  def findUser(nino: String, notFoundResult: Future[Result] = Future(notFound))
-              (function: APIUser => Future[Result]): Future[Result] = {
-
-    Users.users.find(_.nino.equals(nino)).fold(notFoundResult)(function)
-  }
 }

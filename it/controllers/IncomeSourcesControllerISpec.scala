@@ -239,7 +239,6 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
 
         val res = await(buildClient(url).get())
 
-        println(res.body)
         res.status mustEqual INTERNAL_SERVER_ERROR
         res.body mustEqual Json.toJson(DES_500_ERROR_MODEL).toString()
       }
