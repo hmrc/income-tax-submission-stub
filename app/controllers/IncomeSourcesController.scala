@@ -17,7 +17,7 @@
 package controllers
 
 import javax.inject.Inject
-import models.Users.findUser
+import services.UserDataService
 import play.api.Logging
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Result}
@@ -33,6 +33,7 @@ import scala.concurrent.Future
 class IncomeSourcesController @Inject()(interestService: InterestService,
                                         dividendsService: DividendsService,
                                         giftAidService: GiftAidService,
+                                        userDataService: UserDataService,
                                         cc: ControllerComponents) extends BackendController(cc) with Logging {
 
   // DES #1390 //
@@ -69,9 +70,9 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
     logger.info(s"Get income source for nino: $nino, taxYear: $taxYear, incomeSourceType: $incomeSourceType, incomeSourceId: $incomeSourceId")
 
     incomeSourceType match {
-      case INTEREST => findUser(nino)(interestService.getIncomeSourceInterest(incomeSourceId, taxYear))
-      case DIVIDENDS => findUser(nino)(dividendsService.getIncomeSourceDividends(taxYear))
-      case GIFT_AID => findUser(nino)(giftAidService.getIncomeSourceGiftAid(taxYear))
+      case INTEREST => userDataService.findUser(nino)(interestService.getIncomeSourceInterest(incomeSourceId,taxYear))
+      case DIVIDENDS => userDataService.findUser(nino)(dividendsService.getIncomeSourceDividends(taxYear))
+      case GIFT_AID => userDataService.findUser(nino)(giftAidService.getIncomeSourceGiftAid(taxYear))
       case _ => Future(incomeSourceTypeNotFound)
     }
   }
@@ -86,7 +87,7 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
     logger.info(s"Get income source list for nino: $nino, taxYear: $taxYear, incomeSourceType: $incomeSourceType")
 
     incomeSourceType match {
-      case INTEREST_FROM_UK_BANKS => findUser(nino)(interestService.getListOfIncomeSourcesInterest(nino, incomeSourceType))
+      case INTEREST_FROM_UK_BANKS => userDataService.findUser(nino)(interestService.getListOfIncomeSourcesInterest(nino, incomeSourceType))
       case _ => Future(incomeSourceTypeNotFound)
     }
   }

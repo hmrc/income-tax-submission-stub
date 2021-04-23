@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
-package models.errors
+package config
 
-import models.{ErrorBodyModel, ErrorsBodyModel}
+import play.api.inject.{Binding, Module}
+import play.api.{Configuration, Environment}
+import utils.StartUpAction
+import play.api.inject.{bind => playBind}
+import repositories.UserRepository
 
-object StubErrors {
-
-  val DES_500_ERROR_MODEL: ErrorBodyModel = ErrorBodyModel("SERVER_ERROR", "DES is currently experiencing problems that require live service intervention.")
-  val DES_503_ERRORS_MODEL: ErrorsBodyModel = ErrorsBodyModel(
-    Seq(ErrorBodyModel("SERVICE_UNAVAILABLE", "Service A is Down"), ErrorBodyModel("SERVICE_UNAVAILABLE", "Service B is Down"))
+class ModuleBindings extends Module {
+  override def bindings(environment: Environment, configuration: Configuration): Seq[Binding[_]] = Seq(
+    playBind(classOf[UserRepository]).toSelf.eagerly(),
+    playBind(classOf[StartUpAction]).toSelf.eagerly()
   )
-
 }

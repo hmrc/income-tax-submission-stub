@@ -14,15 +14,24 @@
  * limitations under the License.
  */
 
-package models.errors
+package utils
 
-import models.{ErrorBodyModel, ErrorsBodyModel}
+import models.{APIUser, Users}
 
-object StubErrors {
+import javax.inject.{Inject, Singleton}
+import repositories.UserRepository
 
-  val DES_500_ERROR_MODEL: ErrorBodyModel = ErrorBodyModel("SERVER_ERROR", "DES is currently experiencing problems that require live service intervention.")
-  val DES_503_ERRORS_MODEL: ErrorsBodyModel = ErrorsBodyModel(
-    Seq(ErrorBodyModel("SERVICE_UNAVAILABLE", "Service A is Down"), ErrorBodyModel("SERVICE_UNAVAILABLE", "Service B is Down"))
-  )
+import scala.concurrent.{Await, ExecutionContext, Future}
+import scala.concurrent.duration._
+
+@Singleton
+class StartUpAction @Inject()(userRepository: UserRepository,
+                              implicit val ec: ExecutionContext) {
+
+  def initialiseUsers(): Seq[Option[APIUser]] = {
+    Await.result(Future.sequence(Users.users.map(user => userRepository.insertUser(user))), 5.seconds)
+  }
+
+  initialiseUsers()
 
 }

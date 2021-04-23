@@ -23,17 +23,27 @@ import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.ws.{WSClient, WSRequest}
 
+import scala.concurrent.ExecutionContext
+
 trait IntegrationTest extends PlaySpec with GuiceOneServerPerSuite with BeforeAndAfterAll with BeforeAndAfterEach {
+
+  override lazy val app: Application = new GuiceApplicationBuilder()
+    .configure(extraConfig)
+    .build()
+
+  implicit val ec: ExecutionContext = ExecutionContext.Implicits.global
+
+  lazy val startupAction: StartUpAction = app.injector.instanceOf[StartUpAction]
+
+  override protected def beforeAll(): Unit = {
+    startupAction.initialiseUsers()
+  }
 
   val extraConfig: Map[String, Any] = {
     Map[String, Any](
       "metrics.enabled" -> false
     )
   }
-
-  override lazy val app: Application = new GuiceApplicationBuilder()
-    .configure(extraConfig)
-    .build()
 
   def buildClient(path: String)(implicit app: Application): WSRequest = {
     app.injector.instanceOf[WSClient].url(s"http://localhost:$port/$path").withHttpHeaders(

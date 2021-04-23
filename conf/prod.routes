@@ -15,6 +15,7 @@ POST    /income-tax/nino/:nino/income-source/:incomeSourceType/annual/:taxYear  
 ### DES #1426 ###
 POST    /income-tax/nino/:nino/taxYear/:taxYear/tax-calculation                 controllers.CalculationController.generateCalculationId(nino:String, taxYear:Int)
 
+POST    /user                                                                   controllers.UserDataController.postUser
 
 ->	/setup			    setup.Routes
 ->	/			        health.Routes
