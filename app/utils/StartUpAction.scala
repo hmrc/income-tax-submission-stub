@@ -28,7 +28,6 @@ import scala.concurrent.duration._
 class StartUpAction @Inject()(userRepository: UserRepository,
                               implicit val ec: ExecutionContext) {
 
-//TODO - Does this need changing (await.result part) ?
   def initialiseUsers(): Seq[Option[APIUser]] = {
     Await.result(Future.sequence(Users.users.map(user => userRepository.insertUser(user))), 5.seconds)
   }
