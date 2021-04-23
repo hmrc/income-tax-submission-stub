@@ -18,8 +18,6 @@ package models
 
 import play.api.libs.json.{Json, OFormat}
 
-import java.util.Date
-
 trait IncomeSource
 
 case class InterestSubmission(taxYear: Int,

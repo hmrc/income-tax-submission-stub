@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-import play.api.libs.json.{Format, JsResult, JsValue}
-import uk.gov.hmrc.domain.Vrn
+package utils
 
-package object models {
+import testUtils.TestSupport
 
-  type OptEither[T] = Option[Either[String, T]]
+class TaxYearConversionSpec extends TestSupport {
 
-  val vrnFormat: Format[Vrn] = new Format[Vrn] {
-    override def reads(json: JsValue): JsResult[Vrn] = Vrn.vrnRead.reads(json)
+  "The TaxYearConversion" should {
 
-    override def writes(o: Vrn): JsValue = Vrn.vrnWrite.writes(o)
+    s"return int from string" in {
+      TaxYearConversion.convertStringTaxYear("2021-22") mustBe 2022
+      TaxYearConversion.convertStringTaxYear("2099-00") mustBe 2100
+      TaxYearConversion.convertStringTaxYear("2029-30") mustBe 2030
+    }
   }
-
 }

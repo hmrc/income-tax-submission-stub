@@ -33,7 +33,9 @@ class CalculationController @Inject()(cc: ControllerComponents) extends BackendC
     logger.info(s"Generating calculation id for nino: $nino, taxYear: $taxYear")
 
     if(request.body != Json.parse("{}")){
-      Future(BadRequest("API needs empty json supplied."))
+      val message = s"[generateCalculationId] API needs empty json supplied. Nino with request: $nino"
+      logger.error(message)
+      Future(BadRequest(message))
     } else {
       Future(Ok(Json.parse(s"""{"id": "$randomId"}""".stripMargin)))
     }

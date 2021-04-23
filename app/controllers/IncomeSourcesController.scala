@@ -17,7 +17,7 @@
 package controllers
 
 import javax.inject.Inject
-import models.Users.findUser
+import services.UserDataService
 import play.api.Logging
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Result}
@@ -25,15 +25,15 @@ import services.{DividendsService, EmploymentsService, GiftAidService, InterestS
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import utils.ErrorResponses._
 import utils.RandomIdGenerator.randomId
-
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-
+import utils.TaxYearConversion.convertStringTaxYear
 
 class IncomeSourcesController @Inject()(interestService: InterestService,
                                         dividendsService: DividendsService,
                                         giftAidService: GiftAidService,
                                         employmentsService: EmploymentsService,
+                                        userDataService: UserDataService,
                                         cc: ControllerComponents) extends BackendController(cc) with Logging {
 
   // DES #1390 //
@@ -54,7 +54,9 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
     }
 
     outcome match {
-      case Left(error) => Future(error)
+      case Left(error) =>
+        logger.error(s"[createUpdateAnnualIncomeSource] The request body provided does not conform to the schema. Nino with request: $nino")
+        Future(error)
       case Right(_) => Future(Ok(Json.parse(s"""{"transactionReference": "$randomId"}""".stripMargin)))
     }
   }
@@ -70,10 +72,12 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
     logger.info(s"Get income source for nino: $nino, taxYear: $taxYear, incomeSourceType: $incomeSourceType, incomeSourceId: $incomeSourceId")
 
     incomeSourceType match {
-      case INTEREST => findUser(nino)(interestService.getIncomeSourceInterest(incomeSourceId, taxYear))
-      case DIVIDENDS => findUser(nino)(dividendsService.getIncomeSourceDividends(taxYear))
-      case GIFT_AID => findUser(nino)(giftAidService.getIncomeSourceGiftAid(taxYear))
-      case _ => Future(incomeSourceTypeNotFound)
+      case INTEREST => userDataService.findUser(nino)(interestService.getIncomeSourceInterest(incomeSourceId, taxYear))
+      case DIVIDENDS => userDataService.findUser(nino)(dividendsService.getIncomeSourceDividends(taxYear))
+      case GIFT_AID => userDataService.findUser(nino)(giftAidService.getIncomeSourceGiftAid(taxYear))
+      case _ =>
+        logger.error(s"[getIncomeSource] Income source type invalid. Nino with request: $nino")
+        Future(incomeSourceTypeInvalid)
     }
   }
 
@@ -83,12 +87,16 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
                              taxYear: Option[Int]): Action[AnyContent] = Action.async { _ =>
 
     import models.IncomeSourceTypes.IncomeSourceTypeB._
+    import models.IncomeSourceTypes._
 
     logger.info(s"Get income source list for nino: $nino, taxYear: $taxYear, incomeSourceType: $incomeSourceType")
 
-    incomeSourceType match {
-      case INTEREST_FROM_UK_BANKS => findUser(nino)(interestService.getListOfIncomeSourcesInterest(nino, incomeSourceType))
-      case _ => Future(incomeSourceTypeNotFound)
+    IncomeSourceTypeB.validType(incomeSourceType) match {
+      case Right(INTEREST_FROM_UK_BANKS) => userDataService.findUser(nino)(interestService.getListOfIncomeSourcesInterest(nino, incomeSourceType, taxYear))
+      case Right(_) => Future(notFound)
+      case Left(_) =>
+        logger.error(s"[getListOfIncomeSources] Income source type invalid. Nino with request: $nino")
+        Future(incomeSourceTypeInvalid)
     }
   }
 
@@ -102,17 +110,18 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
     val outcome: Either[Result, Boolean] = interestService.validateCreateIncomeSource
 
     outcome match {
-      case Left(error) => Future(error)
+      case Left(error) =>
+        logger.error(s"[createIncomeSource] The request body provided does not conform to the schema. Nino with request: $nino")
+        Future(error)
       case Right(_) => Future(Ok(Json.parse(s"""{"incomeSourceId": "$randomId"}""".stripMargin)))
     }
   }
 
   // DES #1645 //
-  def getEmploymentsList(nino: String, taxYear: Int, employmentId: Option[String]) : Action[JsValue] = Action.async(parse.json) {
-    implicit request =>
+  def getEmploymentsList(nino: String, taxYear: String, employmentId: Option[String]) : Action[AnyContent] = Action.async { _ =>
 
     logger.info(s"Get list of employments for nino: $nino, taxYear: $taxYear, employmentId: ${employmentId.getOrElse("None")}")
 
-    findUser(nino)(employmentsService.getListOfEmployments(taxYear, employmentId))
+    userDataService.findUser(nino)(employmentsService.getListOfEmployments(convertStringTaxYear(taxYear), employmentId))
   }
 }

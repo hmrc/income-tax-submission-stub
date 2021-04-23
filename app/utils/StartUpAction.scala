@@ -14,17 +14,24 @@
  * limitations under the License.
  */
 
-import play.api.libs.json.{Format, JsResult, JsValue}
-import uk.gov.hmrc.domain.Vrn
+package utils
 
-package object models {
+import models.{APIUser, Users}
 
-  type OptEither[T] = Option[Either[String, T]]
+import javax.inject.{Inject, Singleton}
+import repositories.UserRepository
 
-  val vrnFormat: Format[Vrn] = new Format[Vrn] {
-    override def reads(json: JsValue): JsResult[Vrn] = Vrn.vrnRead.reads(json)
+import scala.concurrent.{Await, ExecutionContext, Future}
+import scala.concurrent.duration._
 
-    override def writes(o: Vrn): JsValue = Vrn.vrnWrite.writes(o)
+@Singleton
+class StartUpAction @Inject()(userRepository: UserRepository,
+                              implicit val ec: ExecutionContext) {
+
+  def initialiseUsers(): Seq[Option[APIUser]] = {
+    Await.result(Future.sequence(Users.users.map(user => userRepository.insertUser(user))), 5.seconds)
   }
+
+  initialiseUsers()
 
 }

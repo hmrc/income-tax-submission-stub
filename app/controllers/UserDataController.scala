@@ -14,17 +14,22 @@
  * limitations under the License.
  */
 
-import play.api.libs.json.{Format, JsResult, JsValue}
-import uk.gov.hmrc.domain.Vrn
+package controllers
 
-package object models {
+import models.APIUser
+import play.api.libs.json.JsValue
+import play.api.mvc.{Action, ControllerComponents}
+import services.UserDataService
+import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
-  type OptEither[T] = Option[Either[String, T]]
+import javax.inject.Inject
 
-  val vrnFormat: Format[Vrn] = new Format[Vrn] {
-    override def reads(json: JsValue): JsResult[Vrn] = Vrn.vrnRead.reads(json)
 
-    override def writes(o: Vrn): JsValue = Vrn.vrnWrite.writes(o)
+class UserDataController @Inject()(dataService: UserDataService,
+                                   cc: ControllerComponents) extends BackendController(cc) {
+
+  val postUser: Action[JsValue] = Action.async(parse.json) { implicit request =>
+    withJsonBody[APIUser]( model => dataService.insertUser(model)
+    )
   }
-
 }

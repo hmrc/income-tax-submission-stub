@@ -31,7 +31,9 @@ lazy val coverageSettings: Seq[Setting[_]] = {
     "controllers.javascript.*",
     "com.*",
     ".*Routes*",
-    ".*RoutesPrefix*"
+    ".*RoutesPrefix*",
+    "controllers.Reverse.*",
+    "controllers.Reverse*"
   )
 
   Seq(

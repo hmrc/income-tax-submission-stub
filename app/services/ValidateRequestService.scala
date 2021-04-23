@@ -18,12 +18,13 @@ package services
 
 import javax.inject.Inject
 import models.ErrorModel
+import play.api.Logging
 import play.api.libs.json.JsValue
 import play.api.mvc.Results.Status
 import play.api.mvc.{Request, Result}
 import utils.JsonValidation
 
-class ValidateRequestService @Inject()() extends JsonValidation {
+class ValidateRequestService @Inject()() extends JsonValidation with Logging {
 
   def validateRequest(error: ErrorModel, APINumber: Int)(implicit request: Request[JsValue]): Either[Result, Boolean] = {
 
@@ -35,6 +36,7 @@ class ValidateRequestService @Inject()() extends JsonValidation {
     if (isValidJsonAccordingToJsonSchema(request.body, s"/jsonSchemas/$schemaFile")) {
       Right(true)
     } else {
+      logger.error(s"Request did not validate against the schema. APINumber: $APINumber")
       Left(Status(error.status)(error.toJson))
     }
   }

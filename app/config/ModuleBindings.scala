@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-import play.api.libs.json.{Format, JsResult, JsValue}
-import uk.gov.hmrc.domain.Vrn
+package config
 
-package object models {
+import play.api.inject.{Binding, Module}
+import play.api.{Configuration, Environment}
+import utils.StartUpAction
+import play.api.inject.{bind => playBind}
+import repositories.UserRepository
 
-  type OptEither[T] = Option[Either[String, T]]
-
-  val vrnFormat: Format[Vrn] = new Format[Vrn] {
-    override def reads(json: JsValue): JsResult[Vrn] = Vrn.vrnRead.reads(json)
-
-    override def writes(o: Vrn): JsValue = Vrn.vrnWrite.writes(o)
-  }
-
+class ModuleBindings extends Module {
+  override def bindings(environment: Environment, configuration: Configuration): Seq[Binding[_]] = Seq(
+    playBind(classOf[UserRepository]).toSelf.eagerly(),
+    playBind(classOf[StartUpAction]).toSelf.eagerly()
+  )
 }

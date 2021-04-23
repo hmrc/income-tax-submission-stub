@@ -17,11 +17,7 @@
 package models
 
 import filters.StubErrorFilter.{DES_500_NINO, DES_503_NINO}
-import play.api.mvc.Result
-import utils.ErrorResponses._
 import utils.RandomIdGenerator
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
 
 object Users {
 
@@ -31,7 +27,7 @@ object Users {
       interest = Seq(
         Interest(
           "Rick Owens Bank", //TODO THIS TEST CASE SHOULD WORK AFTER SASS-536 IS COMPLETED https://jira.tools.tax.service.gov.uk/browse/SASS-536
-          RandomIdGenerator.randomId,
+          "000000000000001",
           interestSubmissions = Seq(
             InterestSubmission(
               2022,
@@ -42,7 +38,7 @@ object Users {
         ),
         Interest(
           "Rick Owens Taxed Bank",
-          RandomIdGenerator.randomId,
+          "000000000000002",
           interestSubmissions = Seq(
             InterestSubmission(
               2022,
@@ -53,7 +49,7 @@ object Users {
         ),
         Interest(
           "Rick Owens Untaxed Bank",
-          RandomIdGenerator.randomId,
+          "000000000000003",
           interestSubmissions = Seq(
             InterestSubmission(
               2022,
@@ -88,6 +84,15 @@ object Users {
             Some(99999999999.99)
           ))
         )
+      ),
+      employment = Seq(
+        Employment(
+          2022,
+          Seq(HmrcEmployment("00000000-0000-0000-0000-000000000001", "Rick Owens LTD", Some("666/66666"), Some("123456789"),
+            Some("2020-06-17T10:53:38Z"), Some("2020-06-17T10:53:38Z"), Some("2020-06-17T10:53:38Z"))),
+          Seq(CustomerEmployment("00000000-0000-0000-0000-000000000001", "Rick Owens London LTD",
+            Some("666/66666"), Some("123456789"), Some("2020-06-17T10:53:38Z"), Some("2020-06-17T10:53:38Z"), submittedOn = "2020-06-17T10:53:38Z"))
+        )
       )
     ),
     APIUser(
@@ -110,7 +115,6 @@ object Users {
         )
       )
     ),
-
     APIUser(
       "AA000003A",
       interest = Seq(
@@ -199,10 +203,4 @@ object Users {
     APIUser(DES_500_NINO),
     APIUser(DES_503_NINO)
   )
-
-  def findUser(nino: String, notFoundResult: Future[Result] = Future(userNotFound))
-              (function: APIUser => Future[Result]): Future[Result] = {
-
-    Users.users.find(_.nino.equals(nino)).fold(notFoundResult)(function)
-  }
 }
