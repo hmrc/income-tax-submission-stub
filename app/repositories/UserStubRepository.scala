@@ -38,5 +38,5 @@ trait UserStubRepository[T, O] extends ReactiveRepository[T, BSONObjectID] {
 
 }
 
-class UserRepositoryBase(implicit mongo: () => DB, formats: Format[APIUser])
+class UserRepositoryBase(implicit mongo: () => DB)
   extends ReactiveRepository[APIUser, String]("users", mongo, APIUser.formats, Format(StringReads, StringWrites))

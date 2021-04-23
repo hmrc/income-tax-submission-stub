@@ -27,7 +27,7 @@ object Users {
       interest = Seq(
         Interest(
           "Rick Owens Bank", //TODO THIS TEST CASE SHOULD WORK AFTER SASS-536 IS COMPLETED https://jira.tools.tax.service.gov.uk/browse/SASS-536
-          RandomIdGenerator.randomId,
+          "000000000000001",
           interestSubmissions = Seq(
             InterestSubmission(
               2022,
@@ -38,7 +38,7 @@ object Users {
         ),
         Interest(
           "Rick Owens Taxed Bank",
-          RandomIdGenerator.randomId,
+          "000000000000002",
           interestSubmissions = Seq(
             InterestSubmission(
               2022,
@@ -49,7 +49,7 @@ object Users {
         ),
         Interest(
           "Rick Owens Untaxed Bank",
-          RandomIdGenerator.randomId,
+          "000000000000003",
           interestSubmissions = Seq(
             InterestSubmission(
               2022,

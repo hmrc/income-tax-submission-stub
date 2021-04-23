@@ -49,7 +49,7 @@ class SetupDataController @Inject()(dataRepository: DataRepository,
     }
   }
 
-  val removeAll: Action[AnyContent] = Action.async { implicit request =>
+  val removeAll: Action[AnyContent] = Action.async { _ =>
     dataRepository.removeAll().map {
       case result if result.ok => Ok("Removed All Stubbed Data")
       case _ => InternalServerError("Unexpected Error Clearing MongoDB.")

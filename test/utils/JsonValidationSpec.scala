@@ -14,17 +14,20 @@
  * limitations under the License.
  */
 
-import play.api.libs.json.{Format, JsResult, JsValue}
-import uk.gov.hmrc.domain.Vrn
+package utils
 
-package object models {
+import play.api.libs.json.{JsValue, Json}
+import testUtils.TestSupport
 
-  type OptEither[T] = Option[Either[String, T]]
+class JsonValidationSpec extends TestSupport with JsonValidation {
 
-  val vrnFormat: Format[Vrn] = new Format[Vrn] {
-    override def reads(json: JsValue): JsResult[Vrn] = Vrn.vrnRead.reads(json)
+  private case class JsonTest(name: String, json: JsValue, outcome: Boolean)
 
-    override def writes(o: Vrn): JsValue = Vrn.vrnWrite.writes(o)
+  "The json Schema validation utils" should {
+    val schemaJsonDoc = "/jsonSchemas/notfound.json"
+
+    s"return false if the schema cant be found" in {
+      isValidJsonAccordingToJsonSchema(Json.parse("{}"), schemaJsonDoc) mustBe false
+    }
   }
-
 }
