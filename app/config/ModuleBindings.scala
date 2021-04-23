@@ -20,9 +20,11 @@ import play.api.inject.{Binding, Module}
 import play.api.{Configuration, Environment}
 import utils.StartUpAction
 import play.api.inject.{bind => playBind}
+import repositories.UserRepository
 
 class ModuleBindings extends Module {
   override def bindings(environment: Environment, configuration: Configuration): Seq[Binding[_]] = Seq(
+    playBind(classOf[UserRepository]).toSelf.eagerly(),
     playBind(classOf[StartUpAction]).toSelf.eagerly()
   )
 }
