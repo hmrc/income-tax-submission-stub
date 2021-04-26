@@ -97,4 +97,11 @@ class UserDataControllerISpec extends IntegrationTest with FutureAwaits with Def
     }
 
   }
+
+  "DELETE /reset" should {
+    s"return $OK when" in {
+
+    }
+
+  }
 }

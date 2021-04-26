@@ -18,18 +18,36 @@ package controllers
 
 import models.APIUser
 import play.api.libs.json.JsValue
-import play.api.mvc.{Action, ControllerComponents}
+import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import repositories.UserRepository
 import services.UserDataService
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
+import utils.StartUpAction
 
 import javax.inject.Inject
+import scala.concurrent.{ExecutionContext, Future}
 
 
 class UserDataController @Inject()(dataService: UserDataService,
-                                   cc: ControllerComponents) extends BackendController(cc) {
+                                   userRepository: UserRepository,
+                                   startUpAction: StartUpAction,
+                                   cc: ControllerComponents,
+                                   implicit val ec: ExecutionContext) extends BackendController(cc) {
 
   val postUser: Action[JsValue] = Action.async(parse.json) { implicit request =>
     withJsonBody[APIUser]( model => dataService.insertUser(model)
     )
+  }
+
+
+  def resetUsers: Action[AnyContent] = Action.async { implicit request =>
+    userRepository.removeAll().flatMap{
+      case result if result.ok =>
+        startUpAction.initialiseUsers().map{
+          case Some(value) => Ok("MongoDB users were reset to default")
+          case None => InternalServerError("Unexpected Error Resetting Users.")
+        }
+      case _ => Future.successful(InternalServerError("Unexpected Error Clearing MongoDB."))
+    }
   }
 }
