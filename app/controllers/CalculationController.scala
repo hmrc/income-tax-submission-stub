@@ -22,7 +22,6 @@ import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, ControllerComponents}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import utils.RandomIdGenerator.randomId
-
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
