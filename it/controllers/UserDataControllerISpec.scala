@@ -77,7 +77,8 @@ class UserDataControllerISpec extends IntegrationTest with FutureAwaits with Def
           |			"sharesOrSecurities": 99999999999.99,
           |			"investmentsNonUkCharities": 99999999999.99
           |		}
-          |	}]
+          |	}],
+          | "employment": []
           |}""".stripMargin)))
 
       res.status mustBe CREATED
@@ -89,7 +90,8 @@ class UserDataControllerISpec extends IntegrationTest with FutureAwaits with Def
         """{
           |    "nino": "AA030405A",
           |    "dividends": [],
-          |    "interest": []
+          |    "interest": [],
+          |    "employment": []
           |}""".stripMargin)))
 
       res.status mustBe BAD_REQUEST

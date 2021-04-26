@@ -84,6 +84,15 @@ object Users {
             Some(99999999999.99)
           ))
         )
+      ),
+      employment = Seq(
+        Employment(
+          2022,
+          Seq(HmrcEmployment("00000000-0000-0000-0000-000000000001", "Rick Owens LTD", Some("666/66666"), Some("123456789"),
+            Some("2020-06-17T10:53:38Z"), Some("2020-06-17T10:53:38Z"), Some("2020-06-17T10:53:38Z"))),
+          Seq(CustomerEmployment("00000000-0000-0000-0000-000000000001", "Rick Owens London LTD",
+            Some("666/66666"), Some("123456789"), Some("2020-06-17T10:53:38Z"), Some("2020-06-17T10:53:38Z"), submittedOn = "2020-06-17T10:53:38Z"))
+        )
       )
     ),
     APIUser(
@@ -106,7 +115,6 @@ object Users {
         )
       )
     ),
-
     APIUser(
       "AA000003A",
       interest = Seq(
@@ -180,6 +188,17 @@ object Users {
               )
             )
         }
+    ),
+    APIUser("PB133742J",
+      employment = Seq(
+        Employment(
+          2022,
+          Seq(HmrcEmployment("00000000-0000-1000-8000-000000000000", "Vera Lynn", Some("123/abc 001<Q>"), Some("123345657"),
+            Some("2020-06-17T10:53:38Z"), Some("2020-06-17T10:53:38Z"), Some("2020-06-17T10:53:38Z"))),
+          Seq(CustomerEmployment("00000000-0000-1000-8000-000000000002", "Vera Lynn",
+            Some("123/abc 001<Q>"), Some("123345657"), Some("2020-06-17T10:53:38Z"), Some("2020-06-17T10:53:38Z"), submittedOn = "2020-06-17T10:53:38Z"))
+        )
+      )
     ),
     APIUser(DES_500_NINO),
     APIUser(DES_503_NINO)

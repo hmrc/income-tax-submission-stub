@@ -72,10 +72,43 @@ object GiftAid {
   implicit val formats: OFormat[GiftAid] = Json.format[GiftAid]
 }
 
+case class Employment(taxYear: Int,
+                      hmrcEmployments: Seq[HmrcEmployment],
+                      customerEmployments: Seq[CustomerEmployment]) extends IncomeSource
+
+object Employment {
+  implicit val formats: OFormat[Employment] = Json.format[Employment]
+}
+
+case class HmrcEmployment(employmentId: String,
+                          employerName: String,
+                          employerRef: Option[String] = None,
+                          payRollId: Option[String] = None,
+                          startDate: Option[String] = None,
+                          cessationDate: Option[String] = None,
+                          dateIgnored: Option[String] = None)
+
+object HmrcEmployment {
+  implicit val formats: OFormat[HmrcEmployment] = Json.format[HmrcEmployment]
+}
+
+case class CustomerEmployment(employmentId: String,
+                              employerName: String,
+                              employerRef: Option[String] = None,
+                              payRollId: Option[String] = None,
+                              startDate: Option[String] = None,
+                              cessationDate: Option[String] = None,
+                              submittedOn: String)
+
+object CustomerEmployment {
+  implicit val formats: OFormat[CustomerEmployment] = Json.format[CustomerEmployment]
+}
+
 case class APIUser(nino: String,
                    dividends: Seq[Dividends] = Seq(),
                    interest: Seq[Interest] = Seq(),
-                   giftAid: Seq[GiftAid] = Seq())
+                   giftAid: Seq[GiftAid] = Seq(),
+                   employment: Seq[Employment] = Seq())
 
 object APIUser {
   implicit val formats: OFormat[APIUser] = Json.format[APIUser]

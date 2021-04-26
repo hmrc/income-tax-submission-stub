@@ -119,6 +119,104 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
     }
   }
 
+  "GET /income-tax/income/employments/AA123459A/2022" should {
+    s"return ${Status.OK} with json" in {
+
+      val url = s"income-tax/income/employments/AA123459A/2021-22"
+
+      val res = await(buildClient(url).get())
+
+      res.status mustBe Status.OK
+      res.json mustBe Json.parse("""{
+                                   |	"employments": [{
+                                   |		"employmentId": "00000000-0000-0000-0000-000000000001",
+                                   |		"employerName": "Rick Owens LTD",
+                                   |		"employerRef": "666/66666",
+                                   |		"payRollId": "123456789",
+                                   |		"startDate": "2020-06-17T10:53:38Z",
+                                   |		"cessationDate": "2020-06-17T10:53:38Z",
+                                   |		"dateIgnored": "2020-06-17T10:53:38Z"
+                                   |	}],
+                                   |	"customerDeclaredEmployments": [{
+                                   |		"employmentId": "00000000-0000-0000-0000-000000000001",
+                                   |		"employerName": "Rick Owens London LTD",
+                                   |		"employerRef": "666/66666",
+                                   |		"payRollId": "123456789",
+                                   |		"startDate": "2020-06-17T10:53:38Z",
+                                   |		"cessationDate": "2020-06-17T10:53:38Z",
+                                   |		"submittedOn": "2020-06-17T10:53:38Z"
+                                   |	}]
+                                   |}""".stripMargin)
+    }
+    s"return ${Status.OK} with json when filtering by employment id" in {
+
+      val url = s"income-tax/income/employments/AA123459A/2021-22?employmentId=00000000-0000-0000-0000-000000000001"
+
+      val res = await(buildClient(url).get())
+
+      res.status mustBe Status.OK
+      res.json mustBe Json.parse("""{
+                                   |	"employments": [{
+                                   |		"employmentId": "00000000-0000-0000-0000-000000000001",
+                                   |		"employerName": "Rick Owens LTD",
+                                   |		"employerRef": "666/66666",
+                                   |		"payRollId": "123456789",
+                                   |		"startDate": "2020-06-17T10:53:38Z",
+                                   |		"cessationDate": "2020-06-17T10:53:38Z",
+                                   |		"dateIgnored": "2020-06-17T10:53:38Z"
+                                   |	}],
+                                   |	"customerDeclaredEmployments": [{
+                                   |		"employmentId": "00000000-0000-0000-0000-000000000001",
+                                   |		"employerName": "Rick Owens London LTD",
+                                   |		"employerRef": "666/66666",
+                                   |		"payRollId": "123456789",
+                                   |		"startDate": "2020-06-17T10:53:38Z",
+                                   |		"cessationDate": "2020-06-17T10:53:38Z",
+                                   |		"submittedOn": "2020-06-17T10:53:38Z"
+                                   |	}]
+                                   |}""".stripMargin)
+    }
+    s"return ${Status.OK} with json when filtering by employment id and only return one record" in {
+
+      val url = s"income-tax/income/employments/PB133742J/2021-22?employmentId=00000000-0000-1000-8000-000000000000"
+
+      val res = await(buildClient(url).get())
+
+      res.status mustBe Status.OK
+      res.json mustBe Json.parse(
+        """{
+          |	"employments": [{
+          |		"employmentId": "00000000-0000-1000-8000-000000000000",
+          |		"employerName": "Vera Lynn",
+          |		"employerRef": "123/abc 001<Q>",
+          |		"payRollId": "123345657",
+          |		"startDate": "2020-06-17T10:53:38Z",
+          |		"cessationDate": "2020-06-17T10:53:38Z",
+          |		"dateIgnored": "2020-06-17T10:53:38Z"
+          |	}],
+          |	"customerDeclaredEmployments": []
+          |}""".stripMargin)
+    }
+    s"return ${Status.NOT_FOUND} with json when no data for the tax year" in {
+
+      val url = s"income-tax/income/employments/AA123459A/2022-23"
+
+      val res = await(buildClient(url).get())
+
+      res.status mustBe Status.NOT_FOUND
+      res.json mustBe Json.parse("""{"code":"NOT_FOUND","message":"The remote endpoint has indicated that no data can be found."}""".stripMargin)
+    }
+    s"return ${Status.NOT_FOUND} with json when no data for the employment id" in {
+
+      val url = s"income-tax/income/employments/AA123459A/2021-22?employmentId=00000000-0000-0000-0000-000000000003"
+
+      val res = await(buildClient(url).get())
+
+      res.status mustBe Status.NOT_FOUND
+      res.json mustBe Json.parse("""{"code":"NOT_FOUND","message":"The remote endpoint has indicated that no data can be found."}""".stripMargin)
+    }
+  }
+
   "GET /income-tax/income-sources/nino/AA123459A" should {
     s"return ${Status.OK} with json" in {
 
