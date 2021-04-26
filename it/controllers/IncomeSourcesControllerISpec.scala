@@ -176,6 +176,27 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
                                    |	}]
                                    |}""".stripMargin)
     }
+    s"return ${Status.OK} with json when filtering by employment id and only return one record" in {
+
+      val url = s"income-tax/income/employments/PB133742J/2021-22?employmentId=00000000-0000-1000-8000-000000000000"
+
+      val res = await(buildClient(url).get())
+
+      res.status mustBe Status.OK
+      res.json mustBe Json.parse(
+        """{
+          |	"employments": [{
+          |		"employmentId": "00000000-0000-1000-8000-000000000000",
+          |		"employerName": "Vera Lynn",
+          |		"employerRef": "123/abc 001<Q>",
+          |		"payRollId": "123345657",
+          |		"startDate": "2020-06-17T10:53:38Z",
+          |		"cessationDate": "2020-06-17T10:53:38Z",
+          |		"dateIgnored": "2020-06-17T10:53:38Z"
+          |	}],
+          |	"customerDeclaredEmployments": []
+          |}""".stripMargin)
+    }
     s"return ${Status.NOT_FOUND} with json when no data for the tax year" in {
 
       val url = s"income-tax/income/employments/AA123459A/2022-23"
