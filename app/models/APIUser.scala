@@ -72,10 +72,38 @@ object GiftAid {
   implicit val formats: OFormat[GiftAid] = Json.format[GiftAid]
 }
 
+case class EmploymentExpenses(submittedOn: Option[String],
+                              dateIgnored: Option[String],
+                              source: Option[String],
+                              totalExpenses: Option[BigDecimal],
+                              expenses: Option[ExpensesType]
+                             )
+
+object EmploymentExpenses {
+  implicit val format: OFormat[EmploymentExpenses] = Json.format[EmploymentExpenses]
+}
+
+case class ExpensesType(
+                         businessTravelCosts: Option[BigDecimal],
+                         jobExpenses: Option[BigDecimal],
+                         flatRateJobExpenses: Option[BigDecimal],
+                         professionalSubscriptions: Option[BigDecimal],
+                         hotelAndMealExpenses: Option[BigDecimal],
+                         otherAndCapitalAllowances: Option[BigDecimal],
+                         vehicleExpenses: Option[BigDecimal],
+                         mileageAllowanceRelief: Option[BigDecimal]
+                       )
+
+object ExpensesType {
+  implicit val formats: OFormat[ExpensesType] = Json.format[ExpensesType]
+}
+
 case class APIUser(nino: String,
                    dividends: Seq[Dividends] = Seq(),
                    interest: Seq[Interest] = Seq(),
-                   giftAid: Seq[GiftAid] = Seq())
+                   giftAid: Seq[GiftAid] = Seq(),
+                   employmentExpenses: EmploymentExpenses = EmploymentExpenses(None, None, None, None, None)
+                  )
 
 object APIUser {
   implicit val formats: OFormat[APIUser] = Json.format[APIUser]

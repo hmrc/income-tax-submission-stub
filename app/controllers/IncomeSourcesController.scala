@@ -17,14 +17,14 @@
 package controllers
 
 import javax.inject.Inject
-import services.UserDataService
+import services.{DividendsService, EmploymentExpensesService, GiftAidService, InterestService, UserDataService}
 import play.api.Logging
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Result}
-import services.{DividendsService, GiftAidService, InterestService}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import utils.ErrorResponses._
 import utils.RandomIdGenerator.randomId
+import utils.TaxYearConversion.convertStringTaxYear
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -34,6 +34,7 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
                                         dividendsService: DividendsService,
                                         giftAidService: GiftAidService,
                                         userDataService: UserDataService,
+                                        employmentExpensesService: EmploymentExpensesService,
                                         cc: ControllerComponents) extends BackendController(cc) with Logging {
 
   // DES #1390 //
@@ -115,5 +116,11 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
         Future(error)
       case Right(_) => Future(Ok(Json.parse(s"""{"incomeSourceId": "$randomId"}""".stripMargin)))
     }
+  }
+
+  // DES #1668 //
+  def getEmploymentsExpenses(nino: String, taxYear: String, view: String) : Action[AnyContent] = Action.async { _ =>
+    logger.info(s"Get employment expenses for nino: $nino, taxYear: $taxYear, view: $view")
+    userDataService.findUser(nino)(employmentExpensesService.getEmploymentExpenses(convertStringTaxYear(taxYear), nino, view))
   }
 }

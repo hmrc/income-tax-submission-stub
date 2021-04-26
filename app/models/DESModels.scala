@@ -59,4 +59,17 @@ object DESModels {
   }
   // DES #1391 //
 
+  // DES #1668 //
+  case class EmploymentExpenses(submittedOn: Option[String],
+                                dateIgnored: Option[String],
+                                source: Option[String],
+                                totalExpenses: Option[BigDecimal],
+                                expenses: Option[ExpensesType]
+                               )
+
+  object EmploymentExpenses {
+    implicit val format: Format[EmploymentExpenses] = Json.format[EmploymentExpenses]
+  }
+  // DES #1668 //
+
 }
