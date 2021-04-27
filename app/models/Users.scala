@@ -216,7 +216,7 @@ object Users {
           employmentExpenses = EmploymentExpenses(
             submittedOn = Some("2022-12-12T12:12:12Z"),
             dateIgnored = Some("2022-12-11T12:12:12Z"),
-            source = Some("CUSTOMER"),
+            source = None,
             totalExpenses = Some(100.00),
             expenses = Some(ExpensesType(
               businessTravelCosts = Some(100.00),

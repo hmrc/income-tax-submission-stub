@@ -260,6 +260,16 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
       res.status mustBe Status.NOT_FOUND
       res.json mustBe Json.parse("""{"code":"NOT_FOUND","message":"The remote endpoint has indicated that no data can be found."}""".stripMargin)
     }
+
+    s"return ${Status.NOT_FOUND} with the json has no source value" in {
+
+      val url = s"income-tax/expenses/employments/PB133742J/2021-22?view=LATEST"
+
+      val res = await(buildClient(url).get())
+
+      res.status mustBe Status.NOT_FOUND
+      res.json mustBe Json.parse("""{"code":"NOT_FOUND","message":"The remote endpoint has indicated that no data can be found."}""".stripMargin)
+    }
   }
 
   "GET /income-tax/income-sources/nino/AA123459A" should {
