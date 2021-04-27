@@ -4,11 +4,10 @@
 
 A number of NINOs hold stub data by default. Please refer to Users file in the Models package to see these NINOs.
 
-The NINO AA123459A should include data for all DES API calls(i.e. dividends, interest, giftAid etc).
 
 ### Creating a Custom User
 
-It is possible to create a custom user. Please see below for an example. git stat
+It is possible to create a custom user. See below for an example.
 
 **note empty array passed if no stub data is needed*
 
