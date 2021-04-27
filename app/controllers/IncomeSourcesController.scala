@@ -21,18 +21,18 @@ import services.UserDataService
 import play.api.Logging
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Result}
-import services.{DividendsService, GiftAidService, InterestService}
+import services.{DividendsService, EmploymentsService, GiftAidService, InterestService}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import utils.ErrorResponses._
 import utils.RandomIdGenerator.randomId
-
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-
+import utils.TaxYearConversion.convertStringTaxYear
 
 class IncomeSourcesController @Inject()(interestService: InterestService,
                                         dividendsService: DividendsService,
                                         giftAidService: GiftAidService,
+                                        employmentsService: EmploymentsService,
                                         userDataService: UserDataService,
                                         cc: ControllerComponents) extends BackendController(cc) with Logging {
 
@@ -115,5 +115,13 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
         Future(error)
       case Right(_) => Future(Ok(Json.parse(s"""{"incomeSourceId": "$randomId"}""".stripMargin)))
     }
+  }
+
+  // DES #1645 //
+  def getEmploymentsList(nino: String, taxYear: String, employmentId: Option[String]) : Action[AnyContent] = Action.async { _ =>
+
+    logger.info(s"Get list of employments for nino: $nino, taxYear: $taxYear, employmentId: ${employmentId.getOrElse("None")}")
+
+    userDataService.findUser(nino)(employmentsService.getListOfEmployments(convertStringTaxYear(taxYear), employmentId))
   }
 }

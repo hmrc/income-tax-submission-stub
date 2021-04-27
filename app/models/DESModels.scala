@@ -59,4 +59,12 @@ object DESModels {
   }
   // DES #1391 //
 
+  // DES #1645 //
+  case class EmploymentsDetail(employments: Seq[HmrcEmployment],
+                               customerDeclaredEmployments: Seq[CustomerEmployment])
+
+  object EmploymentsDetail {
+    implicit val format: OFormat[EmploymentsDetail] = Json.format[EmploymentsDetail]
+  }
+  // DES #1645 //
 }
