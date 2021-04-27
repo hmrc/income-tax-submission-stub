@@ -16,7 +16,7 @@
 
 package controllers
 
-import models.APIUser
+import models.{APIUser, Users}
 import play.api.libs.json.JsValue
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import repositories.UserRepository
@@ -43,10 +43,10 @@ class UserDataController @Inject()(dataService: UserDataService,
       case result if result.ok =>
         startUpAction.initialiseUsers().map {
           start =>
-            if (start.isEmpty) {
-              InternalServerError("Unexpected Error Resetting Users.")
-            } else {
+            if (start.length == Users.users.length) {
               Ok("MongoDB users were reset to default")
+            } else {
+              InternalServerError("Unexpected Error Resetting Users.")
             }
         }
       case _ => Future(InternalServerError("Unexpected Error Clearing MongoDB."))
