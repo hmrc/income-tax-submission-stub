@@ -23,11 +23,11 @@ object ErrorResponses {
 
   val notFound: Result = NotFound(Json.obj(
     "code" -> "NOT_FOUND",
-    "message" -> "The remote endpoint has indicated that no data can be found.")
+    "reason" -> "The remote endpoint has indicated that no data can be found.")
   )
 
   val incomeSourceTypeInvalid: Result = BadRequest(Json.obj(
     "code" -> "INVALID_TYPE",
-    "message" -> "Submission has not passed validation. Invalid parameter type.")
+    "reason" -> "Submission has not passed validation. Invalid parameter type.")
   )
 }

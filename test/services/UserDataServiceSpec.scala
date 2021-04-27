@@ -83,7 +83,7 @@ class UserDataServiceSpec extends TestSupport with Results {
       val result = userDataService.findUser(nino)(fn)
 
       status(result) mustBe NOT_FOUND
-      contentAsJson(result) mustBe Json.obj("code" -> "NOT_FOUND", "message" -> "The remote endpoint has indicated that no data can be found.")
+      contentAsJson(result) mustBe Json.obj("code" -> "NOT_FOUND", "reason" -> "The remote endpoint has indicated that no data can be found.")
     }
 
     "return an InternalServerError when the repository query fails" in {
