@@ -109,22 +109,6 @@ object Users {
             ))
           )
         )
-      ),
-      employmentExpenses = EmploymentExpenses(
-        submittedOn = Some("2022-12-12T12:12:12Z"),
-        dateIgnored = Some("2022-12-11T12:12:12Z"),
-        source = Some("CUSTOMER"),
-        totalExpenses = Some(100.00),
-        expenses = Some(ExpensesType(
-          businessTravelCosts = Some(100.00),
-          jobExpenses = Some(100.00),
-          flatRateJobExpenses = Some(100.00),
-          professionalSubscriptions = Some(100.00),
-          hotelAndMealExpenses = Some(100.00),
-          otherAndCapitalAllowances = Some(100.00),
-          vehicleExpenses = Some(100.00),
-          mileageAllowanceRelief = Some(100.00)
-        ))
       )
     ),
     APIUser(
