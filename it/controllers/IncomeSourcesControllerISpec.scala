@@ -37,7 +37,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
       val res = await(buildClient(url).get())
 
       res.status mustBe Status.NOT_FOUND
-      res.json.toString() must include("""{"code":"404","reason":"Could not find endpoint in Dynamic Stub matching the URI: /income-tax/nino/AA123459A/not-a-real-endpoint"}""")
+      res.json.toString() must include("""{"statusCode":404,"message":"URI not found","requested":"/income-tax/nino/AA123459A/not-a-real-endpoint"}""")
     }
   }
 
@@ -209,6 +209,61 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
     s"return ${Status.NOT_FOUND} with json when no data for the employment id" in {
 
       val url = s"income-tax/income/employments/AA123459A/2021-22?employmentId=00000000-0000-0000-0000-000000000003"
+
+      val res = await(buildClient(url).get())
+
+      res.status mustBe Status.NOT_FOUND
+      res.json mustBe Json.parse("""{"code":"NOT_FOUND","message":"The remote endpoint has indicated that no data can be found."}""".stripMargin)
+    }
+  }
+
+  "GET /income-tax/expenses/employments/AA123459A/2021-22" should {
+    s"return ${Status.OK} with json with a valid view parameter" in {
+
+      val url = s"income-tax/expenses/employments/AA123459A/2021-22?view=CUSTOMER"
+
+      val res = await(buildClient(url).get())
+
+      res.status mustBe Status.OK
+      res.json mustBe Json.parse("""{
+                                   |    "submittedOn": "2022-12-12T12:12:12Z",
+                                   |    "dateIgnored": "2022-12-11T12:12:12Z",
+                                   |    "source": "CUSTOMER",
+                                   |    "totalExpenses": 100,
+                                   |    "expenses": {
+                                   |        "businessTravelCosts": 100,
+                                   |        "jobExpenses": 100,
+                                   |        "flatRateJobExpenses": 100,
+                                   |        "professionalSubscriptions": 100,
+                                   |        "hotelAndMealExpenses": 100,
+                                   |        "otherAndCapitalAllowances": 100,
+                                   |        "vehicleExpenses": 100,
+                                   |        "mileageAllowanceRelief": 100
+                                   |    }
+                                   |}""".stripMargin)
+    }
+    s"return ${Status.NOT_FOUND} with json when no data for the view" in {
+
+      val url = s"income-tax/expenses/employments/AA123459A/2021-22?view=NOTFOUND"
+
+      val res = await(buildClient(url).get())
+
+      res.status mustBe Status.NOT_FOUND
+      res.json mustBe Json.parse("""{"code":"NOT_FOUND","message":"The remote endpoint has indicated that no data can be found."}""".stripMargin)
+    }
+    s"return ${Status.NOT_FOUND} with json when no data for the tax year" in {
+
+      val url = s"income-tax/expenses/employments/AA123459A/2022-23?view=CUSTOMER"
+
+      val res = await(buildClient(url).get())
+
+      res.status mustBe Status.NOT_FOUND
+      res.json mustBe Json.parse("""{"code":"NOT_FOUND","message":"The remote endpoint has indicated that no data can be found."}""".stripMargin)
+    }
+
+    s"return ${Status.NOT_FOUND} with the json has no source value" in {
+
+      val url = s"income-tax/expenses/employments/PB133742J/2021-22?view=LATEST"
 
       val res = await(buildClient(url).get())
 
