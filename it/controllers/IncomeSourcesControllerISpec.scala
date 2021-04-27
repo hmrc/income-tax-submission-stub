@@ -58,7 +58,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
       val res = await(buildClient(url).get())
 
       res.status mustBe Status.NOT_FOUND
-      res.json.toString() must include("""{"code":"NOT_FOUND","message":"The remote endpoint has indicated that no data can be found."}""")
+      res.json.toString() must include("""{"code":"NOT_FOUND","reason":"The remote endpoint has indicated that no data can be found."}""")
     }
   }
 
@@ -80,7 +80,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
       val res = await(buildClient(url).get())
 
       res.status mustBe Status.NOT_FOUND
-      res.json.toString() must include("""{"code":"NOT_FOUND","message":"The remote endpoint has indicated that no data can be found."}""")
+      res.json.toString() must include("""{"code":"NOT_FOUND","reason":"The remote endpoint has indicated that no data can be found."}""")
     }
   }
 
@@ -92,7 +92,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
       val res = await(buildClient(url).get())
 
       res.status mustBe Status.BAD_REQUEST
-      res.body mustBe """{"code":"INVALID_TYPE","message":"Submission has not passed validation. Invalid parameter type."}"""
+      res.body mustBe """{"code":"INVALID_TYPE","reason":"Submission has not passed validation. Invalid parameter type."}"""
 
     }
   }
@@ -115,7 +115,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
       val res = await(buildClient(url).get())
 
       res.status mustBe Status.NOT_FOUND
-      res.json.toString() must include("""{"code":"NOT_FOUND","message":"The remote endpoint has indicated that no data can be found."}""")
+      res.json.toString() must include("""{"code":"NOT_FOUND","reason":"The remote endpoint has indicated that no data can be found."}""")
     }
   }
 
@@ -204,7 +204,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
       val res = await(buildClient(url).get())
 
       res.status mustBe Status.NOT_FOUND
-      res.json mustBe Json.parse("""{"code":"NOT_FOUND","message":"The remote endpoint has indicated that no data can be found."}""".stripMargin)
+      res.json mustBe Json.parse("""{"code":"NOT_FOUND","reason":"The remote endpoint has indicated that no data can be found."}""".stripMargin)
     }
     s"return ${Status.NOT_FOUND} with json when no data for the employment id" in {
 
@@ -213,7 +213,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
       val res = await(buildClient(url).get())
 
       res.status mustBe Status.NOT_FOUND
-      res.json mustBe Json.parse("""{"code":"NOT_FOUND","message":"The remote endpoint has indicated that no data can be found."}""".stripMargin)
+      res.json mustBe Json.parse("""{"code":"NOT_FOUND","reason":"The remote endpoint has indicated that no data can be found."}""".stripMargin)
     }
   }
 
@@ -249,7 +249,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
       val res = await(buildClient(url).get())
 
       res.status mustBe Status.NOT_FOUND
-      res.json mustBe Json.parse("""{"code":"NOT_FOUND","message":"The remote endpoint has indicated that no data can be found."}""".stripMargin)
+      res.json mustBe Json.parse("""{"code":"NOT_FOUND","reason":"The remote endpoint has indicated that no data can be found."}""".stripMargin)
     }
     s"return ${Status.NOT_FOUND} with json when no data for the tax year" in {
 
@@ -258,7 +258,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
       val res = await(buildClient(url).get())
 
       res.status mustBe Status.NOT_FOUND
-      res.json mustBe Json.parse("""{"code":"NOT_FOUND","message":"The remote endpoint has indicated that no data can be found."}""".stripMargin)
+      res.json mustBe Json.parse("""{"code":"NOT_FOUND","reason":"The remote endpoint has indicated that no data can be found."}""".stripMargin)
     }
 
     s"return ${Status.NOT_FOUND} with the json has no source value" in {
@@ -268,7 +268,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
       val res = await(buildClient(url).get())
 
       res.status mustBe Status.NOT_FOUND
-      res.json mustBe Json.parse("""{"code":"NOT_FOUND","message":"The remote endpoint has indicated that no data can be found."}""".stripMargin)
+      res.json mustBe Json.parse("""{"code":"NOT_FOUND","reason":"The remote endpoint has indicated that no data can be found."}""".stripMargin)
     }
   }
 
@@ -302,7 +302,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
       val res = await(buildClient(url).get())
 
       res.status mustBe Status.NOT_FOUND
-      res.json.toString() must include("""{"code":"NOT_FOUND","message":"The remote endpoint has indicated that no data can be found."}""")
+      res.json.toString() must include("""{"code":"NOT_FOUND","reason":"The remote endpoint has indicated that no data can be found."}""")
     }
     s"return ${Status.NOT_FOUND} for other type that has not data" in {
 
@@ -311,7 +311,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
       val res = await(buildClient(url).get())
 
       res.status mustBe Status.NOT_FOUND
-      res.json.toString() must include("""{"code":"NOT_FOUND","message":"The remote endpoint has indicated that no data can be found."}""")
+      res.json.toString() must include("""{"code":"NOT_FOUND","reason":"The remote endpoint has indicated that no data can be found."}""")
     }
     s"return ${Status.BAD_REQUEST} for invalid type" in {
 
@@ -320,7 +320,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
       val res = await(buildClient(url).get())
 
       res.status mustBe Status.BAD_REQUEST
-      res.body mustBe """{"code":"INVALID_TYPE","message":"Submission has not passed validation. Invalid parameter type."}"""
+      res.body mustBe """{"code":"INVALID_TYPE","reason":"Submission has not passed validation. Invalid parameter type."}"""
     }
   }
 
