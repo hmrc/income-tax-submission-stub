@@ -18,7 +18,7 @@ package services
 
 import javax.inject.Inject
 import models.APIUser
-import models.DESModels.EmploymentsDetail
+import models.DESModels.{EmploymentExpenses, EmploymentsDetail}
 import play.api.libs.json.Json
 import play.api.mvc.Result
 import play.api.mvc.Results.Ok
@@ -47,6 +47,23 @@ class EmploymentsService @Inject()() {
           employmentsDetail match {
             case EmploymentsDetail(hmrc, customer) if hmrc.isEmpty && customer.isEmpty => Future(notFound)
             case model => Future(Ok(Json.toJson(model)))
+          }
+      }
+  }
+
+  def getEmploymentExpenses(taxYear: Int, view: String)(implicit ec: ExecutionContext): APIUser => Future[Result] = {
+    user =>
+      user.employment.find(_.taxYear == taxYear).fold(Future(notFound)) {
+        employment =>
+        val employmentExpenses: EmploymentExpenses = EmploymentExpenses(
+          dateIgnored = employment.employmentExpenses.dateIgnored,
+          source = employment.employmentExpenses.source,
+          submittedOn = employment.employmentExpenses.submittedOn,
+          totalExpenses = employment.employmentExpenses.totalExpenses,
+          expenses = employment.employmentExpenses.expenses
+        )
+          employmentExpenses match {
+            case model => if (!model.source.get.equals(view)) Future(notFound) else Future(Ok(Json.toJson(model)))
           }
       }
   }

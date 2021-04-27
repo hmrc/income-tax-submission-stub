@@ -91,8 +91,40 @@ object Users {
           Seq(HmrcEmployment("00000000-0000-0000-0000-000000000001", "Rick Owens LTD", Some("666/66666"), Some("123456789"),
             Some("2020-06-17T10:53:38Z"), Some("2020-06-17T10:53:38Z"), Some("2020-06-17T10:53:38Z"))),
           Seq(CustomerEmployment("00000000-0000-0000-0000-000000000001", "Rick Owens London LTD",
-            Some("666/66666"), Some("123456789"), Some("2020-06-17T10:53:38Z"), Some("2020-06-17T10:53:38Z"), submittedOn = "2020-06-17T10:53:38Z"))
+            Some("666/66666"), Some("123456789"), Some("2020-06-17T10:53:38Z"), Some("2020-06-17T10:53:38Z"), submittedOn = "2020-06-17T10:53:38Z")),
+          employmentExpenses = EmploymentExpenses(
+            submittedOn = Some("2022-12-12T12:12:12Z"),
+            dateIgnored = Some("2022-12-11T12:12:12Z"),
+            source = Some("CUSTOMER"),
+            totalExpenses = Some(100.00),
+            expenses = Some(ExpensesType(
+              businessTravelCosts = Some(100.00),
+              jobExpenses = Some(100.00),
+              flatRateJobExpenses = Some(100.00),
+              professionalSubscriptions = Some(100.00),
+              hotelAndMealExpenses = Some(100.00),
+              otherAndCapitalAllowances = Some(100.00),
+              vehicleExpenses = Some(100.00),
+              mileageAllowanceRelief = Some(100.00)
+            ))
+          )
         )
+      ),
+      employmentExpenses = EmploymentExpenses(
+        submittedOn = Some("2022-12-12T12:12:12Z"),
+        dateIgnored = Some("2022-12-11T12:12:12Z"),
+        source = Some("CUSTOMER"),
+        totalExpenses = Some(100.00),
+        expenses = Some(ExpensesType(
+          businessTravelCosts = Some(100.00),
+          jobExpenses = Some(100.00),
+          flatRateJobExpenses = Some(100.00),
+          professionalSubscriptions = Some(100.00),
+          hotelAndMealExpenses = Some(100.00),
+          otherAndCapitalAllowances = Some(100.00),
+          vehicleExpenses = Some(100.00),
+          mileageAllowanceRelief = Some(100.00)
+        ))
       )
     ),
     APIUser(
@@ -196,7 +228,23 @@ object Users {
           Seq(HmrcEmployment("00000000-0000-1000-8000-000000000000", "Vera Lynn", Some("123/abc 001<Q>"), Some("123345657"),
             Some("2020-06-17T10:53:38Z"), Some("2020-06-17T10:53:38Z"), Some("2020-06-17T10:53:38Z"))),
           Seq(CustomerEmployment("00000000-0000-1000-8000-000000000002", "Vera Lynn",
-            Some("123/abc 001<Q>"), Some("123345657"), Some("2020-06-17T10:53:38Z"), Some("2020-06-17T10:53:38Z"), submittedOn = "2020-06-17T10:53:38Z"))
+            Some("123/abc 001<Q>"), Some("123345657"), Some("2020-06-17T10:53:38Z"), Some("2020-06-17T10:53:38Z"), submittedOn = "2020-06-17T10:53:38Z")),
+          employmentExpenses = EmploymentExpenses(
+            submittedOn = Some("2022-12-12T12:12:12Z"),
+            dateIgnored = Some("2022-12-11T12:12:12Z"),
+            source = Some("CUSTOMER"),
+            totalExpenses = Some(100.00),
+            expenses = Some(ExpensesType(
+              businessTravelCosts = Some(100.00),
+              jobExpenses = Some(100.00),
+              flatRateJobExpenses = Some(100.00),
+              professionalSubscriptions = Some(100.00),
+              hotelAndMealExpenses = Some(100.00),
+              otherAndCapitalAllowances = Some(100.00),
+              vehicleExpenses = Some(100.00),
+              mileageAllowanceRelief = Some(100.00)
+            ))
+          )
         )
       )
     ),
