@@ -226,7 +226,6 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
 
       res.status mustBe Status.OK
       res.json mustBe Json.parse("""{
-                                   |		"submittedOn": "2020-06-17T10:53:38Z",
                                    |    "submittedOn": "2022-12-12T12:12:12Z",
                                    |    "dateIgnored": "2022-12-11T12:12:12Z",
                                    |    "source": "CUSTOMER",

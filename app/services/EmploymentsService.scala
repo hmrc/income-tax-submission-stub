@@ -55,15 +55,19 @@ class EmploymentsService @Inject()() {
     user =>
       user.employment.find(_.taxYear == taxYear).fold(Future(notFound)) {
         employment =>
-        val employmentExpenses: EmploymentExpenses = EmploymentExpenses(
-          dateIgnored = employment.employmentExpenses.dateIgnored,
-          source = employment.employmentExpenses.source,
-          submittedOn = employment.employmentExpenses.submittedOn,
-          totalExpenses = employment.employmentExpenses.totalExpenses,
-          expenses = employment.employmentExpenses.expenses
-        )
-          employmentExpenses match {
-            case model => if (!model.source.get.equals(view)) Future(notFound) else Future(Ok(Json.toJson(model)))
+          employment.employmentExpenses.source match {
+            case None => Future(notFound)
+            case _ =>
+              val employmentExpenses: EmploymentExpenses = EmploymentExpenses(
+                dateIgnored = employment.employmentExpenses.dateIgnored,
+                source = employment.employmentExpenses.source,
+                submittedOn = employment.employmentExpenses.submittedOn,
+                totalExpenses = employment.employmentExpenses.totalExpenses,
+                expenses = employment.employmentExpenses.expenses
+              )
+              employmentExpenses match {
+                case model => if (!model.source.get.equals(view)) Future(notFound) else Future(Ok(Json.toJson(model)))
+              }
           }
       }
   }
