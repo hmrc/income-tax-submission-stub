@@ -36,6 +36,16 @@ class CalculationControllerISpec extends IntegrationTest with FutureAwaits with 
       result.status mustBe Status.OK
       result.json.toString() must include("""{"id":"""")
     }
+
+    s"return ${Status.BAD_REQUEST} with json" in {
+
+      val url = "income-tax/nino/AA123456A/taxYear/2022/tax-calculation"
+
+      val result = await(buildClient(url).post(Json.parse("""[]""".stripMargin)))
+
+      result.status mustBe Status.BAD_REQUEST
+      result.body must include("""API needs empty json supplied.""")
+    }
   }
 }
 

@@ -29,7 +29,7 @@ import scala.concurrent.{Await, Awaitable, ExecutionContext, Future}
 
 trait TestSupport extends PlaySpec with MockFactory with GuiceOneAppPerSuite with MaterializerSupport {
 
-  implicit val ec: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
+  implicit lazy val ec: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
 
   implicit val headerCarrier: HeaderCarrier = HeaderCarrier()
 

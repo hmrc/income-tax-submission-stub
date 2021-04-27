@@ -21,7 +21,7 @@ import play.api.Logging
 import play.api.mvc.Result
 import play.api.mvc.Results._
 import repositories.UserRepository
-import utils.ErrorResponses.userNotFound
+import utils.ErrorResponses.notFound
 import utils.JsonValidation
 
 import javax.inject.Inject
@@ -47,7 +47,7 @@ class UserDataService @Inject()(dataRepository: UserRepository,
 
   def findUser(nino: String)(function: APIUser => Future[Result]): Future[Result] = {
     dataRepository.findByNino(nino).flatMap {
-      _.fold(Future(userNotFound))(function)
+      _.fold(Future(notFound))(function)
     } recoverWith {
       case t: Throwable =>
         logger.error(s"Failed to find user due to an exception", t)

@@ -34,20 +34,22 @@ class UserDataController @Inject()(dataService: UserDataService,
                                    cc: ControllerComponents,
                                    implicit val ec: ExecutionContext) extends BackendController(cc) {
 
-  val postUser: Action[JsValue] = Action.async(parse.json) { implicit request =>
-    withJsonBody[APIUser]( model => dataService.insertUser(model)
-    )
+  def postUser: Action[JsValue] = Action.async(parse.json) { implicit request =>
+    withJsonBody[APIUser](model => dataService.insertUser(model))
   }
 
-
   def resetUsers: Action[AnyContent] = Action.async { implicit request =>
-    userRepository.removeAll().flatMap{
+    userRepository.removeAll().flatMap {
       case result if result.ok =>
-        startUpAction.initialiseUsers().map{
-          case Some(value) => Ok("MongoDB users were reset to default")
-          case None => InternalServerError("Unexpected Error Resetting Users.")
+        startUpAction.initialiseUsers().map {
+          start =>
+            if (start.isEmpty) {
+              InternalServerError("Unexpected Error Resetting Users.")
+            } else {
+              Ok("MongoDB users were reset to default")
+            }
         }
-      case _ => Future.successful(InternalServerError("Unexpected Error Clearing MongoDB."))
+      case _ => Future(InternalServerError("Unexpected Error Clearing MongoDB."))
     }
   }
 }

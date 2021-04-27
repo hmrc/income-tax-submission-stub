@@ -17,7 +17,7 @@ POST    /income-tax/nino/:nino/taxYear/:taxYear/tax-calculation                 
 
 POST    /user                                                                   controllers.UserDataController.postUser
 
-DELETE  /reset                                                                  controllers.UserDataController.
+DELETE  /reset                                                                  controllers.UserDataController.resetUsers
 
 ->	/setup			    setup.Routes
 ->	/			        health.Routes
