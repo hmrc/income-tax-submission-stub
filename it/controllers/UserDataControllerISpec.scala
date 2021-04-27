@@ -99,4 +99,16 @@ class UserDataControllerISpec extends IntegrationTest with FutureAwaits with Def
     }
 
   }
+
+  "DELETE /reset" should {
+    s"return $OK when" in {
+
+      val url = "reset"
+
+      val res = await(buildClient(url).delete())
+
+      res.status mustBe OK
+    }
+
+  }
 }

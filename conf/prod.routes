@@ -23,7 +23,8 @@ GET    /income-tax/income/employments/:nino/:taxYear                            
 
 POST    /user                                                                   controllers.UserDataController.postUser
 
-->	/			        health.Routes
+DELETE  /reset                                                                  controllers.UserDataController.resetUsers
 
+->	/			        health.Routes
 
 GET	/admin/metrics		com.kenshoo.play.metrics.MetricsController.metrics
