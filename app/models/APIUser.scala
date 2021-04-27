@@ -74,7 +74,8 @@ object GiftAid {
 
 case class Employment(taxYear: Int,
                       hmrcEmployments: Seq[HmrcEmployment],
-                      customerEmployments: Seq[CustomerEmployment]) extends IncomeSource
+                      customerEmployments: Seq[CustomerEmployment],
+                      employmentExpenses: EmploymentExpenses) extends IncomeSource
 
 object Employment {
   implicit val formats: OFormat[Employment] = Json.format[Employment]
@@ -102,6 +103,32 @@ case class CustomerEmployment(employmentId: String,
 
 object CustomerEmployment {
   implicit val formats: OFormat[CustomerEmployment] = Json.format[CustomerEmployment]
+}
+
+case class EmploymentExpenses(submittedOn: Option[String],
+                              dateIgnored: Option[String],
+                              source: Option[String],
+                              totalExpenses: Option[BigDecimal],
+                              expenses: Option[ExpensesType]
+                             )
+
+object EmploymentExpenses {
+  implicit val format: OFormat[EmploymentExpenses] = Json.format[EmploymentExpenses]
+}
+
+case class ExpensesType(
+                         businessTravelCosts: Option[BigDecimal],
+                         jobExpenses: Option[BigDecimal],
+                         flatRateJobExpenses: Option[BigDecimal],
+                         professionalSubscriptions: Option[BigDecimal],
+                         hotelAndMealExpenses: Option[BigDecimal],
+                         otherAndCapitalAllowances: Option[BigDecimal],
+                         vehicleExpenses: Option[BigDecimal],
+                         mileageAllowanceRelief: Option[BigDecimal]
+                       )
+
+object ExpensesType {
+  implicit val formats: OFormat[ExpensesType] = Json.format[ExpensesType]
 }
 
 case class APIUser(nino: String,

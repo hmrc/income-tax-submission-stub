@@ -15,6 +15,9 @@ POST    /income-tax/nino/:nino/income-source/:incomeSourceType/annual/:taxYear  
 ### DES #1426 ###
 POST    /income-tax/nino/:nino/taxYear/:taxYear/tax-calculation                 controllers.CalculationController.generateCalculationId(nino:String, taxYear:Int)
 
+### DES #1668 ###
+GET    /income-tax/expenses/employments/:nino/:taxYear                            controllers.IncomeSourcesController.getEmploymentsExpenses(nino: String, taxYear: String, view: String)
+
 ### DES #1645 ###
 GET    /income-tax/income/employments/:nino/:taxYear                            controllers.IncomeSourcesController.getEmploymentsList(nino: String, taxYear: String, employmentId: Option[String])
 
