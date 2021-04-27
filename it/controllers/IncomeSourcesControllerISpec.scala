@@ -37,7 +37,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
       val res = await(buildClient(url).get())
 
       res.status mustBe Status.NOT_FOUND
-      res.json.toString() must include("""{"code":"404","reason":"Could not find endpoint in Dynamic Stub matching the URI: /income-tax/nino/AA123459A/not-a-real-endpoint"}""")
+      res.json.toString() must include("""{"statusCode":404,"message":"URI not found","requested":"/income-tax/nino/AA123459A/not-a-real-endpoint"}""")
     }
   }
 
