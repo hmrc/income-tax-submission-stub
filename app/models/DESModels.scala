@@ -16,6 +16,7 @@
 
 package models
 
+import models.APIUsers.EmploymentDataDetails
 import play.api.libs.json.{Format, Json, OFormat}
 
 object DESModels {
@@ -47,12 +48,12 @@ object DESModels {
   case class DividendsDetail(ukDividends: Option[BigDecimal],
                              otherUkDividends: Option[BigDecimal])
 
-  object DividendsDetail{
+  object DividendsDetail {
     implicit val formats: Format[DividendsDetail] = Json.format[DividendsDetail]
   }
 
   case class GiftAidDetail(giftAidPayments: Option[GiftAidPayments],
-                                   gifts: Option[Gifts])
+                           gifts: Option[Gifts])
 
   object GiftAidDetail {
     implicit val format: OFormat[GiftAidDetail] = Json.format[GiftAidDetail]
@@ -80,4 +81,19 @@ object DESModels {
     implicit val format: Format[EmploymentExpenses] = Json.format[EmploymentExpenses]
   }
   // DES #1668 //
+
+
+  // DES #1647 //
+  case class EmploymentData(submittedOn: String,
+                            customerAdded: Option[String],
+                            source: Option[String],
+                            dateIgnored: Option[String],
+                            employment: Seq[EmploymentDataDetails]
+                           )
+
+  object EmploymentData {
+    implicit val format: Format[EmploymentData] = Json.format[EmploymentData]
+  }
+
+  // DES #1647 //
 }

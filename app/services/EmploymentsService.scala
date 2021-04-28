@@ -71,4 +71,12 @@ class EmploymentsService @Inject()() {
           }
       }
   }
+
+  def getEmploymentData(taxYear: Int, employmentId: String)(implicit ec: ExecutionContext): APIUser => Future[Result] = {
+    user =>
+      user.employment.find(_.taxYear == taxYear).fold(Future(notFound)) {
+        employment =>
+          employment.employmentData.
+      }
+  }
 }

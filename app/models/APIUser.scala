@@ -16,6 +16,7 @@
 
 package models
 
+import models.DESModels.EmploymentData
 import play.api.libs.json.{Json, OFormat}
 
 trait IncomeSource
@@ -75,6 +76,7 @@ object GiftAid {
 case class Employment(taxYear: Int,
                       hmrcEmployments: Seq[HmrcEmployment],
                       customerEmployments: Seq[CustomerEmployment],
+                      employmentData: Seq[EmploymentData],
                       employmentExpenses: EmploymentExpenses) extends IncomeSource
 
 object Employment {

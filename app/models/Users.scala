@@ -17,6 +17,8 @@
 package models
 
 import filters.StubErrorFilter.{DES_500_NINO, DES_503_NINO}
+import models.APIUsers.{EmployerDetails, EmploymentDataDetails, EmploymentPayDetails}
+import models.DESModels.EmploymentData
 import utils.RandomIdGenerator
 
 object Users {
@@ -228,7 +230,8 @@ object Users {
               vehicleExpenses = Some(100.00),
               mileageAllowanceRelief = Some(100.00)
             ))
-          )
+          ),
+          Seq(EmploymentData("2020-01-04T05:01:01Z",Seq(EmploymentDataDetails(Seq(EmployerDetails(Some("223/AB12399"),"maggie")),Seq(EmploymentPayDetails(34234.15,6782.92, Some(67676),"CALENDAR MONTHLY","2020-04-23",Some(32)))))))
         )
       )
     ),
