@@ -16,8 +16,9 @@
 
 package services
 
+import models.APIUsers.APIUser
 import models.DESModels.GiftAidDetail
-import models.{APIUser, ErrorBodyModel, ErrorModel}
+import models.{ErrorBodyModel, ErrorModel}
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Results.Ok
 import play.api.mvc.{Request, Result}

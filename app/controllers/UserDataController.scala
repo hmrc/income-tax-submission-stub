@@ -16,7 +16,8 @@
 
 package controllers
 
-import models.{APIUser, Users}
+import models.APIUsers.APIUser
+import models.Users
 import play.api.libs.json.JsValue
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import repositories.UserRepository

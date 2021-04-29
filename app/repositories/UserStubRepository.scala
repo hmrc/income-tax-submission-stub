@@ -16,6 +16,7 @@
 
 package repositories
 
+import models.APIUsers.APIUser
 import models._
 import play.api.libs.json.Format
 import reactivemongo.api.DB
@@ -24,6 +25,7 @@ import reactivemongo.bson.BSONObjectID
 import uk.gov.hmrc.mongo.ReactiveRepository
 import play.api.libs.json.Writes.StringWrites
 import play.api.libs.json.Reads.StringReads
+
 import scala.concurrent.{ExecutionContext, Future}
 
 trait UserStubRepository[T, O] extends ReactiveRepository[T, BSONObjectID] {

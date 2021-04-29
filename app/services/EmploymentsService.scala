@@ -17,7 +17,7 @@
 package services
 
 import javax.inject.Inject
-import models.APIUser
+import models.APIUsers._
 import models.DESModels.{EmploymentExpenses, EmploymentsDetail}
 import play.api.libs.json.Json
 import play.api.mvc.Result
@@ -72,11 +72,35 @@ class EmploymentsService @Inject()() {
       }
   }
 
-  def getEmploymentData(taxYear: Int, employmentId: String)(implicit ec: ExecutionContext): APIUser => Future[Result] = {
+  def getEmploymentData(taxYear: Int, employmentId: String, view: String)(implicit ec: ExecutionContext): APIUser => Future[Result] = {
     user =>
       user.employment.find(_.taxYear == taxYear).fold(Future(notFound)) {
         employment =>
-          employment.employmentData.
+
+          view match {
+            case "CUSTOMER" =>
+              val x = employment.customerEmployments.find(_.employmentId == employmentId).flatMap(_.employmentData)
+              x match {
+                case Some(value) => Future(Ok(Json.toJson(value)))
+                case None => Future(notFound)
+              }
+
+            case "HRMC-HELD" =>
+              val x = employment.hmrcEmployments.find(_.employmentId == employmentId).flatMap(_.employmentData)
+              x match {
+                case Some(value) => Future(Ok(Json.toJson(value)))
+                case None => Future(notFound)
+              }
+
+            case "LATEST" =>
+              val x = employment.customerEmployments.find(_.employmentId == employmentId).flatMap(_.employmentData)
+              x match {
+                case Some(value) => Future(Ok(Json.toJson(value)))
+                case None => Future(notFound)
+              }
+
+            case _ => Future(notFound)
+          }
       }
   }
 }

@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package models
+package models.APIUsers
 
-import models.DESModels.EmploymentData
 import play.api.libs.json.{Json, OFormat}
 
 trait IncomeSource
@@ -74,64 +73,14 @@ object GiftAid {
 }
 
 case class Employment(taxYear: Int,
-                      hmrcEmployments: Seq[HmrcEmployment],
-                      customerEmployments: Seq[CustomerEmployment],
-                      employmentData: Seq[EmploymentData],
+                      hmrcEmployments: Seq[EmploymentSource],
+                      customerEmployments: Seq[EmploymentSource],
                       employmentExpenses: EmploymentExpenses) extends IncomeSource
 
 object Employment {
   implicit val formats: OFormat[Employment] = Json.format[Employment]
 }
 
-case class HmrcEmployment(employmentId: String,
-                          employerName: String,
-                          employerRef: Option[String] = None,
-                          payRollId: Option[String] = None,
-                          startDate: Option[String] = None,
-                          cessationDate: Option[String] = None,
-                          dateIgnored: Option[String] = None)
-
-object HmrcEmployment {
-  implicit val formats: OFormat[HmrcEmployment] = Json.format[HmrcEmployment]
-}
-
-case class CustomerEmployment(employmentId: String,
-                              employerName: String,
-                              employerRef: Option[String] = None,
-                              payRollId: Option[String] = None,
-                              startDate: Option[String] = None,
-                              cessationDate: Option[String] = None,
-                              submittedOn: String)
-
-object CustomerEmployment {
-  implicit val formats: OFormat[CustomerEmployment] = Json.format[CustomerEmployment]
-}
-
-case class EmploymentExpenses(submittedOn: Option[String],
-                              dateIgnored: Option[String],
-                              source: Option[String],
-                              totalExpenses: Option[BigDecimal],
-                              expenses: Option[ExpensesType]
-                             )
-
-object EmploymentExpenses {
-  implicit val format: OFormat[EmploymentExpenses] = Json.format[EmploymentExpenses]
-}
-
-case class ExpensesType(
-                         businessTravelCosts: Option[BigDecimal],
-                         jobExpenses: Option[BigDecimal],
-                         flatRateJobExpenses: Option[BigDecimal],
-                         professionalSubscriptions: Option[BigDecimal],
-                         hotelAndMealExpenses: Option[BigDecimal],
-                         otherAndCapitalAllowances: Option[BigDecimal],
-                         vehicleExpenses: Option[BigDecimal],
-                         mileageAllowanceRelief: Option[BigDecimal]
-                       )
-
-object ExpensesType {
-  implicit val formats: OFormat[ExpensesType] = Json.format[ExpensesType]
-}
 
 case class APIUser(nino: String,
                    dividends: Seq[Dividends] = Seq(),

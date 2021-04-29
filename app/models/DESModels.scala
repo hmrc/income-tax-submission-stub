@@ -16,7 +16,7 @@
 
 package models
 
-import models.APIUsers.EmploymentDataDetails
+import models.APIUsers.{EmploymentModel, ExpensesType, GiftAidPayments, Gifts, EmploymentSource}
 import play.api.libs.json.{Format, Json, OFormat}
 
 object DESModels {
@@ -61,8 +61,8 @@ object DESModels {
   // DES #1391 //
 
   // DES #1645 //
-  case class EmploymentsDetail(employments: Seq[HmrcEmployment],
-                               customerDeclaredEmployments: Seq[CustomerEmployment])
+  case class EmploymentsDetail(employments: Seq[EmploymentSource],
+                               customerDeclaredEmployments: Seq[EmploymentSource])
 
   object EmploymentsDetail {
     implicit val format: OFormat[EmploymentsDetail] = Json.format[EmploymentsDetail]
@@ -85,10 +85,10 @@ object DESModels {
 
   // DES #1647 //
   case class EmploymentData(submittedOn: String,
-                            customerAdded: Option[String],
-                            source: Option[String],
-                            dateIgnored: Option[String],
-                            employment: Seq[EmploymentDataDetails]
+                            customerAdded: Option[String] = None,
+                            source: Option[String] = None,
+                            dateIgnored: Option[String] = None,
+                            employment: EmploymentModel
                            )
 
   object EmploymentData {

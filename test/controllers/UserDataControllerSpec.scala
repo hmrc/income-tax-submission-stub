@@ -16,7 +16,8 @@
 
 package controllers
 
-import models.{APIUser, Users}
+import models.APIUsers.APIUser
+import models.Users
 import org.scalamock.scalatest.MockFactory
 import play.api.mvc.Results
 import play.api.test.FakeRequest

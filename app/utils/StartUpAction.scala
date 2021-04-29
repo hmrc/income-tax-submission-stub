@@ -16,7 +16,8 @@
 
 package utils
 
-import models.{APIUser, Users}
+import models.APIUsers.APIUser
+import models.Users
 
 import javax.inject.{Inject, Singleton}
 import repositories.UserRepository

@@ -272,6 +272,100 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
     }
   }
 
+  "GET /income-tax/income/employments/AA123459A/2021-22/:employmentId" should {
+
+    s"return ${Status.OK} with json with a valid Customer view parameter" {
+
+      val url = s"/income-tax/income/employments/AA123459A/2021-22/00000000-0000-1000-8000-000000000000?view=CUSTOMER"
+
+      val res = await(buildClient(url).get())
+
+      res.status mustBe Status.OK
+
+      res.json mustBe Json.parse(
+        """{
+          |  "submittedOn": "2020-01-04T05:01:01Z",
+          |
+          |  "employment": {
+          |    "payrollId": "123456789999",
+          |    "companyDirector": false,
+          |    "closeCompany": true,
+          |    "directorshipCeasedDate": "2020-02-12",
+          |    "startDate": "2019-04-21",
+          |    "cessationDate": "2020-03-11",
+          |    "occPen": false,
+          |    "disguisedRemuneration": false,
+          |    "employer": {
+          |      "employerRef": "223/AB12399",
+          |      "employerName": "maggie"
+          |    },
+          |    "pay": {
+          |      "taxablePayToDate": 34234.15,
+          |      "totalTaxToDate": 6782.92,
+          |      "tipsAndOtherPayments": 67676,
+          |      "payFrequency": "CALENDAR MONTHLY",
+          |      "paymentDate": "2020-04-23",
+          |      "taxWeekNo": 32
+          |    },
+          |    "deductions": {
+          |      "studentLoans": {
+          |        "uglDeductionAmount": 13343.45,
+          |        "pglDeductionAmount": 24242.56
+          |      }
+          |    },
+          |    "benefitsInKind": {
+          |      "accommodation": 455.67,
+          |      "assets": 435.54,
+          |      "assetTransfer": 24.58,
+          |      "beneficialLoan": 33.89,
+          |      "car": 3434.78,
+          |      "carFuel": 34.56,
+          |      "educationalServices": 445.67,
+          |      "entertaining": 434.45,
+          |      "expenses": 3444.32,
+          |      "medicalInsurance": 4542.47,
+          |      "telephone": 243.43,
+          |      "service": 45.67,
+          |      "taxableExpenses": 24.56,
+          |      "van": 56.29,
+          |      "vanFuel": 14.56,
+          |      "mileage": 34.23,
+          |      "nonQualifyingRelocationExpenses": 54.62,
+          |      "nurseryPlaces": 84.29,
+          |      "otherItems": 67.67,
+          |      "paymentsOnEmployeesBehalf": 67.23,
+          |      "personalIncidentalExpenses": 74.29,
+          |      "qualifyingRelocationExpenses": 78.24,
+          |      "employerProvidedProfessionalSubscriptions": 84.56,
+          |      "employerProvidedServices": 56.34,
+          |      "incomeTaxPaidByDirector": 67.34,
+          |      "travelAndSubsistence": 56.89,
+          |      "vouchersAndCreditCards": 34.90,
+          |      "nonCash": 23.89
+          |    }
+          |  }
+          |}""".stripMargin)
+    }
+
+    s"return ${Status.OK} with json with a valid HMRC-HELD view parameter" {
+
+      val url = s"/income-tax/income/employments/AA123459A/2021-22/00000000-0000-1000-8000-000000000000?view=HMRC-HELD"
+
+      val res = await(buildClient(url).get())
+
+      res.status mustBe Status.OK
+
+      res.json mustBe Json.parse(
+        """
+          |
+          |
+          |""".stripMargin)
+
+    }
+
+  }
+
+
   "GET /income-tax/income-sources/nino/AA123459A" should {
     s"return ${Status.OK} with json" in {
 

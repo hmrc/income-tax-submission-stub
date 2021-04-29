@@ -16,9 +16,11 @@
 
 package services
 
+import models.APIUsers.APIUser
+
 import javax.inject.Inject
 import models.DESModels.DividendsDetail
-import models.{APIUser, ErrorBodyModel, ErrorModel}
+import models.{ErrorBodyModel, ErrorModel}
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Results._
 import play.api.mvc.{Request, Result}
