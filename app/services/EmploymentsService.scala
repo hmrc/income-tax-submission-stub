@@ -79,9 +79,6 @@ class EmploymentsService @Inject()() {
     user =>
       user.employment.find(_.taxYear == taxYear).fold(Future(notFound)) {
         employment =>
-
-          println(employment)
-
           val employmentData: Option[EmploymentData] = view match {
             case "CUSTOMER" => employment.customerEmployments.find(_.employmentId == employmentId).flatMap(_.employmentData)
             case "HMRC-HELD" => employment.hmrcEmployments.find(_.employmentId == employmentId).flatMap(_.employmentData)
