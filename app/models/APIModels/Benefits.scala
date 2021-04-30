@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package models.APIUsers
+package models.APIModels
 
 
 import play.api.libs.functional.syntax.toFunctionalBuilderOps
@@ -47,8 +47,7 @@ case class Benefits(accommodation: Option[BigDecimal] = None,
                     incomeTaxPaidByDirector: Option[BigDecimal] = None,
                     travelAndSubsistence: Option[BigDecimal] = None,
                     vouchersAndCreditCards: Option[BigDecimal] = None,
-                    nonCash: Option[BigDecimal] = None
-                   )
+                    nonCash: Option[BigDecimal] = None)
 
 object Benefits {
   val firstSetOfFields: OFormat[(Option[BigDecimal], Option[BigDecimal], Option[BigDecimal], Option[BigDecimal],

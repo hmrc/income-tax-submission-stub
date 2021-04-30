@@ -16,84 +16,82 @@
 
 package models
 
-import models.APIUsers.{EmploymentModel, ExpensesType, GiftAidPayments, Gifts, EmploymentSource}
+import models.APIModels.{EmploymentDetails, ExpensesType, GiftAidPayments, Gifts, EmploymentSource}
 import play.api.libs.json.{Format, Json, OFormat}
 
 object DESModels {
 
   // DES #1392 //
-  case class IncomeSourceModel(incomeSourceId: String,
-                               incomeSourceName: String,
-                               identifier: String,
-                               incomeSourceType: String)
+  case class DESIncomeSourceModel(incomeSourceId: String,
+                                  incomeSourceName: String,
+                                  identifier: String,
+                                  incomeSourceType: String)
 
-  object IncomeSourceModel {
-    implicit val format: Format[IncomeSourceModel] = Json.format[IncomeSourceModel]
+  object DESIncomeSourceModel {
+    implicit val format: Format[DESIncomeSourceModel] = Json.format[DESIncomeSourceModel]
   }
   // DES #1392 //
 
   // DES #1391 //
-  case class InterestDetail(incomeSourceId: String, taxedUkInterest: Option[BigDecimal], untaxedUkInterest: Option[BigDecimal])
+  case class DESInterestDetail(incomeSourceId: String, taxedUkInterest: Option[BigDecimal], untaxedUkInterest: Option[BigDecimal])
 
-  object InterestDetail {
-    implicit val format: Format[InterestDetail] = Json.format[InterestDetail]
+  object DESInterestDetail {
+    implicit val format: Format[DESInterestDetail] = Json.format[DESInterestDetail]
   }
 
-  case class InterestDetails(savingsInterestAnnualIncome: Seq[InterestDetail])
+  case class DESInterestDetails(savingsInterestAnnualIncome: Seq[DESInterestDetail])
 
-  object InterestDetails {
-    implicit val format: Format[InterestDetails] = Json.format[InterestDetails]
+  object DESInterestDetails {
+    implicit val format: Format[DESInterestDetails] = Json.format[DESInterestDetails]
   }
 
-  case class DividendsDetail(ukDividends: Option[BigDecimal],
-                             otherUkDividends: Option[BigDecimal])
+  case class DESDividendsDetail(ukDividends: Option[BigDecimal],
+                                otherUkDividends: Option[BigDecimal])
 
-  object DividendsDetail {
-    implicit val formats: Format[DividendsDetail] = Json.format[DividendsDetail]
+  object DESDividendsDetail {
+    implicit val formats: Format[DESDividendsDetail] = Json.format[DESDividendsDetail]
   }
 
-  case class GiftAidDetail(giftAidPayments: Option[GiftAidPayments],
-                           gifts: Option[Gifts])
+  case class DESGiftAidDetail(giftAidPayments: Option[GiftAidPayments],
+                              gifts: Option[Gifts])
 
-  object GiftAidDetail {
-    implicit val format: OFormat[GiftAidDetail] = Json.format[GiftAidDetail]
+  object DESGiftAidDetail {
+    implicit val format: OFormat[DESGiftAidDetail] = Json.format[DESGiftAidDetail]
   }
   // DES #1391 //
 
   // DES #1645 //
-  case class EmploymentsDetail(employments: Seq[EmploymentSource],
-                               customerDeclaredEmployments: Seq[EmploymentSource])
+  case class DESEmploymentsList(employments: Seq[EmploymentSource],
+                                customerDeclaredEmployments: Seq[EmploymentSource])
 
-  object EmploymentsDetail {
-    implicit val format: OFormat[EmploymentsDetail] = Json.format[EmploymentsDetail]
+  object DESEmploymentsList {
+    implicit val format: OFormat[DESEmploymentsList] = Json.format[DESEmploymentsList]
   }
   // DES #1645 //
 
   // DES #1668 //
-  case class EmploymentExpenses(submittedOn: Option[String],
-                                dateIgnored: Option[String],
-                                source: Option[String],
-                                totalExpenses: Option[BigDecimal],
-                                expenses: Option[ExpensesType]
+  case class DESEmploymentExpenses(submittedOn: Option[String],
+                                   dateIgnored: Option[String],
+                                   source: Option[String],
+                                   totalExpenses: Option[BigDecimal],
+                                   expenses: Option[ExpensesType]
                                )
 
-  object EmploymentExpenses {
-    implicit val format: Format[EmploymentExpenses] = Json.format[EmploymentExpenses]
+  object DESEmploymentExpenses {
+    implicit val format: Format[DESEmploymentExpenses] = Json.format[DESEmploymentExpenses]
   }
   // DES #1668 //
 
 
   // DES #1647 //
-  case class EmploymentData(submittedOn: String,
-                            customerAdded: Option[String] = None,
-                            source: Option[String] = None,
-                            dateIgnored: Option[String] = None,
-                            employment: EmploymentModel
-                           )
+  case class DESEmploymentData(submittedOn: String,
+                               customerAdded: Option[String] = None,
+                               source: Option[String] = None,
+                               dateIgnored: Option[String] = None,
+                               employment: EmploymentDetails)
 
-  object EmploymentData {
-    implicit val format: Format[EmploymentData] = Json.format[EmploymentData]
+  object DESEmploymentData {
+    implicit val format: Format[DESEmploymentData] = Json.format[DESEmploymentData]
   }
-
   // DES #1647 //
 }

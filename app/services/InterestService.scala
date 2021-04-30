@@ -16,11 +16,11 @@
 
 package services
 
-import models.APIUsers.APIUser
+import models.APIModels.APIUser
 
 import javax.inject.Inject
 import models.{ErrorBodyModel, ErrorModel}
-import models.DESModels.{IncomeSourceModel, InterestDetail, InterestDetails}
+import models.DESModels.{DESIncomeSourceModel, DESInterestDetail, DESInterestDetails}
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Request, Result}
 import play.api.mvc.Results._
@@ -33,11 +33,11 @@ class InterestService @Inject()(validateRequestService: ValidateRequestService){
   def getListOfIncomeSourcesInterest(nino: String,incomeSourceType: String, taxYear:Option[Int])(implicit ec: ExecutionContext): APIUser => Future[Result] = {
     user =>
 
-      val incomeSources: Seq[IncomeSourceModel] = user.interest.flatMap {
+      val incomeSources: Seq[DESIncomeSourceModel] = user.interest.flatMap {
         interest =>
 
           if(taxYear.isEmpty || interest.interestSubmissions.exists(sub => taxYear.contains(sub.taxYear))){
-            Some(IncomeSourceModel(interest.incomeSourceId, interest.incomeSourceName, nino, incomeSourceType))
+            Some(DESIncomeSourceModel(interest.incomeSourceId, interest.incomeSourceName, nino, incomeSourceType))
           } else {
             None
           }
@@ -53,14 +53,14 @@ class InterestService @Inject()(validateRequestService: ValidateRequestService){
   def getIncomeSourceInterest(incomeSourceId: Option[String],taxYear: Int)(implicit ec: ExecutionContext): APIUser => Future[Result] = {
     user =>
 
-      val interestIncomeSource: Option[InterestDetails] = user.interest.filter(x => incomeSourceId.contains(x.incomeSourceId)).map {
+      val interestIncomeSource: Option[DESInterestDetails] = user.interest.filter(x => incomeSourceId.contains(x.incomeSourceId)).map {
         interest =>
 
-          val interestSubmissionsForTaxYear: Seq[InterestDetail] = interest.interestSubmissions.filter(_.taxYear == taxYear).map {
+          val interestSubmissionsForTaxYear: Seq[DESInterestDetail] = interest.interestSubmissions.filter(_.taxYear == taxYear).map {
             submission =>
-              InterestDetail(interest.incomeSourceId, submission.taxedUkInterest, submission.untaxedUkInterest)
+              DESInterestDetail(interest.incomeSourceId, submission.taxedUkInterest, submission.untaxedUkInterest)
           }
-          InterestDetails(interestSubmissionsForTaxYear)
+          DESInterestDetails(interestSubmissionsForTaxYear)
       }.headOption
 
       interestIncomeSource.fold(Future(notFound))(incomeSource => Future(Ok(Json.toJson(incomeSource))))

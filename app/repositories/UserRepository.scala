@@ -16,7 +16,7 @@
 
 package repositories
 
-import models.APIUsers.APIUser
+import models.APIModels.APIUser
 
 import javax.inject.{Inject, Singleton}
 import play.api.libs.json.Json

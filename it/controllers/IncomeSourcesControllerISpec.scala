@@ -133,18 +133,18 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
                                    |		"employerName": "Rick Owens LTD",
                                    |		"employerRef": "666/66666",
                                    |		"payRollId": "123456789",
-                                   |		"startDate": "2020-06-17T10:53:38Z",
-                                   |		"cessationDate": "2020-06-17T10:53:38Z",
-                                   |		"dateIgnored": "2020-06-17T10:53:38Z"
+                                   |		"startDate": "2020-01-04T05:01:01Z",
+                                   |		"cessationDate": "2020-01-04T05:01:01Z",
+                                   |		"dateIgnored": "2020-01-04T05:01:01Z"
                                    |	}],
                                    |	"customerDeclaredEmployments": [{
                                    |		"employmentId": "00000000-0000-0000-0000-000000000001",
                                    |		"employerName": "Rick Owens London LTD",
                                    |		"employerRef": "666/66666",
                                    |		"payRollId": "123456789",
-                                   |		"startDate": "2020-06-17T10:53:38Z",
-                                   |		"cessationDate": "2020-06-17T10:53:38Z",
-                                   |		"submittedOn": "2020-06-17T10:53:38Z"
+                                   |		"startDate": "2020-02-04T05:01:01Z",
+                                   |		"cessationDate": "2020-02-04T05:01:01Z",
+                                   |		"submittedOn": "2020-02-04T05:01:01Z"
                                    |	}]
                                    |}""".stripMargin)
     }
@@ -161,18 +161,18 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
                                    |		"employerName": "Rick Owens LTD",
                                    |		"employerRef": "666/66666",
                                    |		"payRollId": "123456789",
-                                   |		"startDate": "2020-06-17T10:53:38Z",
-                                   |		"cessationDate": "2020-06-17T10:53:38Z",
-                                   |		"dateIgnored": "2020-06-17T10:53:38Z"
+                                   |		"startDate": "2020-01-04T05:01:01Z",
+                                   |		"cessationDate": "2020-01-04T05:01:01Z",
+                                   |		"dateIgnored": "2020-01-04T05:01:01Z"
                                    |	}],
                                    |	"customerDeclaredEmployments": [{
                                    |		"employmentId": "00000000-0000-0000-0000-000000000001",
                                    |		"employerName": "Rick Owens London LTD",
                                    |		"employerRef": "666/66666",
                                    |		"payRollId": "123456789",
-                                   |		"startDate": "2020-06-17T10:53:38Z",
-                                   |		"cessationDate": "2020-06-17T10:53:38Z",
-                                   |		"submittedOn": "2020-06-17T10:53:38Z"
+                                   |		"startDate": "2020-02-04T05:01:01Z",
+                                   |		"cessationDate": "2020-02-04T05:01:01Z",
+                                   |		"submittedOn": "2020-02-04T05:01:01Z"
                                    |	}]
                                    |}""".stripMargin)
     }
@@ -242,6 +242,15 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
                                    |    }
                                    |}""".stripMargin)
     }
+    s"return ${Status.NOT_FOUND} when user has no expenses" in {
+
+      val url = s"income-tax/expenses/employments/BB444444A/2021-22?view=CUSTOMER"
+
+      val res = await(buildClient(url).get())
+
+      res.status mustBe Status.NOT_FOUND
+      res.json mustBe Json.parse("""{"code":"NOT_FOUND","reason":"The remote endpoint has indicated that no data can be found."}""".stripMargin)
+    }
     s"return ${Status.NOT_FOUND} with json when no data for the view" in {
 
       val url = s"income-tax/expenses/employments/AA123459A/2021-22?view=NOTFOUND"
@@ -272,11 +281,11 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
     }
   }
 
-  "GET /income-tax/income/employments/AA123459A/2021-22/:employmentId" should {
+  "GET /income-tax/income/employments/PB133742J/2021-22/00000000-0000-1000-8000-000000000002" should {
 
-    s"return ${Status.OK} with json with a valid Customer view parameter" {
+    s"return ${Status.OK} with json with a valid Customer view parameter" in {
 
-      val url = s"/income-tax/income/employments/AA123459A/2021-22/00000000-0000-1000-8000-000000000000?view=CUSTOMER"
+      val url = s"income-tax/income/employments/PB133742J/2021-22/00000000-0000-1000-8000-000000000002?view=CUSTOMER"
 
       val res = await(buildClient(url).get())
 
@@ -284,85 +293,383 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
 
       res.json mustBe Json.parse(
         """{
-          |  "submittedOn": "2020-01-04T05:01:01Z",
-          |
-          |  "employment": {
-          |    "payrollId": "123456789999",
-          |    "companyDirector": false,
-          |    "closeCompany": true,
-          |    "directorshipCeasedDate": "2020-02-12",
-          |    "startDate": "2019-04-21",
-          |    "cessationDate": "2020-03-11",
-          |    "occPen": false,
-          |    "disguisedRemuneration": false,
-          |    "employer": {
-          |      "employerRef": "223/AB12399",
-          |      "employerName": "maggie"
-          |    },
-          |    "pay": {
-          |      "taxablePayToDate": 34234.15,
-          |      "totalTaxToDate": 6782.92,
-          |      "tipsAndOtherPayments": 67676,
-          |      "payFrequency": "CALENDAR MONTHLY",
-          |      "paymentDate": "2020-04-23",
-          |      "taxWeekNo": 32
-          |    },
-          |    "deductions": {
-          |      "studentLoans": {
-          |        "uglDeductionAmount": 13343.45,
-          |        "pglDeductionAmount": 24242.56
-          |      }
-          |    },
-          |    "benefitsInKind": {
-          |      "accommodation": 455.67,
-          |      "assets": 435.54,
-          |      "assetTransfer": 24.58,
-          |      "beneficialLoan": 33.89,
-          |      "car": 3434.78,
-          |      "carFuel": 34.56,
-          |      "educationalServices": 445.67,
-          |      "entertaining": 434.45,
-          |      "expenses": 3444.32,
-          |      "medicalInsurance": 4542.47,
-          |      "telephone": 243.43,
-          |      "service": 45.67,
-          |      "taxableExpenses": 24.56,
-          |      "van": 56.29,
-          |      "vanFuel": 14.56,
-          |      "mileage": 34.23,
-          |      "nonQualifyingRelocationExpenses": 54.62,
-          |      "nurseryPlaces": 84.29,
-          |      "otherItems": 67.67,
-          |      "paymentsOnEmployeesBehalf": 67.23,
-          |      "personalIncidentalExpenses": 74.29,
-          |      "qualifyingRelocationExpenses": 78.24,
-          |      "employerProvidedProfessionalSubscriptions": 84.56,
-          |      "employerProvidedServices": 56.34,
-          |      "incomeTaxPaidByDirector": 67.34,
-          |      "travelAndSubsistence": 56.89,
-          |      "vouchersAndCreditCards": 34.90,
-          |      "nonCash": 23.89
-          |    }
-          |  }
+          |	"submittedOn": "2020-02-04T05:01:01Z",
+          |	"employment": {
+          |		"employmentSequenceNumber": "1002",
+          |		"payrollId": "123456789999",
+          |		"companyDirector": false,
+          |		"closeCompany": true,
+          |		"directorshipCeasedDate": "2020-02-12",
+          |		"startDate": "2019-04-21",
+          |		"cessationDate": "2020-03-11",
+          |		"occPen": false,
+          |		"disguisedRemuneration": false,
+          |		"employer": {
+          |			"employerRef": "223/AB12399",
+          |			"employerName": "maggie"
+          |		},
+          |		"pay": {
+          |			"taxablePayToDate": 34234.15,
+          |			"totalTaxToDate": 6782.92,
+          |			"tipsAndOtherPayments": 67676,
+          |			"payFrequency": "CALENDAR MONTHLY",
+          |			"paymentDate": "2020-04-23",
+          |			"taxWeekNo": 32
+          |		},
+          |		"deductions": {
+          |			"studentLoans": {
+          |				"uglDeductionAmount": 13343.45,
+          |				"pglDeductionAmount": 24242.56
+          |			}
+          |		},
+          |		"benefitsInKind": {
+          |			"accommodation": 100,
+          |			"assets": 100,
+          |			"assetTransfer": 100,
+          |			"beneficialLoan": 100,
+          |			"car": 100,
+          |			"carFuel": 100,
+          |			"educationalServices": 100,
+          |			"entertaining": 100,
+          |			"expenses": 100,
+          |			"medicalInsurance": 100,
+          |			"telephone": 100,
+          |			"service": 100,
+          |			"taxableExpenses": 100,
+          |			"van": 100,
+          |			"vanFuel": 100,
+          |			"mileage": 100,
+          |			"nonQualifyingRelocationExpenses": 100,
+          |			"nurseryPlaces": 100,
+          |			"otherItems": 100,
+          |			"paymentsOnEmployeesBehalf": 100,
+          |			"personalIncidentalExpenses": 100,
+          |			"qualifyingRelocationExpenses": 100,
+          |			"employerProvidedProfessionalSubscriptions": 100,
+          |			"employerProvidedServices": 100,
+          |			"incomeTaxPaidByDirector": 100,
+          |			"travelAndSubsistence": 100,
+          |			"vouchersAndCreditCards": 100,
+          |			"nonCash": 100
+          |		}
+          |	}
           |}""".stripMargin)
     }
+    s"return ${Status.OK} with json with a valid LATEST view parameter" in {
 
-    s"return ${Status.OK} with json with a valid HMRC-HELD view parameter" {
-
-      val url = s"/income-tax/income/employments/AA123459A/2021-22/00000000-0000-1000-8000-000000000000?view=HMRC-HELD"
+      val url = s"income-tax/income/employments/PB133742J/2021-22/00000000-0000-1000-8000-000000000002?view=LATEST"
 
       val res = await(buildClient(url).get())
 
       res.status mustBe Status.OK
 
       res.json mustBe Json.parse(
-        """
-          |
-          |
-          |""".stripMargin)
-
+        """{
+          |	"submittedOn": "2020-02-04T05:01:01Z",
+          |	"employment": {
+          |		"employmentSequenceNumber": "1002",
+          |		"payrollId": "123456789999",
+          |		"companyDirector": false,
+          |		"closeCompany": true,
+          |		"directorshipCeasedDate": "2020-02-12",
+          |		"startDate": "2019-04-21",
+          |		"cessationDate": "2020-03-11",
+          |		"occPen": false,
+          |		"disguisedRemuneration": false,
+          |		"employer": {
+          |			"employerRef": "223/AB12399",
+          |			"employerName": "maggie"
+          |		},
+          |		"pay": {
+          |			"taxablePayToDate": 34234.15,
+          |			"totalTaxToDate": 6782.92,
+          |			"tipsAndOtherPayments": 67676,
+          |			"payFrequency": "CALENDAR MONTHLY",
+          |			"paymentDate": "2020-04-23",
+          |			"taxWeekNo": 32
+          |		},
+          |		"deductions": {
+          |			"studentLoans": {
+          |				"uglDeductionAmount": 13343.45,
+          |				"pglDeductionAmount": 24242.56
+          |			}
+          |		},
+          |		"benefitsInKind": {
+          |			"accommodation": 100,
+          |			"assets": 100,
+          |			"assetTransfer": 100,
+          |			"beneficialLoan": 100,
+          |			"car": 100,
+          |			"carFuel": 100,
+          |			"educationalServices": 100,
+          |			"entertaining": 100,
+          |			"expenses": 100,
+          |			"medicalInsurance": 100,
+          |			"telephone": 100,
+          |			"service": 100,
+          |			"taxableExpenses": 100,
+          |			"van": 100,
+          |			"vanFuel": 100,
+          |			"mileage": 100,
+          |			"nonQualifyingRelocationExpenses": 100,
+          |			"nurseryPlaces": 100,
+          |			"otherItems": 100,
+          |			"paymentsOnEmployeesBehalf": 100,
+          |			"personalIncidentalExpenses": 100,
+          |			"qualifyingRelocationExpenses": 100,
+          |			"employerProvidedProfessionalSubscriptions": 100,
+          |			"employerProvidedServices": 100,
+          |			"incomeTaxPaidByDirector": 100,
+          |			"travelAndSubsistence": 100,
+          |			"vouchersAndCreditCards": 100,
+          |			"nonCash": 100
+          |		}
+          |	}
+          |}""".stripMargin)
     }
 
+    s"return ${Status.OK} with json with a valid LATEST view parameter and compare records" in {
+
+      val url = s"income-tax/income/employments/AA123459A/2021-22/00000000-0000-0000-0000-000000000001?view=LATEST"
+
+      val res = await(buildClient(url).get())
+
+      res.status mustBe Status.OK
+      res.json mustBe Json.parse("""{
+                                   |	"submittedOn": "2020-02-04T05:01:01Z",
+                                   |	"customerAdded": "2020-02-04T05:01:01Z",
+                                   |	"source": "CUSTOMER",
+                                   |	"employment": {
+                                   |		"employer": {
+                                   |			"employerRef": "666/66666",
+                                   |			"employerName": "Rick Owens LTD"
+                                   |		},
+                                   |		"pay": {
+                                   |			"taxablePayToDate": 555.55,
+                                   |			"totalTaxToDate": 555.55,
+                                   |			"tipsAndOtherPayments": 555.55,
+                                   |			"payFrequency": "CALENDAR MONTHLY",
+                                   |			"paymentDate": "2020-04-23",
+                                   |			"taxWeekNo": 32
+                                   |		}
+                                   |	}
+                                   |}""".stripMargin)
+    }
+
+    s"return ${Status.OK} with json with a valid LATEST view parameter and compare records for when hmrc is the latest" in {
+
+      val url = s"income-tax/income/employments/BB444444A/2021-22/00000000-5555-0000-0000-000000000001?view=LATEST"
+
+      val res = await(buildClient(url).get())
+
+      res.status mustBe Status.OK
+      res.json mustBe Json.parse("""{
+                                   |	"submittedOn": "2020-03-04T05:01:01Z",
+                                   |	"employment": {
+                                   |		"employer": {
+                                   |			"employerRef": "666/66666",
+                                   |			"employerName": "Business"
+                                   |		},
+                                   |		"pay": {
+                                   |			"taxablePayToDate": 666.66,
+                                   |			"totalTaxToDate": 666.66,
+                                   |			"tipsAndOtherPayments": 6666.66,
+                                   |			"payFrequency": "CALENDAR MONTHLY",
+                                   |			"paymentDate": "2020-04-23",
+                                   |			"taxWeekNo": 32
+                                   |		}
+                                   |	}
+                                   |}""".stripMargin)
+    }
+    s"return ${Status.NOT_FOUND} when no employment data exists" in {
+
+      val url = s"income-tax/income/employments/BB444444A/2021-22/00000000-5555-5555-0000-000000000001?view=LATEST"
+
+      val res = await(buildClient(url).get())
+
+      res.status mustBe Status.NOT_FOUND
+      res.json mustBe Json.parse("""{"code":"NOT_FOUND","reason":"The remote endpoint has indicated that no data can be found."}""".stripMargin)
+    }
+    s"return ${Status.NOT_FOUND} when invalid view for user" in {
+
+      val url = s"income-tax/income/employments/BB444444A/2021-22/00000000-5555-5555-0000-000000000001?view=VIEW"
+
+      val res = await(buildClient(url).get())
+
+      res.status mustBe Status.NOT_FOUND
+      res.json mustBe Json.parse("""{"code":"NOT_FOUND","reason":"The remote endpoint has indicated that no data can be found."}""".stripMargin)
+    }
+
+    s"return ${Status.OK} with json with a valid HMRC-HELD view parameter" in {
+
+      val url = s"income-tax/income/employments/PB133742J/2021-22/00000000-0000-1000-8000-000000000000?view=HMRC-HELD"
+
+      val res = await(buildClient(url).get())
+
+      res.status mustBe Status.OK
+      res.json mustBe Json.parse("""{
+                                   |	"submittedOn": "2020-01-04T05:01:01Z",
+                                   |	"source": "HMRC-HELD",
+                                   |	"employment": {
+                                   |		"employmentSequenceNumber": "1002",
+                                   |		"payrollId": "123456789999",
+                                   |		"companyDirector": false,
+                                   |		"closeCompany": true,
+                                   |		"directorshipCeasedDate": "2020-02-12",
+                                   |		"startDate": "2019-04-21",
+                                   |		"cessationDate": "2020-03-11",
+                                   |		"occPen": false,
+                                   |		"disguisedRemuneration": false,
+                                   |		"employer": {
+                                   |			"employerRef": "223/AB12399",
+                                   |			"employerName": "maggie"
+                                   |		},
+                                   |		"pay": {
+                                   |			"taxablePayToDate": 34234.15,
+                                   |			"totalTaxToDate": 6782.92,
+                                   |			"tipsAndOtherPayments": 67676,
+                                   |			"payFrequency": "CALENDAR MONTHLY",
+                                   |			"paymentDate": "2020-04-23",
+                                   |			"taxWeekNo": 32
+                                   |		},
+                                   |		"deductions": {
+                                   |			"studentLoans": {
+                                   |				"uglDeductionAmount": 13343.45,
+                                   |				"pglDeductionAmount": 24242.56
+                                   |			}
+                                   |		},
+                                   |		"benefitsInKind": {
+                                   |			"accommodation": 100,
+                                   |			"assets": 100,
+                                   |			"assetTransfer": 100,
+                                   |			"beneficialLoan": 100,
+                                   |			"car": 100,
+                                   |			"carFuel": 100,
+                                   |			"educationalServices": 100,
+                                   |			"entertaining": 100,
+                                   |			"expenses": 100,
+                                   |			"medicalInsurance": 100,
+                                   |			"telephone": 100,
+                                   |			"service": 100,
+                                   |			"taxableExpenses": 100,
+                                   |			"van": 100,
+                                   |			"vanFuel": 100,
+                                   |			"mileage": 100,
+                                   |			"nonQualifyingRelocationExpenses": 100,
+                                   |			"nurseryPlaces": 100,
+                                   |			"otherItems": 100,
+                                   |			"paymentsOnEmployeesBehalf": 100,
+                                   |			"personalIncidentalExpenses": 100,
+                                   |			"qualifyingRelocationExpenses": 100,
+                                   |			"employerProvidedProfessionalSubscriptions": 100,
+                                   |			"employerProvidedServices": 100,
+                                   |			"incomeTaxPaidByDirector": 100,
+                                   |			"travelAndSubsistence": 100,
+                                   |			"vouchersAndCreditCards": 100,
+                                   |			"nonCash": 100
+                                   |		}
+                                   |	}
+                                   |}""".stripMargin)
+    }
+    s"return ${Status.OK} with json with a valid LATEST view parameter and find the hmrc data" in {
+
+      val url = s"income-tax/income/employments/PB133742J/2021-22/00000000-0000-1000-8000-000000000000?view=LATEST"
+
+      val res = await(buildClient(url).get())
+
+      res.status mustBe Status.OK
+      res.json mustBe Json.parse("""{
+                                   |	"submittedOn": "2020-01-04T05:01:01Z",
+                                   |	"source": "HMRC-HELD",
+                                   |	"employment": {
+                                   |		"employmentSequenceNumber": "1002",
+                                   |		"payrollId": "123456789999",
+                                   |		"companyDirector": false,
+                                   |		"closeCompany": true,
+                                   |		"directorshipCeasedDate": "2020-02-12",
+                                   |		"startDate": "2019-04-21",
+                                   |		"cessationDate": "2020-03-11",
+                                   |		"occPen": false,
+                                   |		"disguisedRemuneration": false,
+                                   |		"employer": {
+                                   |			"employerRef": "223/AB12399",
+                                   |			"employerName": "maggie"
+                                   |		},
+                                   |		"pay": {
+                                   |			"taxablePayToDate": 34234.15,
+                                   |			"totalTaxToDate": 6782.92,
+                                   |			"tipsAndOtherPayments": 67676,
+                                   |			"payFrequency": "CALENDAR MONTHLY",
+                                   |			"paymentDate": "2020-04-23",
+                                   |			"taxWeekNo": 32
+                                   |		},
+                                   |		"deductions": {
+                                   |			"studentLoans": {
+                                   |				"uglDeductionAmount": 13343.45,
+                                   |				"pglDeductionAmount": 24242.56
+                                   |			}
+                                   |		},
+                                   |		"benefitsInKind": {
+                                   |			"accommodation": 100,
+                                   |			"assets": 100,
+                                   |			"assetTransfer": 100,
+                                   |			"beneficialLoan": 100,
+                                   |			"car": 100,
+                                   |			"carFuel": 100,
+                                   |			"educationalServices": 100,
+                                   |			"entertaining": 100,
+                                   |			"expenses": 100,
+                                   |			"medicalInsurance": 100,
+                                   |			"telephone": 100,
+                                   |			"service": 100,
+                                   |			"taxableExpenses": 100,
+                                   |			"van": 100,
+                                   |			"vanFuel": 100,
+                                   |			"mileage": 100,
+                                   |			"nonQualifyingRelocationExpenses": 100,
+                                   |			"nurseryPlaces": 100,
+                                   |			"otherItems": 100,
+                                   |			"paymentsOnEmployeesBehalf": 100,
+                                   |			"personalIncidentalExpenses": 100,
+                                   |			"qualifyingRelocationExpenses": 100,
+                                   |			"employerProvidedProfessionalSubscriptions": 100,
+                                   |			"employerProvidedServices": 100,
+                                   |			"incomeTaxPaidByDirector": 100,
+                                   |			"travelAndSubsistence": 100,
+                                   |			"vouchersAndCreditCards": 100,
+                                   |			"nonCash": 100
+                                   |		}
+                                   |	}
+                                   |}""".stripMargin)
+    }
+
+    s"return ${Status.NOT_FOUND} when nothing found for tax year" in {
+
+      val url = s"income-tax/income/employments/PB133742J/2022-23/00000000-0000-1000-8000-000000000000?view=HMRC-HELD"
+
+      val res = await(buildClient(url).get())
+
+      res.status mustBe Status.NOT_FOUND
+      res.json mustBe Json.parse("""{"code":"NOT_FOUND","reason":"The remote endpoint has indicated that no data can be found."}""".stripMargin)
+    }
+    s"return ${Status.NOT_FOUND} when matching on LATEST and theres no data" in {
+
+      val url = s"income-tax/income/employments/PB133742J/2022-23/10000000-0000-0000-8000-000000000000?view=LATEST"
+
+      val res = await(buildClient(url).get())
+
+      res.status mustBe Status.NOT_FOUND
+      res.json mustBe Json.parse("""{"code":"NOT_FOUND","reason":"The remote endpoint has indicated that no data can be found."}""".stripMargin)
+    }
+    s"return ${Status.NOT_FOUND} when invalid view" in {
+
+      val url = s"income-tax/income/employments/PB133742J/2022-23/00000000-0000-1000-8000-000000000000?view=VIEW"
+
+      val res = await(buildClient(url).get())
+
+      res.status mustBe Status.NOT_FOUND
+      res.json mustBe Json.parse("""{"code":"NOT_FOUND","reason":"The remote endpoint has indicated that no data can be found."}""".stripMargin)
+    }
   }
 
 

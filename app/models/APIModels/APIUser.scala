@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package models.APIUsers
+package models.APIModels
 
 import play.api.libs.json.{Json, OFormat}
 
@@ -75,7 +75,7 @@ object GiftAid {
 case class Employment(taxYear: Int,
                       hmrcEmployments: Seq[EmploymentSource],
                       customerEmployments: Seq[EmploymentSource],
-                      employmentExpenses: EmploymentExpenses) extends IncomeSource
+                      employmentExpenses: Option[EmploymentExpenses] = None) extends IncomeSource
 
 object Employment {
   implicit val formats: OFormat[Employment] = Json.format[Employment]

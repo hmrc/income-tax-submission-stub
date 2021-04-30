@@ -16,7 +16,7 @@
 
 package controllers
 
-import models.APIUsers.APIUser
+import models.APIModels.APIUser
 import models.Users
 import play.api.libs.json.JsValue
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
@@ -39,7 +39,7 @@ class UserDataController @Inject()(dataService: UserDataService,
     withJsonBody[APIUser](model => dataService.insertUser(model))
   }
 
-  def resetUsers: Action[AnyContent] = Action.async { implicit request =>
+  def resetUsers: Action[AnyContent] = Action.async { _ =>
     userRepository.removeAll().flatMap {
       case result if result.ok =>
         startUpAction.initialiseUsers().map {

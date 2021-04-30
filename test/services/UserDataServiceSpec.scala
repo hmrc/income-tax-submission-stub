@@ -16,7 +16,7 @@
 
 package services
 
-import models.APIUsers.APIUser
+import models.APIModels.APIUser
 import play.api.libs.json.Json
 import play.api.mvc.{Result, Results}
 import play.api.test.Helpers._

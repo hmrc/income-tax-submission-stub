@@ -16,8 +16,7 @@
 
 package repositories
 
-import models.APIUsers.APIUser
-import models._
+import models.APIModels.APIUser
 import play.api.libs.json.Format
 import reactivemongo.api.DB
 import reactivemongo.api.commands.WriteResult

@@ -16,10 +16,10 @@
 
 package services
 
-import models.APIUsers.APIUser
+import models.APIModels.APIUser
 
 import javax.inject.Inject
-import models.DESModels.DividendsDetail
+import models.DESModels.DESDividendsDetail
 import models.{ErrorBodyModel, ErrorModel}
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Results._
@@ -34,7 +34,7 @@ class DividendsService @Inject()(validateRequestService: ValidateRequestService)
     user =>
       user.dividends.find(_.taxYear == taxYear).fold(Future(notFound)){
         dividends =>
-          Future(Ok(Json.toJson(DividendsDetail(dividends.ukDividends,dividends.otherUkDividends))))
+          Future(Ok(Json.toJson(DESDividendsDetail(dividends.ukDividends,dividends.otherUkDividends))))
       }
   }
 

@@ -17,8 +17,7 @@
 package models
 
 import filters.StubErrorFilter.{DES_500_NINO, DES_503_NINO}
-import models.APIUsers._
-import models.DESModels.EmploymentData
+import models.APIModels._
 import utils.RandomIdGenerator
 
 object Users {
@@ -90,46 +89,54 @@ object Users {
       employment = Seq(
         Employment(
           2022,
-          Seq(EmploymentSource("00000000-0000-0000-0000-000000000001", "Rick Owens LTD", Some("666/66666"), Some("123456789"),
-            Some("2020-06-17T10:53:38Z"), Some("2020-06-17T10:53:38Z"), Some("2020-06-17T10:53:38Z"),
-            employmentData = Some(EmploymentData(
-              submittedOn = "2020-01-04T05:01:01Z",
-              employment = EmploymentModel(
-                employer = EmployerModel(Some("223/AB12399"), "maggie"),
-                pay = PayModel(34234.15, 6782.92, Some(67676), "CALENDAR MONTHLY", "2020-04-23", Some(32)),
-                deductions = Some(EmploymentDeductions(
-                  studentLoans = Some(StudentLoans(Some(13343.45), Some(24242.56))))),
-                benefitsInKind = Some(Benefits(Some(455.67), Some(435.54), Some(24.58), Some(33.89), Some(3434.78), Some(34.56), Some(445.67),
-                  Some(434.45), Some(3444.32), Some(4542.47), Some(243.43), Some(45.67), Some(24.56), Some(56.29), Some(14.56), Some(34.23),
-
-                ))
-          ))))),
-          Seq(EmploymentSource("00000000-0000-0000-0000-000000000001", "Rick Owens London LTD",
-            Some("666/66666"), Some("123456789"), Some("2020-06-17T10:53:38Z"), Some("2020-06-17T10:53:38Z"), submittedOn = Some("2020-06-17T10:53:38Z"),
-              employmentData = Some(EmploymentData(
-              submittedOn = "2020-01-04T05:01:01Z",
-              source = Some("CUSTOMER"),
-              customerAdded = Some(""),
-              employment = EmploymentModel(
-                employer = EmployerModel(Some("223/AB12399"), "maggie"),
-                pay = PayModel(34234.15, 6782.92, Some(67676), "CALENDAR MONTHLY", "2020-04-23", Some(32)))))
-          )),
-          employmentExpenses = EmploymentExpenses(
+          Seq(
+            EmploymentSource("00000000-0000-0000-0000-000000000001", "Rick Owens LTD", Some("666/66666"), Some("123456789"),
+              Some("2020-01-04T05:01:01Z"), Some("2020-01-04T05:01:01Z"), Some("2020-01-04T05:01:01Z"),
+              employmentData = Some(
+                EmploymentData(
+                  submittedOn = "2020-01-04T05:01:01Z",
+                  employment = EmploymentDetails(
+                    pay = Pay(666.66, 666.66, Some(6666.66), "CALENDAR MONTHLY", "2020-04-23", Some(32)),
+                    employer = Employer(Some("666/66666"), "Rick Owens LTD")
+                  )
+                )
+              )
+            )
+          ),
+          Seq(
+            EmploymentSource("00000000-0000-0000-0000-000000000001", "Rick Owens London LTD",
+              Some("666/66666"), Some("123456789"), Some("2020-02-04T05:01:01Z"), Some("2020-02-04T05:01:01Z"), submittedOn = Some("2020-02-04T05:01:01Z"),
+              employmentData = Some(
+                EmploymentData(
+                  submittedOn = "2020-02-04T05:01:01Z",
+                  source = Some("CUSTOMER"),
+                  customerAdded = Some("2020-02-04T05:01:01Z"),
+                  employment = EmploymentDetails(
+                    pay = Pay(555.55, 555.55, Some(555.55), "CALENDAR MONTHLY", "2020-04-23", Some(32)),
+                    employer = Employer(Some("666/66666"), "Rick Owens LTD")
+                  )
+                )
+              )
+            )
+          ),
+          employmentExpenses = Some(EmploymentExpenses(
             submittedOn = Some("2022-12-12T12:12:12Z"),
             dateIgnored = Some("2022-12-11T12:12:12Z"),
             source = Some("CUSTOMER"),
             totalExpenses = Some(100.00),
-            expenses = Some(ExpensesType(
-              businessTravelCosts = Some(100.00),
-              jobExpenses = Some(100.00),
-              flatRateJobExpenses = Some(100.00),
-              professionalSubscriptions = Some(100.00),
-              hotelAndMealExpenses = Some(100.00),
-              otherAndCapitalAllowances = Some(100.00),
-              vehicleExpenses = Some(100.00),
-              mileageAllowanceRelief = Some(100.00)
-            ))
-          )
+            expenses = Some(
+              ExpensesType(
+                businessTravelCosts = Some(100.00),
+                jobExpenses = Some(100.00),
+                flatRateJobExpenses = Some(100.00),
+                professionalSubscriptions = Some(100.00),
+                hotelAndMealExpenses = Some(100.00),
+                otherAndCapitalAllowances = Some(100.00),
+                vehicleExpenses = Some(100.00),
+                mileageAllowanceRelief = Some(100.00)
+              )
+            )
+          ))
         )
       )
     ),
@@ -209,7 +216,7 @@ object Users {
         )
       )
     ),
-    APIUsers.APIUser(
+    APIModels.APIUser(
       "BB777777B",
       interest =
         (1 to 11).map {
@@ -231,32 +238,74 @@ object Users {
       employment = Seq(
         Employment(
           2022,
-          Seq(EmploymentSource("00000000-0000-1000-8000-000000000000", "Vera Lynn", Some("123/abc 001<Q>"), Some("123345657"),
-            Some("2020-06-17T10:53:38Z"), Some("2020-06-17T10:53:38Z"), Some("2020-06-17T10:53:38Z"),
-            employmentData = Some(EmploymentData(
-              submittedOn = "2020-01-04T05:01:01Z",
-              employment = EmploymentModel(
-                employer = EmployerModel(Some("223/AB12399"), "maggie"),
-                pay = PayModel(34234.15, 6782.92, Some(67676), "CALENDAR MONTHLY", "2020-04-23", Some(32)),
-                deductions = Some(EmploymentDeductions(
-                  studentLoans = Some(StudentLoans(Some(13343.45), Some(24242.56))))),
-                benefitsInKind = Some(Benefits(Some(455.67), Some(435.54), Some(24.58), Some(33.89), Some(3434.78), Some(34.56), Some(445.67),
-                  Some(434.45), Some(3444.32), Some(4542.47), Some(243.43), Some(45.67), Some(24.56), Some(56.29), Some(14.56), Some(34.23),
-
-                ))))))),
-          Seq(EmploymentSource("00000000-0000-1000-8000-000000000002", "Vera Lynn",
-            Some("123/abc 001<Q>"), Some("123345657"), Some("2020-06-17T10:53:38Z"), Some("2020-06-17T10:53:38Z"), submittedOn = Some("2020-06-17T10:53:38Z"),
-            employmentData = Some(EmploymentData(
-              submittedOn = "2020-01-04T05:01:01Z",
-              employment = EmploymentModel(
-                employer = EmployerModel(Some("223/AB12399"), "maggie"),
-                pay = PayModel(34234.15, 6782.92, Some(67676), "CALENDAR MONTHLY", "2020-04-23", Some(32)),
-                deductions = Some(EmploymentDeductions(
-                  studentLoans = Some(StudentLoans(Some(13343.45), Some(24242.56))))),
-                benefitsInKind = Some(Benefits(Some(455.67), Some(435.54), Some(24.58), Some(33.89), Some(3434.78), Some(34.56), Some(445.67),
-                  Some(434.45), Some(3444.32), Some(4542.47), Some(243.43), Some(45.67), Some(24.56), Some(56.29), Some(14.56), Some(34.23),
-                ))))))),
-          employmentExpenses = EmploymentExpenses(
+          Seq(
+            EmploymentSource("00000000-0000-1000-8000-000000000000", "Vera Lynn", Some("123/abc 001<Q>"), Some("123345657"),
+              Some("2020-06-17T10:53:38Z"), Some("2020-06-17T10:53:38Z"), Some("2020-06-17T10:53:38Z"),
+              employmentData = Some(
+                EmploymentData(
+                  submittedOn = "2020-01-04T05:01:01Z",
+                  source = Some("HMRC-HELD"),
+                  employment = EmploymentDetails(
+                    employmentSequenceNumber = Some("1002"),
+                    payrollId = Some("123456789999"),
+                    companyDirector = Some(false),
+                    closeCompany = Some(true),
+                    directorshipCeasedDate = Some("2020-02-12"),
+                    startDate = Some("2019-04-21"),
+                    cessationDate = Some("2020-03-11"),
+                    occPen = Some(false),
+                    disguisedRemuneration = Some(false),
+                    employer = Employer(Some("223/AB12399"), "maggie"),
+                    pay = Pay(34234.15, 6782.92, Some(67676), "CALENDAR MONTHLY", "2020-04-23", Some(32)),
+                    deductions = Some(
+                      EmploymentDeductions(
+                        studentLoans = Some(StudentLoans(Some(13343.45), Some(24242.56)))
+                      )
+                    ),
+                    benefitsInKind = Some(
+                      Benefits(
+                        Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),
+                        Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100)
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          ),
+          Seq(
+            EmploymentSource("00000000-0000-1000-8000-000000000002", "Vera Lynn",
+              Some("123/abc 001<Q>"), Some("123345657"), Some("2020-06-17T10:53:38Z"), Some("2020-06-17T10:53:38Z"), submittedOn = Some("2020-06-17T10:53:38Z"),
+              employmentData = Some(
+                EmploymentData(
+                  submittedOn = "2020-02-04T05:01:01Z",
+                  employment = EmploymentDetails(
+                    employmentSequenceNumber = Some("1002"),
+                    payrollId = Some("123456789999"),
+                    companyDirector = Some(false),
+                    closeCompany = Some(true),
+                    directorshipCeasedDate = Some("2020-02-12"),
+                    startDate = Some("2019-04-21"),
+                    cessationDate = Some("2020-03-11"),
+                    occPen = Some(false),
+                    disguisedRemuneration = Some(false),
+                    employer = Employer(Some("223/AB12399"), "maggie"),
+                    pay = Pay(34234.15, 6782.92, Some(67676), "CALENDAR MONTHLY", "2020-04-23", Some(32)),
+                    deductions = Some(
+                      EmploymentDeductions(
+                        studentLoans = Some(StudentLoans(Some(13343.45), Some(24242.56))))),
+                    benefitsInKind = Some(
+                      Benefits(
+                        Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),
+                        Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100)
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          ),
+          employmentExpenses = Some(EmploymentExpenses(
             submittedOn = Some("2022-12-12T12:12:12Z"),
             dateIgnored = Some("2022-12-11T12:12:12Z"),
             source = None,
@@ -271,10 +320,51 @@ object Users {
               vehicleExpenses = Some(100.00),
               mileageAllowanceRelief = Some(100.00)
             ))
-          )
+          ))
         )
       )
     ),
     APIUser(DES_500_NINO),
-    APIUser(DES_503_NINO)
+    APIUser(DES_503_NINO),
+    APIUser(
+      "BB444444A",
+      employment = Seq(
+        Employment(
+          2022,
+          Seq(
+            EmploymentSource("00000000-5555-0000-0000-000000000001", "Business", Some("666/66666"), Some("123456789"),
+              Some("2020-01-04T05:01:01Z"), Some("2020-01-04T05:01:01Z"), Some("2020-01-04T05:01:01Z"),
+              employmentData = Some(
+                EmploymentData(
+                  submittedOn = "2020-03-04T05:01:01Z",
+                  employment = EmploymentDetails(
+                    pay = Pay(666.66, 666.66, Some(6666.66), "CALENDAR MONTHLY", "2020-04-23", Some(32)),
+                    employer = Employer(Some("666/66666"), "Business")
+                  )
+                )
+              )
+            ),
+            EmploymentSource("00000000-5555-5555-0000-000000000001", "Business", Some("666/66666"), Some("123456789"),
+              Some("2020-01-04T05:01:01Z"), Some("2020-01-04T05:01:01Z"), Some("2020-01-04T05:01:01Z"))
+          ),
+          Seq(
+            EmploymentSource("00000000-5555-0000-0000-000000000001", "Business",
+              Some("666/66666"), Some("123456789"), Some("2020-02-04T05:01:01Z"), Some("2020-02-04T05:01:01Z"), submittedOn = Some("2020-02-04T05:01:01Z"),
+              employmentData = Some(
+                EmploymentData(
+                  submittedOn = "2020-02-04T05:01:01Z",
+                  source = Some("CUSTOMER"),
+                  customerAdded = Some("2020-02-04T05:01:01Z"),
+                  employment = EmploymentDetails(
+                    pay = Pay(555.55, 555.55, Some(555.55), "CALENDAR MONTHLY", "2020-04-23", Some(32)),
+                    employer = Employer(Some("666/66666"), "Business")
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  )
 }
