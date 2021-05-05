@@ -216,7 +216,42 @@ object Users {
         )
       )
     ),
-    APIModels.APIUser(
+    //Accessibility Staging users
+    APIUser(
+      "AA111113A",
+      interest = Seq(
+        Interest(
+          "First Direct",
+          RandomIdGenerator.randomId,
+          interestSubmissions = Seq(
+            InterestSubmission(
+              2022,
+              None,
+              Some(4000)
+            )
+          )
+        ),
+        Interest(
+          "Skipton",
+          RandomIdGenerator.randomId,
+          interestSubmissions = Seq(
+            InterestSubmission(
+              2022,
+              Some(4000),
+              None
+            )
+          )
+        )
+      ),
+      dividends = Seq(
+        Dividends(
+          2022,
+          Some(750.50),
+          Some(225.25),
+        )
+      )
+    ),
+    APIUser(
       "BB777777B",
       interest =
         (1 to 11).map {
