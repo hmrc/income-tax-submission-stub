@@ -130,4 +130,11 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
     logger.info(s"Get employment expenses for nino: $nino, taxYear: $taxYear, view: $view")
     userDataService.findUser(nino)(employmentsService.getEmploymentExpenses(convertStringTaxYear(taxYear), view))
   }
+
+  // DES #1647 //
+  def getEmploymentData(nino: String, taxYear: String, employmentId: String, view: String) : Action[AnyContent] = Action.async { _ =>
+    logger.info(s"Get employment data for nino: $nino, taxYear: $taxYear, employmentID: $employmentId, view: $view")
+    userDataService.findUser(nino)(employmentsService.getEmploymentData(convertStringTaxYear(taxYear), employmentId, view))
+  }
+
 }

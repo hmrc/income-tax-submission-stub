@@ -16,7 +16,7 @@
 
 package repositories
 
-import models.{APIUser, Dividends}
+import models.APIModels.{APIUser, Dividends}
 import org.scalatest.BeforeAndAfterEach
 import play.api.test.{DefaultAwaitTimeout, FutureAwaits}
 import utils.IntegrationTest

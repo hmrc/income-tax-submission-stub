@@ -16,8 +16,11 @@
 
 package services
 
-import models.DESModels.GiftAidDetail
-import models.{APIUser, ErrorBodyModel, ErrorModel}
+import models.APIModels.APIUser
+import models.APIModels.Gifts
+import models.APIModels.GiftAidPayments
+import models.DESModels.DESGiftAidDetail
+import models.{ErrorBodyModel, ErrorModel}
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Results.Ok
 import play.api.mvc.{Request, Result}
@@ -32,10 +35,11 @@ class GiftAidService @Inject()(validateRequestService: ValidateRequestService){
     user =>
       user.giftAid.find(_.taxYear == taxYear).fold(Future(notFound)){
         giftAid =>
-          Future(Ok(Json.toJson(GiftAidDetail(
-            giftAid.giftAidPayments,
-            giftAid.gifts
-          ))))
+
+          val payments: Option[GiftAidPayments] = giftAid.giftAidPayments
+          val gifts: Option[Gifts] = giftAid.gifts
+
+          Future(Ok(Json.toJson(DESGiftAidDetail(payments,gifts))))
       }
   }
 

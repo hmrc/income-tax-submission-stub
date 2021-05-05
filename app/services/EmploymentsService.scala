@@ -17,8 +17,8 @@
 package services
 
 import javax.inject.Inject
-import models.APIUser
-import models.DESModels.{EmploymentExpenses, EmploymentsDetail}
+import models.APIModels._
+import models.DESModels.{DESEmploymentExpenses, DESEmploymentsList}
 import play.api.libs.json.Json
 import play.api.mvc.Result
 import play.api.mvc.Results.Ok
@@ -34,18 +34,18 @@ class EmploymentsService @Inject()() {
       user.employment.find(_.taxYear == taxYear).fold(Future(notFound)) {
         employment =>
 
-          val employmentsDetail: EmploymentsDetail = employmentId.fold {
-            EmploymentsDetail(employment.hmrcEmployments, employment.customerEmployments)
+          val employmentsDetail: DESEmploymentsList = employmentId.fold {
+            DESEmploymentsList(employment.hmrcEmployments.map(_.toDESEmploymentList), employment.customerEmployments.map(_.toDESEmploymentList))
           } {
             employmentId =>
-              EmploymentsDetail(
-                employment.hmrcEmployments.filter(_.employmentId.equals(employmentId)),
-                employment.customerEmployments.filter(_.employmentId.equals(employmentId))
+              DESEmploymentsList(
+                employment.hmrcEmployments.filter(_.employmentId.equals(employmentId)).map(_.toDESEmploymentList),
+                employment.customerEmployments.filter(_.employmentId.equals(employmentId)).map(_.toDESEmploymentList)
               )
           }
 
           employmentsDetail match {
-            case EmploymentsDetail(hmrc, customer) if hmrc.isEmpty && customer.isEmpty => Future(notFound)
+            case DESEmploymentsList(hmrc, customer) if hmrc.isEmpty && customer.isEmpty => Future(notFound)
             case model => Future(Ok(Json.toJson(model)))
           }
       }
@@ -55,19 +55,50 @@ class EmploymentsService @Inject()() {
     user =>
       user.employment.find(_.taxYear == taxYear).fold(Future(notFound)) {
         employment =>
-          employment.employmentExpenses.source match {
-            case None => Future(notFound)
-            case _ =>
-              val employmentExpenses: EmploymentExpenses = EmploymentExpenses(
-                dateIgnored = employment.employmentExpenses.dateIgnored,
-                source = employment.employmentExpenses.source,
-                submittedOn = employment.employmentExpenses.submittedOn,
-                totalExpenses = employment.employmentExpenses.totalExpenses,
-                expenses = employment.employmentExpenses.expenses
-              )
-              employmentExpenses match {
-                case model => if (!model.source.get.equals(view)) Future(notFound) else Future(Ok(Json.toJson(model)))
+          employment.employmentExpenses.map {
+            expenses =>
+              expenses.source match {
+                case None => Future(notFound)
+                case _ =>
+                  val employmentExpenses: DESEmploymentExpenses = DESEmploymentExpenses(
+                    dateIgnored = expenses.dateIgnored,
+                    source = expenses.source,
+                    submittedOn = expenses.submittedOn,
+                    totalExpenses = expenses.totalExpenses,
+                    expenses = expenses.expenses
+                  )
+                  employmentExpenses match {
+                    case model => if (!model.source.get.equals(view)) Future(notFound) else Future(Ok(Json.toJson(model)))
+                  }
               }
+          }.getOrElse(Future(notFound))
+      }
+  }
+
+  def getEmploymentData(taxYear: Int, employmentId: String, view: String)(implicit ec: ExecutionContext): APIUser => Future[Result] = {
+    user =>
+      user.employment.find(_.taxYear == taxYear).fold(Future(notFound)) {
+        employment =>
+          val employmentData: Option[EmploymentData] = view match {
+            case "CUSTOMER" => employment.customerEmployments.find(_.employmentId == employmentId).flatMap(_.employmentData)
+            case "HMRC-HELD" => employment.hmrcEmployments.find(_.employmentId == employmentId).flatMap(_.employmentData)
+            case "LATEST" =>
+
+              val customerEmploymentData: Option[EmploymentData] = employment.customerEmployments.find(_.employmentId == employmentId).flatMap(_.employmentData)
+              val hmrcEmploymentData: Option[EmploymentData] = employment.hmrcEmployments.find(_.employmentId == employmentId).flatMap(_.employmentData)
+
+              (customerEmploymentData,hmrcEmploymentData) match {
+                case (customer@Some(EmploymentData(customerDate,_, _, _, _)),hmrc@Some(EmploymentData(hmrcDate,_, _, _, _))) => if(customerDate > hmrcDate) customer else hmrc
+                case (customer@Some(_),_) => customer
+                case (_,hmrc@Some(_)) => hmrc
+                case _ => None
+              }
+            case _ => None
+          }
+
+          employmentData match {
+            case Some(data) => Future(Ok(Json.toJson(data.toDESEmploymentData)))
+            case None => Future(notFound)
           }
       }
   }

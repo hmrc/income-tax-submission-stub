@@ -16,8 +16,9 @@
 
 package repositories
 
+import models.APIModels.APIUser
+
 import javax.inject.{Inject, Singleton}
-import models.APIUser
 import play.api.libs.json.Json
 import play.api.libs.json.Json.JsValueWrapper
 import play.modules.reactivemongo.ReactiveMongoComponent

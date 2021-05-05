@@ -16,7 +16,7 @@
 
 package services
 
-import models.APIUser
+import models.APIModels.APIUser
 import play.api.Logging
 import play.api.mvc.Result
 import play.api.mvc.Results._

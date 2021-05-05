@@ -16,7 +16,7 @@
 
 package mocks
 
-import models.APIUser
+import models.APIModels.APIUser
 import org.scalamock.handlers.{CallHandler1, CallHandler2}
 import org.scalamock.scalatest.MockFactory
 import play.api.libs.json.Json.JsValueWrapper
