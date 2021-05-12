@@ -178,7 +178,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
     }
     s"return ${Status.OK} with json when filtering by employment id and only return one record" in {
 
-      val url = s"income-tax/income/employments/PB133742J/2021-22?employmentId=00000000-0000-1000-8000-000000000000"
+      val url = s"income-tax/income/employments/AA133742A/2021-22?employmentId=00000000-0000-1000-8000-000000000000"
 
       val res = await(buildClient(url).get())
 
@@ -272,7 +272,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
 
     s"return ${Status.NOT_FOUND} with the json has no source value" in {
 
-      val url = s"income-tax/expenses/employments/PB133742J/2021-22?view=LATEST"
+      val url = s"income-tax/expenses/employments/AA133742A/2021-22?view=LATEST"
 
       val res = await(buildClient(url).get())
 
@@ -281,11 +281,11 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
     }
   }
 
-  "GET /income-tax/income/employments/PB133742J/2021-22/00000000-0000-1000-8000-000000000002" should {
+  "GET /income-tax/income/employments/AA133742A/2021-22/00000000-0000-1000-8000-000000000002" should {
 
     s"return ${Status.OK} with json with a valid Customer view parameter" in {
 
-      val url = s"income-tax/income/employments/PB133742J/2021-22/00000000-0000-1000-8000-000000000002?view=CUSTOMER"
+      val url = s"income-tax/income/employments/AA133742A/2021-22/00000000-0000-1000-8000-000000000002?view=CUSTOMER"
 
       val res = await(buildClient(url).get())
 
@@ -357,7 +357,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
     }
     s"return ${Status.OK} with json with a valid LATEST view parameter" in {
 
-      val url = s"income-tax/income/employments/PB133742J/2021-22/00000000-0000-1000-8000-000000000002?view=LATEST"
+      val url = s"income-tax/income/employments/AA133742A/2021-22/00000000-0000-1000-8000-000000000002?view=LATEST"
 
       val res = await(buildClient(url).get())
 
@@ -477,7 +477,10 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
                                    |			"payFrequency": "CALENDAR MONTHLY",
                                    |			"paymentDate": "2020-04-23",
                                    |			"taxWeekNo": 32
-                                   |		}
+                                   |		},
+                                   |    "benefitsInKind":{
+                                   |      "accommodation":100
+                                   |    }
                                    |	}
                                    |}""".stripMargin)
     }
@@ -502,7 +505,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
 
     s"return ${Status.OK} with json with a valid HMRC-HELD view parameter" in {
 
-      val url = s"income-tax/income/employments/PB133742J/2021-22/00000000-0000-1000-8000-000000000000?view=HMRC-HELD"
+      val url = s"income-tax/income/employments/AA133742A/2021-22/00000000-0000-1000-8000-000000000000?view=HMRC-HELD"
 
       val res = await(buildClient(url).get())
 
@@ -573,7 +576,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
     }
     s"return ${Status.OK} with json with a valid LATEST view parameter and find the hmrc data" in {
 
-      val url = s"income-tax/income/employments/PB133742J/2021-22/00000000-0000-1000-8000-000000000000?view=LATEST"
+      val url = s"income-tax/income/employments/AA133742A/2021-22/00000000-0000-1000-8000-000000000000?view=LATEST"
 
       val res = await(buildClient(url).get())
 
@@ -645,7 +648,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
 
     s"return ${Status.NOT_FOUND} when nothing found for tax year" in {
 
-      val url = s"income-tax/income/employments/PB133742J/2022-23/00000000-0000-1000-8000-000000000000?view=HMRC-HELD"
+      val url = s"income-tax/income/employments/AA133742A/2022-23/00000000-0000-1000-8000-000000000000?view=HMRC-HELD"
 
       val res = await(buildClient(url).get())
 
@@ -654,7 +657,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
     }
     s"return ${Status.NOT_FOUND} when matching on LATEST and theres no data" in {
 
-      val url = s"income-tax/income/employments/PB133742J/2022-23/10000000-0000-0000-8000-000000000000?view=LATEST"
+      val url = s"income-tax/income/employments/AA133742A/2022-23/10000000-0000-0000-8000-000000000000?view=LATEST"
 
       val res = await(buildClient(url).get())
 
@@ -663,7 +666,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
     }
     s"return ${Status.NOT_FOUND} when invalid view" in {
 
-      val url = s"income-tax/income/employments/PB133742J/2022-23/00000000-0000-1000-8000-000000000000?view=VIEW"
+      val url = s"income-tax/income/employments/AA133742A/2022-23/00000000-0000-1000-8000-000000000000?view=VIEW"
 
       val res = await(buildClient(url).get())
 
