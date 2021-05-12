@@ -269,7 +269,7 @@ object Users {
             )
         }
     ),
-    APIUser("PB133742J",
+    APIUser("AA133742A",
       employment = Seq(
         Employment(
           2022,
@@ -374,7 +374,10 @@ object Users {
                   submittedOn = "2020-03-04T05:01:01Z",
                   employment = EmploymentDetails(
                     pay = Pay(666.66, 666.66, Some(6666.66), "CALENDAR MONTHLY", "2020-04-23", Some(32)),
-                    employer = Employer(Some("666/66666"), "Business")
+                    employer = Employer(Some("666/66666"), "Business"),
+                    benefitsInKind = Some(Benefits(
+                      Some(100)
+                    ))
                   )
                 )
               )
@@ -397,7 +400,13 @@ object Users {
                 )
               )
             )
-          )
+          ),
+          employmentExpenses = Some(EmploymentExpenses(
+            source = Some("HMRC-HELD"),
+            expenses = Some(ExpensesType(
+              Some(100)
+            ))
+          ))
         )
       )
     )

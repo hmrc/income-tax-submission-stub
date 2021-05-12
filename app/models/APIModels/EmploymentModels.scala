@@ -72,24 +72,24 @@ object EmploymentDetails {
   implicit val format: Format[EmploymentDetails] = Json.format[EmploymentDetails]
 }
 
-case class EmploymentExpenses(submittedOn: Option[String],
-                              dateIgnored: Option[String],
-                              source: Option[String],
-                              totalExpenses: Option[BigDecimal],
-                              expenses: Option[ExpensesType])
+case class EmploymentExpenses(submittedOn: Option[String] = None,
+                              dateIgnored: Option[String]= None,
+                              source: Option[String]= None,
+                              totalExpenses: Option[BigDecimal]= None,
+                              expenses: Option[ExpensesType]= None)
 
 object EmploymentExpenses {
   implicit val format: OFormat[EmploymentExpenses] = Json.format[EmploymentExpenses]
 }
 
-case class ExpensesType(businessTravelCosts: Option[BigDecimal],
-                        jobExpenses: Option[BigDecimal],
-                        flatRateJobExpenses: Option[BigDecimal],
-                        professionalSubscriptions: Option[BigDecimal],
-                        hotelAndMealExpenses: Option[BigDecimal],
-                        otherAndCapitalAllowances: Option[BigDecimal],
-                        vehicleExpenses: Option[BigDecimal],
-                        mileageAllowanceRelief: Option[BigDecimal])
+case class ExpensesType(businessTravelCosts: Option[BigDecimal]= None,
+                        jobExpenses: Option[BigDecimal]= None,
+                        flatRateJobExpenses: Option[BigDecimal]= None,
+                        professionalSubscriptions: Option[BigDecimal]= None,
+                        hotelAndMealExpenses: Option[BigDecimal]= None,
+                        otherAndCapitalAllowances: Option[BigDecimal]= None,
+                        vehicleExpenses: Option[BigDecimal]= None,
+                        mileageAllowanceRelief: Option[BigDecimal]= None)
 
 object ExpensesType {
   implicit val formats: OFormat[ExpensesType] = Json.format[ExpensesType]
