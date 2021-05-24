@@ -22,7 +22,6 @@ import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.mvc.{AnyContentAsEmpty, ControllerComponents, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.stubControllerComponents
-import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Awaitable, ExecutionContext, Future}
@@ -30,8 +29,6 @@ import scala.concurrent.{Await, Awaitable, ExecutionContext, Future}
 trait TestSupport extends PlaySpec with MockFactory with GuiceOneAppPerSuite with MaterializerSupport {
 
   implicit lazy val ec: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
-
-  implicit val headerCarrier: HeaderCarrier = HeaderCarrier()
 
   lazy val cc: ControllerComponents = stubControllerComponents()
 
