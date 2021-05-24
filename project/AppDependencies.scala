@@ -8,7 +8,7 @@ object AppDependencies {
     ws,
     "uk.gov.hmrc" %% "bootstrap-backend-play-27"  % "5.3.0",
     "uk.gov.hmrc" %% "domain" % "5.11.0-play-27",
-    "uk.gov.hmrc" %% "simple-reactivemongo" % "8.0.0-play-28",
+    "uk.gov.hmrc" %% "simple-reactivemongo" % "8.0.0-play-27",
     "org.typelevel" %% "cats" % "0.9.0",
     "com.github.fge" % "json-schema-validator" % "2.2.6"
   )
