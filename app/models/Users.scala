@@ -269,7 +269,8 @@ object Users {
             )
         }
     ),
-    APIUser("AA133742A",
+    APIUser(
+      "AA133742A",
       employment = Seq(
         Employment(
           2022,
@@ -409,6 +410,32 @@ object Users {
           ))
         )
       )
+    ),
+    APIUser(
+      "AA637489D",
+      giftAid = Seq(GiftAid(
+        2022,
+        Some(GiftAidPayments(
+          Some(Seq(
+            "Whiterun Stables",
+            "Riften Gate Watch"
+          )),
+          Some(12000),
+          Some(52040.32),
+          Some(4427.5),
+          Some(422.87),
+          Some(47889.8)
+        )),
+        Some(Gifts(
+          Some(Seq(
+            "Zealot Blade Replacement Fund",
+            "Dragoon Motor Fund"
+          )),
+          Some(9948376.41),
+          None,
+          Some(876569484.78)
+        ))
+      ))
     )
   )
 }
