@@ -122,7 +122,7 @@ object Users {
           employmentExpenses = Some(EmploymentExpenses(
             submittedOn = Some("2022-12-12T12:12:12Z"),
             dateIgnored = Some("2022-12-11T12:12:12Z"),
-            source = Some("CUSTOMER"),
+            source = Some("HMRC-HELD"),
             totalExpenses = Some(100.00),
             expenses = Some(
               ExpensesType(
@@ -374,10 +374,13 @@ object Users {
                 EmploymentData(
                   submittedOn = "2020-03-04T05:01:01Z",
                   employment = EmploymentDetails(
+                    closeCompany = Some(true),
+                    directorshipCeasedDate = Some("2020-04-20"),
                     pay = Pay(666.66, 666.66, Some(6666.66), "CALENDAR MONTHLY", "2020-04-23", Some(32)),
                     employer = Employer(Some("666/66666"), "Business"),
                     benefitsInKind = Some(Benefits(
-                      Some(100)
+                      Some(100), Some(200), Some(300), Some(400), Some(500), Some(600), Some(700), Some(800), Some(900), Some(1000), Some(1100), Some(1200), Some(1300), Some(1400), Some(1500),
+                      Some(1600), Some(1700), Some(1800), Some(1900), Some(2000), Some(2100), Some(2200), Some(2300), Some(2400), Some(2500), Some(2600), Some(2700), Some(2800)
                     ))
                   )
                 )
@@ -405,7 +408,7 @@ object Users {
           employmentExpenses = Some(EmploymentExpenses(
             source = Some("HMRC-HELD"),
             expenses = Some(ExpensesType(
-              Some(100)
+              Some(100),Some(99.99),Some(99.98),Some(99.97),Some(99.96),Some(99.95),Some(99.94),Some(99.93)
             ))
           ))
         )

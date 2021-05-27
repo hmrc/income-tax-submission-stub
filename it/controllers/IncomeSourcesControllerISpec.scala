@@ -220,7 +220,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
   "GET /income-tax/expenses/employments/AA123459A/2021-22" should {
     s"return ${Status.OK} with json with a valid view parameter" in {
 
-      val url = s"income-tax/expenses/employments/AA123459A/2021-22?view=CUSTOMER"
+      val url = s"income-tax/expenses/employments/AA123459A/2021-22?view=HMRC-HELD"
 
       val res = await(buildClient(url).get())
 
@@ -228,7 +228,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
       res.json mustBe Json.parse("""{
                                    |    "submittedOn": "2022-12-12T12:12:12Z",
                                    |    "dateIgnored": "2022-12-11T12:12:12Z",
-                                   |    "source": "CUSTOMER",
+                                   |    "source": "HMRC-HELD",
                                    |    "totalExpenses": 100,
                                    |    "expenses": {
                                    |        "businessTravelCosts": 100,
@@ -463,27 +463,57 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
       val res = await(buildClient(url).get())
 
       res.status mustBe Status.OK
-      res.json mustBe Json.parse("""{
-                                   |	"submittedOn": "2020-03-04T05:01:01Z",
-                                   |	"employment": {
-                                   |		"employer": {
-                                   |			"employerRef": "666/66666",
-                                   |			"employerName": "Business"
-                                   |		},
-                                   |		"pay": {
-                                   |			"taxablePayToDate": 666.66,
-                                   |			"totalTaxToDate": 666.66,
-                                   |			"tipsAndOtherPayments": 6666.66,
-                                   |			"payFrequency": "CALENDAR MONTHLY",
-                                   |			"paymentDate": "2020-04-23",
-                                   |			"taxWeekNo": 32
-                                   |		},
-                                   |    "benefitsInKind":{
-                                   |      "accommodation":100
-                                   |    }
-                                   |	}
-                                   |}""".stripMargin)
-    }
+      res.json mustBe Json.parse(
+        """{
+          |	"submittedOn": "2020-03-04T05:01:01Z",
+          |	"employment": {
+          |		"closeCompany": true,
+          |		"directorshipCeasedDate": "2020-04-20",
+          |		"employer": {
+          |			"employerRef": "666/66666",
+          |			"employerName": "Business"
+          |		},
+          |		"pay": {
+          |			"taxablePayToDate": 666.66,
+          |			"totalTaxToDate": 666.66,
+          |			"tipsAndOtherPayments": 6666.66,
+          |			"payFrequency": "CALENDAR MONTHLY",
+          |			"paymentDate": "2020-04-23",
+          |			"taxWeekNo": 32
+          |		},
+          |		"benefitsInKind": {
+          |			"accommodation": 100,
+          |			"assets": 200,
+          |			"assetTransfer": 300,
+          |			"beneficialLoan": 400,
+          |			"car": 500,
+          |			"carFuel": 600,
+          |			"educationalServices": 700,
+          |			"entertaining": 800,
+          |			"expenses": 900,
+          |			"medicalInsurance": 1000,
+          |			"telephone": 1100,
+          |			"service": 1200,
+          |			"taxableExpenses": 1300,
+          |			"van": 1400,
+          |			"vanFuel": 1500,
+          |			"mileage": 1600,
+          |			"nonQualifyingRelocationExpenses": 1700,
+          |			"nurseryPlaces": 1800,
+          |			"otherItems": 1900,
+          |			"paymentsOnEmployeesBehalf": 2000,
+          |			"personalIncidentalExpenses": 2100,
+          |			"qualifyingRelocationExpenses": 2200,
+          |			"employerProvidedProfessionalSubscriptions": 2300,
+          |			"employerProvidedServices": 2400,
+          |			"incomeTaxPaidByDirector": 2500,
+          |			"travelAndSubsistence": 2600,
+          |			"vouchersAndCreditCards": 2700,
+          |			"nonCash": 2800
+          |		}
+          |	}
+          |}
+          |""".stripMargin)    }
     s"return ${Status.NOT_FOUND} when no employment data exists" in {
 
       val url = s"income-tax/income/employments/BB444444A/2021-22/00000000-5555-5555-0000-000000000001?view=LATEST"
