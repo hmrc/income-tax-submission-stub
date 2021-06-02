@@ -16,39 +16,68 @@
 
 package repositories
 
-import models.APIModels.APIUser
-
+import com.mongodb.client.model.ReturnDocument
 import javax.inject.{Inject, Singleton}
-import play.api.libs.json.Json
-import play.api.libs.json.Json.JsValueWrapper
-import play.modules.reactivemongo.ReactiveMongoComponent
-import reactivemongo.api.{DefaultDB, WriteConcern}
-import reactivemongo.api.commands._
-import uk.gov.hmrc.mongo.MongoConnector
+import models.APIModels.APIUser
+import org.mongodb.scala.bson.Document
+import org.mongodb.scala.model.Filters.equal
+import org.mongodb.scala.model.Indexes.ascending
+import org.mongodb.scala.model.{FindOneAndReplaceOptions, IndexModel, IndexOptions}
+import org.mongodb.scala.result.DeleteResult
+import uk.gov.hmrc.mongo.MongoComponent
+import uk.gov.hmrc.mongo.play.json.Codecs.toBson
+import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
 
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class UserRepository @Inject()(reactiveMongoComponent: ReactiveMongoComponent) {
+class UserRepositoryImpl @Inject()(mongo: MongoComponent)(implicit ec: ExecutionContext
+) extends PlayMongoRepository[APIUser](
+  mongoComponent = mongo,
+  collectionName = "users",
+  domainFormat = APIUser.formats,
+  indexes = RepositoryIndexes.indexes
+) with UserRepository {
 
-  lazy val mongoConnector: MongoConnector = reactiveMongoComponent.mongoConnector
-  implicit lazy val db: () => DefaultDB = mongoConnector.db
-
-  private lazy val repository = new UserRepositoryBase()
-
-  def removeAll()(implicit ec: ExecutionContext): Future[WriteResult] = repository.removeAll(WriteConcern.Acknowledged)
-
-  def removeByNino(nino: String)(implicit ec: ExecutionContext): Future[WriteResult] = repository.remove("nino" -> nino)
-
-  def insertUser(user: APIUser)(implicit ec: ExecutionContext): Future[Option[APIUser]] = {
-    val ninoSelector = Json.obj("nino" -> user.nino)
-    val modifier = Json.obj("$set" -> user)
-    repository.findAndUpdate(query = ninoSelector, update = modifier, upsert = true, fetchNewObject = true).map(result => result.result[APIUser])
+  def findByNino(nino: String)(implicit ec: ExecutionContext): Future[Option[APIUser]] = {
+    collection.find(equal("nino", nino)).toFuture().map(_.headOption)
   }
 
-  def findByNino(nino: String)(implicit ec: ExecutionContext): Future[Option[APIUser]] = find("nino" -> nino)
+  def removeAll()(implicit ec: ExecutionContext): Future[DeleteResult] = {
+    collection.deleteMany(filter = Document()).toFuture()
+  }
 
-  def find(query: (String, JsValueWrapper)*)(implicit ec: ExecutionContext): Future[Option[APIUser]] =
-    repository.find(query: _*).map(_.headOption)
+  def removeByNino(nino: String)(implicit ec: ExecutionContext): Future[DeleteResult] = {
+    collection.deleteOne(equal("nino", nino)).toFuture()
+  }
 
+  def insertUser(user: APIUser)(implicit ec: ExecutionContext): Future[Option[APIUser]] = {
+    val ninoSelector = equal("nino", toBson(user.nino))
+    collection.findOneAndReplace(
+      filter = ninoSelector,
+      replacement = user,
+      options = FindOneAndReplaceOptions().upsert(true).returnDocument(ReturnDocument.AFTER)
+    ).toFutureOption()
+  }
 }
+
+private object RepositoryIndexes {
+
+  def indexes: Seq[IndexModel] = {
+    Seq(
+      IndexModel(ascending("nino"), IndexOptions().name("nino"))
+    )
+  }
+}
+
+trait UserRepository {
+  def findByNino(nino: String)(implicit ec: ExecutionContext): Future[Option[APIUser]]
+
+  def removeAll()(implicit ec: ExecutionContext): Future[DeleteResult]
+
+  def removeByNino(nino: String)(implicit ec: ExecutionContext): Future[DeleteResult]
+
+  def insertUser(user: APIUser)(implicit ec: ExecutionContext): Future[Option[APIUser]]
+}
+
+

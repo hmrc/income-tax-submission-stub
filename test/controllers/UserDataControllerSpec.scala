@@ -16,13 +16,14 @@
 
 package controllers
 
+import com.mongodb.client.result.DeleteResult
 import models.APIModels.APIUser
 import models.Users
+import org.mongodb.scala.result.DeleteResult
 import org.scalamock.scalatest.MockFactory
 import play.api.mvc.Results
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import reactivemongo.api.commands.{UpdateWriteResult, WriteError}
 import repositories.UserRepository
 import services.UserDataService
 import testUtils.TestSupport
@@ -36,8 +37,12 @@ class UserDataControllerSpec extends TestSupport with MockFactory with Results {
 
   lazy val mockStartUpAction: StartUpAction = new StartUpAction(mockUserRepository, ec)
 
-  lazy val successWriteResult: UpdateWriteResult = UpdateWriteResult(ok = true, n = 1, nModified = 0, upserted = Seq(), writeErrors = Seq(), None, None, None)
-  lazy val errorWriteResult: UpdateWriteResult = UpdateWriteResult(ok = false, n = 1, nModified = 0, upserted = Seq(), writeErrors = Seq(WriteError(1, 1, "Error")), None, None, None)
+  lazy val successWriteResult: DeleteResult = {
+    DeleteResult.acknowledged(5)
+  }
+  lazy val errorWriteResult: DeleteResult = {
+    DeleteResult.unacknowledged()
+  }
 
   lazy val mockUserRepository: UserRepository = mock[UserRepository]
 
