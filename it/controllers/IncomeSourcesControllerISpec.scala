@@ -471,7 +471,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
           |		"directorshipCeasedDate": "2020-04-20",
           |		"employer": {
           |			"employerRef": "666/66666",
-          |			"employerName": "Business"
+          |			"employerName": "Raf Simons Ltd"
           |		},
           |		"pay": {
           |			"taxablePayToDate": 666.66,
