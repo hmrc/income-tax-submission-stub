@@ -368,7 +368,7 @@ object Users {
         Employment(
           2022,
           Seq(
-            EmploymentSource("00000000-5555-0000-0000-000000000001", "Business", Some("666/66666"), Some("123456789"),
+            EmploymentSource("00000000-5555-0000-0000-000000000001", "Raf Simons Ltd", Some("666/66666"), Some("123456789"),
               Some("2020-01-04T05:01:01Z"), Some("2020-01-04T05:01:01Z"), Some("2020-01-04T05:01:01Z"),
               employmentData = Some(
                 EmploymentData(
@@ -377,7 +377,7 @@ object Users {
                     closeCompany = Some(true),
                     directorshipCeasedDate = Some("2020-04-20"),
                     pay = Pay(666.66, 666.66, Some(6666.66), "CALENDAR MONTHLY", "2020-04-23", Some(32)),
-                    employer = Employer(Some("666/66666"), "Business"),
+                    employer = Employer(Some("666/66666"), "Raf Simons Ltd"),
                     benefitsInKind = Some(Benefits(
                       Some(100), Some(200), Some(300), Some(400), Some(500), Some(600), Some(700), Some(800), Some(900), Some(1000), Some(1100), Some(1200), Some(1300), Some(1400), Some(1500),
                       Some(1600), Some(1700), Some(1800), Some(1900), Some(2000), Some(2100), Some(2200), Some(2300), Some(2400), Some(2500), Some(2600), Some(2700), Some(2800)
@@ -386,11 +386,11 @@ object Users {
                 )
               )
             ),
-            EmploymentSource("00000000-5555-5555-0000-000000000001", "Business", Some("666/66666"), Some("123456789"),
+            EmploymentSource("00000000-5555-5555-0000-000000000001", "Rick Owens Ltd", Some("666/66666"), Some("123456789"),
               Some("2020-01-04T05:01:01Z"), Some("2020-01-04T05:01:01Z"), Some("2020-01-04T05:01:01Z"))
           ),
           Seq(
-            EmploymentSource("00000000-5555-0000-0000-000000000001", "Business",
+            EmploymentSource("00000000-5555-0000-0000-000000000001", "Raf Simons Ltd Customer Edition",
               Some("666/66666"), Some("123456789"), Some("2020-02-04T05:01:01Z"), Some("2020-02-04T05:01:01Z"), submittedOn = Some("2020-02-04T05:01:01Z"),
               employmentData = Some(
                 EmploymentData(
@@ -399,7 +399,7 @@ object Users {
                   customerAdded = Some("2020-02-04T05:01:01Z"),
                   employment = EmploymentDetails(
                     pay = Pay(555.55, 555.55, Some(555.55), "CALENDAR MONTHLY", "2020-04-23", Some(32)),
-                    employer = Employer(Some("666/66666"), "Business")
+                    employer = Employer(Some("666/66666"), "Raf Simons Ltd Customer Edition")
                   )
                 )
               )
