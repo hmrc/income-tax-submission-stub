@@ -41,7 +41,7 @@ class UserDataController @Inject()(dataService: UserDataService,
 
   def resetUsers: Action[AnyContent] = Action.async { _ =>
     userRepository.removeAll().flatMap {
-      case result if result.ok =>
+      case result if result.wasAcknowledged() =>
         startUpAction.initialiseUsers().map {
           start =>
             if (start.length == Users.users.length) {
