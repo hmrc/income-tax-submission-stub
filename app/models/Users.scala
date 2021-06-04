@@ -96,7 +96,7 @@ object Users {
                 EmploymentData(
                   submittedOn = "2020-01-04T05:01:01Z",
                   employment = EmploymentDetails(
-                    pay = Pay(666.66, 666.66, Some(6666.66), "CALENDAR MONTHLY", "2020-04-23", Some(32)),
+                    pay = Pay(666.66, 666.66, Some(6666.66), Some("CALENDAR MONTHLY"), Some("2020-04-23"), Some(32)),
                     employer = Employer(Some("666/66666"), "Rick Owens LTD")
                   )
                 )
@@ -112,7 +112,7 @@ object Users {
                   source = Some("CUSTOMER"),
                   customerAdded = Some("2020-02-04T05:01:01Z"),
                   employment = EmploymentDetails(
-                    pay = Pay(555.55, 555.55, Some(555.55), "CALENDAR MONTHLY", "2020-04-23", Some(32)),
+                    pay = Pay(555.55, 555.55, Some(555.55), Some("CALENDAR MONTHLY"), Some("2020-04-23"), Some(32)),
                     employer = Employer(Some("666/66666"), "Rick Owens LTD")
                   )
                 )
@@ -292,7 +292,7 @@ object Users {
                     occPen = Some(false),
                     disguisedRemuneration = Some(false),
                     employer = Employer(Some("223/AB12399"), "maggie"),
-                    pay = Pay(34234.15, 6782.92, Some(67676), "CALENDAR MONTHLY", "2020-04-23", Some(32)),
+                    pay = Pay(34234.15, 6782.92, Some(67676), Some("CALENDAR MONTHLY"), Some("2020-04-23"), Some(32)),
                     deductions = Some(
                       EmploymentDeductions(
                         studentLoans = Some(StudentLoans(Some(13343.45), Some(24242.56)))
@@ -326,7 +326,7 @@ object Users {
                     occPen = Some(false),
                     disguisedRemuneration = Some(false),
                     employer = Employer(Some("223/AB12399"), "maggie"),
-                    pay = Pay(34234.15, 6782.92, Some(67676), "CALENDAR MONTHLY", "2020-04-23", Some(32)),
+                    pay = Pay(34234.15, 6782.92, Some(67676), Some("CALENDAR MONTHLY"), Some("2020-04-23"), Some(32)),
                     deductions = Some(
                       EmploymentDeductions(
                         studentLoans = Some(StudentLoans(Some(13343.45), Some(24242.56))))),
@@ -376,7 +376,7 @@ object Users {
                   employment = EmploymentDetails(
                     closeCompany = Some(true),
                     directorshipCeasedDate = Some("2020-04-20"),
-                    pay = Pay(666.66, 666.66, Some(6666.66), "CALENDAR MONTHLY", "2020-04-23", Some(32)),
+                    pay = Pay(666.66, 666.66, Some(6666.66), Some("CALENDAR MONTHLY"), Some("2020-04-23"), Some(32)),
                     employer = Employer(Some("666/66666"), "Raf Simons Ltd"),
                     benefitsInKind = Some(Benefits(
                       Some(100), Some(200), Some(300), Some(400), Some(500), Some(600), Some(700), Some(800), Some(900), Some(1000), Some(1100), Some(1200), Some(1300), Some(1400), Some(1500),
@@ -398,7 +398,7 @@ object Users {
                   source = Some("CUSTOMER"),
                   customerAdded = Some("2020-02-04T05:01:01Z"),
                   employment = EmploymentDetails(
-                    pay = Pay(555.55, 555.55, Some(555.55), "CALENDAR MONTHLY", "2020-04-23", Some(32)),
+                    pay = Pay(555.55, 555.55, Some(555.55), Some("CALENDAR MONTHLY"), Some("2020-04-23"), Some(32)),
                     employer = Employer(Some("666/66666"), "Raf Simons Ltd Customer Edition")
                   )
                 )

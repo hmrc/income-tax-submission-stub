@@ -106,8 +106,8 @@ object Employer {
 case class Pay(taxablePayToDate: BigDecimal,
                totalTaxToDate: BigDecimal,
                tipsAndOtherPayments: Option[BigDecimal] = None,
-               payFrequency: String,
-               paymentDate: String,
+               payFrequency: Option[String],
+               paymentDate: Option[String],
                taxWeekNo: Option[Int] = None,
                taxMonthNo: Option[Int] = None)
 
