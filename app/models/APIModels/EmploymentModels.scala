@@ -63,7 +63,7 @@ case class EmploymentDetails(employmentSequenceNumber: Option[String] = None,
                              occPen: Option[Boolean] = None,
                              disguisedRemuneration: Option[Boolean] = None,
                              employer: Employer,
-                             pay: Pay,
+                             pay: Option[Pay],
                              customerEstimatedPay: Option[CustomerEstimatedPay] = None,
                              deductions: Option[EmploymentDeductions] = None,
                              benefitsInKind: Option[Benefits] = None)
@@ -103,8 +103,8 @@ object Employer {
 }
 
 
-case class Pay(taxablePayToDate: BigDecimal,
-               totalTaxToDate: BigDecimal,
+case class Pay(taxablePayToDate: Option[BigDecimal],
+               totalTaxToDate: Option[BigDecimal],
                tipsAndOtherPayments: Option[BigDecimal] = None,
                payFrequency: Option[String],
                paymentDate: Option[String],
