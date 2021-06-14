@@ -1,0 +1,239 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "API#1643 Create/Update Employment financial Data Submission",
+  "description": "View a list of employments associated with the customer, the list may contain employments that the customer has added via their third party software.",
+  "type": "object",
+  "properties": {
+    "employment": {
+      "type": "object",
+      "properties": {
+        "pay": {
+          "type": "object",
+          "properties": {
+            "taxablePayToDate": {
+              "$ref": "#/definitions/monetaryPos"
+            },
+            "totalTaxToDate": {
+              "$ref": "#/definitions/monetaryPosNeg"
+            },
+            "tipsAndOtherPayments": {
+              "$ref": "#/definitions/monetaryPos"
+            }
+          },
+          "required": [
+            "taxablePayToDate",
+            "totalTaxToDate"
+          ],
+          "additionalProperties": false
+        },
+        "lumpSums": {
+          "type": "object",
+          "properties": {
+            "taxableLumpSumsAndCertainIncome": {
+              "type": "object",
+              "properties": {
+                "amount": {
+                  "$ref": "#/definitions/monetaryPos"
+                },
+                "taxPaid": {
+                  "$ref": "#/definitions/monetaryPos"
+                },
+                "taxTakenOffInEmployment": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "amount"
+              ],
+              "additionalProperties": false
+            },
+            "benefitFromEmployerFinancedRetirementScheme": {
+              "type": "object",
+              "properties": {
+                "amount": {
+                  "$ref": "#/definitions/monetaryPos"
+                },
+                "exemptAmount": {
+                  "$ref": "#/definitions/monetaryPos"
+                },
+                "taxPaid": {
+                  "$ref": "#/definitions/monetaryPos"
+                },
+                "taxTakenOffInEmployment": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "amount"
+              ],
+              "additionalProperties": false
+            },
+            "redundancyCompensationPaymentsOverExemption": {
+              "type": "object",
+              "properties": {
+                "amount": {
+                  "$ref": "#/definitions/monetaryPos"
+                },
+                "taxPaid": {
+                  "$ref": "#/definitions/monetaryPos"
+                },
+                "taxTakenOffInEmployment": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "amount"
+              ],
+              "additionalProperties": false
+            },
+            "redundancyCompensationPaymentsUnderExemption": {
+              "type": "object",
+              "properties": {
+                "amount": {
+                  "$ref": "#/definitions/monetaryPos"
+                }
+              },
+              "required": [
+                "amount"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "deductions": {
+          "type": "object",
+          "properties": {
+            "studentLoans": {
+              "type": "object",
+              "properties": {
+                "uglDeductionAmount": {
+                  "$ref": "#/definitions/monetaryPos"
+                },
+                "pglDeductionAmount": {
+                  "$ref": "#/definitions/monetaryPos"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "benefitsInKind": {
+          "type": "object",
+          "properties": {
+            "accommodation": {
+              "$ref": "#/definitions/monetaryPos"
+            },
+            "assets": {
+              "$ref": "#/definitions/monetaryPos"
+            },
+            "assetTransfer": {
+              "$ref": "#/definitions/monetaryPos"
+            },
+            "beneficialLoan": {
+              "$ref": "#/definitions/monetaryPos"
+            },
+            "car": {
+              "$ref": "#/definitions/monetaryPos"
+            },
+            "carFuel": {
+              "$ref": "#/definitions/monetaryPos"
+            },
+            "educationalServices": {
+              "$ref": "#/definitions/monetaryPos"
+            },
+            "entertaining": {
+              "$ref": "#/definitions/monetaryPos"
+            },
+            "expenses": {
+              "$ref": "#/definitions/monetaryPos"
+            },
+            "medicalInsurance": {
+              "$ref": "#/definitions/monetaryPos"
+            },
+            "telephone": {
+              "$ref": "#/definitions/monetaryPos"
+            },
+            "service": {
+              "$ref": "#/definitions/monetaryPos"
+            },
+            "taxableExpenses": {
+              "$ref": "#/definitions/monetaryPos"
+            },
+            "van": {
+              "$ref": "#/definitions/monetaryPos"
+            },
+            "vanFuel": {
+              "$ref": "#/definitions/monetaryPos"
+            },
+            "mileage": {
+              "$ref": "#/definitions/monetaryPos"
+            },
+            "nonQualifyingRelocationExpenses": {
+              "$ref": "#/definitions/monetaryPos"
+            },
+            "nurseryPlaces": {
+              "$ref": "#/definitions/monetaryPos"
+            },
+            "otherItems": {
+              "$ref": "#/definitions/monetaryPos"
+            },
+            "paymentsOnEmployeesBehalf": {
+              "$ref": "#/definitions/monetaryPos"
+            },
+            "personalIncidentalExpenses": {
+              "$ref": "#/definitions/monetaryPos"
+            },
+            "qualifyingRelocationExpenses": {
+              "$ref": "#/definitions/monetaryPos"
+            },
+            "employerProvidedProfessionalSubscriptions": {
+              "$ref": "#/definitions/monetaryPos"
+            },
+            "employerProvidedServices": {
+              "$ref": "#/definitions/monetaryPos"
+            },
+            "incomeTaxPaidByDirector": {
+              "$ref": "#/definitions/monetaryPos"
+            },
+            "travelAndSubsistence": {
+              "$ref": "#/definitions/monetaryPos"
+            },
+            "vouchersAndCreditCards": {
+              "$ref": "#/definitions/monetaryPos"
+            },
+            "nonCash": {
+              "$ref": "#/definitions/monetaryPos"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "pay"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "employment"
+  ],
+  "additionalProperties": false,
+  "definitions": {
+    "monetaryPos": {
+      "description": "Defines a monetary value (to 2 decimal places), between 0 and 99999999999.99",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 99999999999.99,
+      "multipleOf": 0.01
+    },
+    "monetaryPosNeg": {
+      "description": "Defines a monetary value (to 2 decimal places), between -99999999999.99 and 99999999999.99",
+      "type": "number",
+      "minimum": -99999999999.99,
+      "maximum": 99999999999.99,
+      "multipleOf": 0.01
+    }
+  }
+}
