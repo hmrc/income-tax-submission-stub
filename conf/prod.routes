@@ -24,6 +24,8 @@ GET    /income-tax/income/employments/:nino/:taxYear                            
 ### DES #1647 ###
 GET    /income-tax/income/employments/:nino/:taxYear/:employmentId              controllers.IncomeSourcesController.getEmploymentData(nino: String, taxYear: String, employmentId: String, view: String)
 
+### DES #1643 ###
+PUT    /income-tax/income/employments/:nino/:taxYear/:employmentId             controllers.IncomeSourcesController.createUpdateEmploymentFinancialData(nino: String, taxYear: String, employmentId: String)
 
 POST    /user                                                                   controllers.UserDataController.postUser
 DELETE  /reset                                                                  controllers.UserDataController.resetUsers

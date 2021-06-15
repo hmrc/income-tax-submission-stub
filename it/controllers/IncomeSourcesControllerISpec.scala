@@ -16,8 +16,8 @@
 
 package controllers
 
-import models.IncomeSourceTypes.IncomeSourceTypeB.{INTEREST_FROM_UK_BANKS, UK_PENSION_BENEFITS}
 import filters.StubErrorFilter.{DES_500_NINO, DES_503_NINO}
+import models.IncomeSourceTypes.IncomeSourceTypeB.{INTEREST_FROM_UK_BANKS, UK_PENSION_BENEFITS}
 import models.errors.StubErrors.{DES_500_ERROR_MODEL, DES_503_ERRORS_MODEL}
 import play.api.Application
 import play.api.http.Status
@@ -703,6 +703,78 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
       res.status mustBe Status.NOT_FOUND
       res.json mustBe Json.parse("""{"code":"NOT_FOUND","reason":"The remote endpoint has indicated that no data can be found."}""".stripMargin)
     }
+
+    "PUT /income-tax/income/employments/AB200900/2022/01312" should {
+      s"return $NO_CONTENT with pay model" in {
+
+        val url = "income-tax/income/employments/AB200900/2022/01312"
+
+        val res = await(buildClient(url).put(Json.parse(
+          """{
+            |	"employment": {
+            |		"pay": {
+            |			"taxablePayToDate": 0,
+            |			"totalTaxToDate": -99999999999.99,
+            |			"tipsAndOtherPayments": 0
+            |		},
+            |  "benefitsInKind": {
+            |			"accommodation": 0,
+            |			"assets": 0,
+            |			"assetTransfer": 0,
+            |			"beneficialLoan": 0,
+            |			"car": 0,
+            |		  "carFuel": 0,
+            |			"educationalServices": 0,
+            |			"entertaining": 0,
+            |			"expenses": 0,
+            |			"medicalInsurance": 0,
+            |			"telephone": 0,
+            |			"service": 0,
+            |			"taxableExpenses": 0,
+            |			"van": 0,
+            |			"vanFuel": 0,
+            |			"mileage": 0,
+            |			"nonQualifyingRelocationExpenses": 0,
+            |			"nurseryPlaces": 0,
+            |			"otherItems": 0,
+            |			"paymentsOnEmployeesBehalf": 0,
+            |			"personalIncidentalExpenses": 0,
+            |			"qualifyingRelocationExpenses": 0,
+            |			"employerProvidedProfessionalSubscriptions": 0,
+            |			"employerProvidedServices": 0,
+            |			"incomeTaxPaidByDirector": 0,
+            |			"travelAndSubsistence": 0,
+            |			"vouchersAndCreditCards": 0,
+            |			"nonCash": 0
+            |		  }
+            |    }
+            |}
+            |""".stripMargin)))
+
+        res.status mustBe Status.NO_CONTENT
+      }
+
+      s"return ${Status.BAD_REQUEST} without required pay model" in {
+
+        val url = "income-tax/income/employments/AB200900/2022/01312"
+
+        val res = await(buildClient(url).put(Json.parse(
+          """{
+            |	"employment": {
+            |		"lumpSums": {
+            |			"taxableLumpSumsAndCertainIncome": {
+            |				"amount": 0,
+            |				"taxPaid": 0,
+            |				"taxTakenOffInEmployment": true
+            |			    }
+            |       }
+            |    }
+            |}""".stripMargin)))
+
+        res.status mustBe Status.BAD_REQUEST
+        res.json.toString() must include("""{"code":"SCHEMA_ERROR","reason":"The request body provided does not conform to the CreateUpdateFinancialDataSchema."}""")
+      }
+    }
   }
 
 
@@ -957,4 +1029,5 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
       res.json.toString() must include("""{"code":"SCHEMA_ERROR","reason":"The request body provided does not conform to the CreateUpdateIncomeSourceSchema."}""")
     }
   }
+
 }

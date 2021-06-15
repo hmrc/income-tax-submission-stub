@@ -19,14 +19,15 @@ package services
 import javax.inject.Inject
 import models.APIModels._
 import models.DESModels.{DESEmploymentExpenses, DESEmploymentsList}
-import play.api.libs.json.Json
-import play.api.mvc.Result
+import models.{ErrorBodyModel, ErrorModel}
+import play.api.libs.json.{JsValue, Json}
+import play.api.mvc.{Request, Result}
 import play.api.mvc.Results.Ok
 import utils.ErrorResponses.notFound
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class EmploymentsService @Inject()() {
+class EmploymentsService @Inject()(validateRequestService: ValidateRequestService) {
 
   def getListOfEmployments(taxYear: Int, employmentId: Option[String])(implicit ec: ExecutionContext): APIUser => Future[Result] = {
     user =>
@@ -101,5 +102,9 @@ class EmploymentsService @Inject()() {
             case None => Future(notFound)
           }
       }
+  }
+
+  def validateCreateUpdateIncomeSource(implicit request: Request[JsValue], APINumber: Int): Either[Result,Boolean] = {
+    validateRequestService.validateRequest(ErrorModel(400,ErrorBodyModel("SCHEMA_ERROR", "The request body provided does not conform to the CreateUpdateFinancialDataSchema.")), APINumber)
   }
 }
