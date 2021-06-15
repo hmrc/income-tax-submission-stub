@@ -148,7 +148,7 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
       case Left(error) =>
         logger.error(s"[createUpdateEmploymentFinancialData] The request body provided does not conform to the schema. Nino with request: $nino")
         Future(error)
-      case Right(_) => Future(Ok(Json.parse("{}")))
+      case Right(_) => Future(NoContent)
     }
   }
 
