@@ -24,7 +24,8 @@ import play.api.mvc.{Action, AnyContent, ControllerComponents, Result}
 import services.{DividendsService, EmploymentsService, GiftAidService, InterestService}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import utils.ErrorResponses._
-import utils.RandomIdGenerator.randomId
+import utils.RandomIdGenerator.{randomEmploymentId, randomId}
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import utils.TaxYearConversion.convertStringTaxYear
@@ -135,6 +136,23 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
   def getEmploymentData(nino: String, taxYear: String, employmentId: String, view: String) : Action[AnyContent] = Action.async { _ =>
     logger.info(s"Get employment data for nino: $nino, taxYear: $taxYear, employmentID: $employmentId, view: $view")
     userDataService.findUser(nino)(employmentsService.getEmploymentData(convertStringTaxYear(taxYear), employmentId, view))
+  }
+
+  // DES #1661 //
+  def addEmployment(nino: String, taxYear: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
+
+    implicit val APINumber: Int = 1661
+
+    logger.info(s"Adding Employment for nino: $nino, taxYear: $taxYear")
+
+    val outcome = employmentsService.validateAddEmployment
+
+    outcome match {
+      case Left(error) =>
+        logger.error(s"[addEmployment] The request body provided does not conform to the schema. Nino with request: $nino")
+        Future(error)
+      case Right(_) => Future(Ok(Json.parse(s"""{"employmentId": "$randomEmploymentId"}""".stripMargin)))
+    }
   }
 
   // DES #1643 //
