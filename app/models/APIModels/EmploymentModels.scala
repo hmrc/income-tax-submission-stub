@@ -136,4 +136,3 @@ case class StudentLoans(uglDeductionAmount: Option[BigDecimal] = None,
 object StudentLoans {
   implicit val format: Format[StudentLoans] = Json.format[StudentLoans]
 }
-

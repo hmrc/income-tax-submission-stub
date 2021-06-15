@@ -20,4 +20,5 @@ import java.util.UUID.randomUUID
 
 object RandomIdGenerator {
   def randomId: String = s"ZZIS${randomUUID.toString.replaceAll("-","").take(11)}".toUpperCase()
+  def randomEmploymentId: String = randomUUID().toString
 }

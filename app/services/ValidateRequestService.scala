@@ -31,6 +31,7 @@ class ValidateRequestService @Inject()() extends JsonValidation with Logging {
     val schemaFile = APINumber match {
       case 1390 => "1390_CreateUpdateIncomeSourceSchema.json"
       case 1393 => "1393_CreateIncomeSourceSchema.json"
+      case 1661 => "1661_AddEmploymentSchema.json"
       case 1643 => "1643_CreateUpdateEmploymentFinancialData.json"
     }
 

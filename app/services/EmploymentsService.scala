@@ -104,6 +104,11 @@ class EmploymentsService @Inject()(validateRequestService: ValidateRequestServic
       }
   }
 
+  def validateAddEmployment(implicit request: Request[JsValue], APINumber: Int): Either[Result, Boolean] = {
+    validateRequestService.validateRequest(ErrorModel(400, ErrorBodyModel("SCHEMA_ERROR", "The request body provided does not conform to the AddEmploymentSchema.")), APINumber)
+  }
+
+
   def validateCreateUpdateIncomeSource(implicit request: Request[JsValue], APINumber: Int): Either[Result,Boolean] = {
     validateRequestService.validateRequest(ErrorModel(400,ErrorBodyModel("SCHEMA_ERROR", "The request body provided does not conform to the CreateUpdateFinancialDataSchema.")), APINumber)
   }
