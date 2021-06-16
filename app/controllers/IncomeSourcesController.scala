@@ -155,6 +155,12 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
     }
   }
 
+  // DES #1663 //
+  def deleteEmployment(nino:String, taxYear:String, employmentId:String): Action[AnyContent] = Action.async { _ =>
+    logger.info(s"Delete employment for nino: $nino, taxYear: $taxYear, employmentID: $employmentId")
+    Future(NoContent)
+  }
+
   // DES #1643 //
   def createUpdateEmploymentFinancialData(nino:String, taxYear:String, employmentId:String): Action[JsValue] = Action.async(parse.json) { implicit request =>
 

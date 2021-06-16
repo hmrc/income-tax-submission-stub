@@ -707,7 +707,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
     "PUT /income-tax/income/employments/AB200900/2022/01312" should {
       s"return $NO_CONTENT with pay model" in {
 
-        val url = "income-tax/income/employments/AB200900/2022/01312"
+        val url = "income-tax/income/employments/AB200900/2021-22/01312"
 
         val res = await(buildClient(url).put(Json.parse(
           """{
@@ -756,7 +756,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
 
       s"return ${Status.BAD_REQUEST} without required pay model" in {
 
-        val url = "income-tax/income/employments/AB200900/2022/01312"
+        val url = "income-tax/income/employments/AB200900/2021-22/01312"
 
         val res = await(buildClient(url).put(Json.parse(
           """{
@@ -807,6 +807,16 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
 
       res.status mustBe BAD_REQUEST
       res.json.toString() must include("""{"code":"SCHEMA_ERROR","reason":"The request body provided does not conform to the AddEmploymentSchema."}""")
+    }
+  }
+
+  "DELETE income-tax/income/employments/AB200900/2022/01312" should {
+    s"return $NO_CONTENT when endpoint is hit" in {
+
+      val url = "income-tax/income/employments/AB200900/2021-22/01312"
+
+      val res = await(buildClient(url).delete())
+      res.status mustBe Status.NO_CONTENT
     }
   }
 
