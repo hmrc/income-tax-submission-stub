@@ -119,7 +119,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
     }
   }
 
-  "GET /income-tax/income/employments/AA123459A/2022" should {
+  "GET /income-tax/income/employments/AA123459A/2021-22" should {
     s"return ${Status.OK} with json" in {
 
       val url = s"income-tax/income/employments/AA123459A/2021-22"
@@ -704,7 +704,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
       res.json mustBe Json.parse("""{"code":"NOT_FOUND","reason":"The remote endpoint has indicated that no data can be found."}""".stripMargin)
     }
 
-    "PUT /income-tax/income/employments/AB200900/2022/01312" should {
+    "PUT /income-tax/income/employments/AB200900/2021-22/01312" should {
       s"return $NO_CONTENT with pay model" in {
 
         val url = "income-tax/income/employments/AB200900/2021-22/01312"
@@ -810,7 +810,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
     }
   }
 
-  "DELETE income-tax/income/employments/AB200900/2022/01312" should {
+  "DELETE income-tax/income/employments/AB200900/2021-22/01312" should {
     s"return $NO_CONTENT when endpoint is hit" in {
 
       val url = "income-tax/income/employments/AB200900/2021-22/01312"

@@ -18,7 +18,6 @@ package utils
 
 import play.api.Application
 import play.api.http.Status
-import play.api.libs.json.Json
 import play.api.test.{DefaultAwaitTimeout, FutureAwaits}
 
 class TaxYearUtilsISpec extends IntegrationTest with FutureAwaits with DefaultAwaitTimeout with Status {
@@ -28,6 +27,17 @@ class TaxYearUtilsISpec extends IntegrationTest with FutureAwaits with DefaultAw
   "Tax year predicate" should {
 
     val invalidTaxYear = "2022"
+    val validTaxYear = "2021-22"
+
+    s"returns expected result with valid tax year" in {
+
+      val url = s"income-tax/income/employments/AB200900/$validTaxYear/01312"
+
+      val res = await(buildClient(url).delete())
+
+      res.status mustBe NO_CONTENT
+    }
+
 
     s"return $BAD_REQUEST with invalid tax year" in {
 
