@@ -119,7 +119,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
     }
   }
 
-  "GET /income-tax/income/employments/AA123459A/2022" should {
+  "GET /income-tax/income/employments/AA123459A/2021-22" should {
     s"return ${Status.OK} with json" in {
 
       val url = s"income-tax/income/employments/AA123459A/2021-22"
@@ -704,10 +704,10 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
       res.json mustBe Json.parse("""{"code":"NOT_FOUND","reason":"The remote endpoint has indicated that no data can be found."}""".stripMargin)
     }
 
-    "PUT /income-tax/income/employments/AB200900/2022/01312" should {
+    "PUT /income-tax/income/employments/AB200900/2021-22/01312" should {
       s"return $NO_CONTENT with pay model" in {
 
-        val url = "income-tax/income/employments/AB200900/2022/01312"
+        val url = "income-tax/income/employments/AB200900/2021-22/01312"
 
         val res = await(buildClient(url).put(Json.parse(
           """{
@@ -756,7 +756,7 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
 
       s"return ${Status.BAD_REQUEST} without required pay model" in {
 
-        val url = "income-tax/income/employments/AB200900/2022/01312"
+        val url = "income-tax/income/employments/AB200900/2021-22/01312"
 
         val res = await(buildClient(url).put(Json.parse(
           """{
@@ -807,6 +807,16 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
 
       res.status mustBe BAD_REQUEST
       res.json.toString() must include("""{"code":"SCHEMA_ERROR","reason":"The request body provided does not conform to the AddEmploymentSchema."}""")
+    }
+  }
+
+  "DELETE income-tax/income/employments/AB200900/2021-22/01312" should {
+    s"return $NO_CONTENT when endpoint is hit" in {
+
+      val url = "income-tax/income/employments/AB200900/2021-22/01312"
+
+      val res = await(buildClient(url).delete())
+      res.status mustBe Status.NO_CONTENT
     }
   }
 

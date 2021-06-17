@@ -16,19 +16,18 @@
 
 package controllers
 
-import javax.inject.Inject
-import services.UserDataService
 import play.api.Logging
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Result}
-import services.{DividendsService, EmploymentsService, GiftAidService, InterestService}
+import services._
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import utils.ErrorResponses._
 import utils.RandomIdGenerator.{randomEmploymentId, randomId}
+import utils.TaxYearUtils.{checkTaxYearIsInValidFormat, convertStringTaxYear}
 
+import javax.inject.Inject
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import utils.TaxYearConversion.convertStringTaxYear
 
 class IncomeSourcesController @Inject()(interestService: InterestService,
                                         dividendsService: DividendsService,
@@ -119,54 +118,72 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
   }
 
   // DES #1645 //
-  def getEmploymentsList(nino: String, taxYear: String, employmentId: Option[String]) : Action[AnyContent] = Action.async { _ =>
-
-    logger.info(s"Get list of employments for nino: $nino, taxYear: $taxYear, employmentId: ${employmentId.getOrElse("None")}")
-
-    userDataService.findUser(nino)(employmentsService.getListOfEmployments(convertStringTaxYear(taxYear), employmentId))
+  def getEmploymentsList(nino: String, taxYear: String, employmentId: Option[String]): Action[AnyContent] = Action.async { _ =>
+    checkTaxYearIsInValidFormat(taxYear, nino) {
+      logger.info(s"Get list of employments for nino: $nino, taxYear: $taxYear, employmentId: ${employmentId.getOrElse("None")}")
+      userDataService.findUser(nino)(employmentsService.getListOfEmployments(convertStringTaxYear(taxYear), employmentId))
+    }
   }
 
   // DES #1668 //
-  def getEmploymentsExpenses(nino: String, taxYear: String, view: String) : Action[AnyContent] = Action.async { _ =>
-    logger.info(s"Get employment expenses for nino: $nino, taxYear: $taxYear, view: $view")
-    userDataService.findUser(nino)(employmentsService.getEmploymentExpenses(convertStringTaxYear(taxYear), view))
+  def getEmploymentsExpenses(nino: String, taxYear: String, view: String): Action[AnyContent] = Action.async { _ =>
+    checkTaxYearIsInValidFormat(taxYear, nino) {
+      logger.info(s"Get employment expenses for nino: $nino, taxYear: $taxYear, view: $view")
+      userDataService.findUser(nino)(employmentsService.getEmploymentExpenses(convertStringTaxYear(taxYear), view))
+    }
   }
 
   // DES #1647 //
-  def getEmploymentData(nino: String, taxYear: String, employmentId: String, view: String) : Action[AnyContent] = Action.async { _ =>
-    logger.info(s"Get employment data for nino: $nino, taxYear: $taxYear, employmentID: $employmentId, view: $view")
-    userDataService.findUser(nino)(employmentsService.getEmploymentData(convertStringTaxYear(taxYear), employmentId, view))
+  def getEmploymentData(nino: String, taxYear: String, employmentId: String, view: String): Action[AnyContent] = Action.async { _ =>
+    checkTaxYearIsInValidFormat(taxYear, nino) {
+      logger.info(s"Get employment data for nino: $nino, taxYear: $taxYear, employmentID: $employmentId, view: $view")
+      userDataService.findUser(nino)(employmentsService.getEmploymentData(convertStringTaxYear(taxYear), employmentId, view))
+    }
   }
 
   // DES #1661 //
   def addEmployment(nino: String, taxYear: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
 
-    implicit val APINumber: Int = 1661
+    checkTaxYearIsInValidFormat(taxYear, nino) {
+      implicit val APINumber: Int = 1661
 
-    logger.info(s"Adding Employment for nino: $nino, taxYear: $taxYear")
+      logger.info(s"Adding Employment for nino: $nino, taxYear: $taxYear")
 
-    val outcome = employmentsService.validateAddEmployment
+      val outcome = employmentsService.validateAddEmployment
 
-    outcome match {
-      case Left(error) =>
-        logger.error(s"[addEmployment] The request body provided does not conform to the schema. Nino with request: $nino")
-        Future(error)
-      case Right(_) => Future(Ok(Json.parse(s"""{"employmentId": "$randomEmploymentId"}""".stripMargin)))
+      outcome match {
+        case Left(error) =>
+          logger.error(s"[addEmployment] The request body provided does not conform to the schema. Nino with request: $nino")
+          Future(error)
+        case Right(_) => Future(Ok(Json.parse(s"""{"employmentId": "$randomEmploymentId"}""".stripMargin)))
+      }
+    }
+
+  }
+
+
+  // DES #1663 //
+  def deleteEmployment(nino: String, taxYear: String, employmentId: String): Action[AnyContent] = Action.async { _ =>
+    checkTaxYearIsInValidFormat(taxYear, nino) {
+      logger.info(s"Delete employment for nino: $nino, taxYear: $taxYear, employmentID: $employmentId")
+      Future(NoContent)
     }
   }
 
   // DES #1643 //
-  def createUpdateEmploymentFinancialData(nino:String, taxYear:String, employmentId:String): Action[JsValue] = Action.async(parse.json) { implicit request =>
+  def createUpdateEmploymentFinancialData(nino: String, taxYear: String, employmentId: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
 
-    implicit val APINumber: Int = 1643
+    checkTaxYearIsInValidFormat(taxYear, nino) {
+      implicit val APINumber: Int = 1643
 
-    logger.info(s"Creating/Updating annual income source for nino: $nino, taxYear: $taxYear, employmentId:$employmentId")
+      logger.info(s"Creating/Updating annual income source for nino: $nino, taxYear: $taxYear, employmentId:$employmentId")
 
-    employmentsService.validateCreateUpdateIncomeSource match {
-      case Left(error) =>
-        logger.error(s"[createUpdateEmploymentFinancialData] The request body provided does not conform to the schema. Nino with request: $nino")
-        Future(error)
-      case Right(_) => Future(NoContent)
+      employmentsService.validateCreateUpdateIncomeSource match {
+        case Left(error) =>
+          logger.error(s"[createUpdateEmploymentFinancialData] The request body provided does not conform to the schema. Nino with request: $nino")
+          Future(error)
+        case Right(_) => Future(NoContent)
+      }
     }
   }
 

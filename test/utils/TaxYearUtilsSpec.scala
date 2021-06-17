@@ -16,12 +16,16 @@
 
 package utils
 
-object TaxYearConversion {
+import testUtils.TestSupport
 
-  def convertStringTaxYear(taxYear: String): Int ={
+class TaxYearUtilsSpec extends TestSupport {
 
-    //2021-22 -> 2022
-    taxYear.take(4).toInt + 1
+  "The TaxYearConversion" should {
+
+    s"return int from string" in {
+      TaxYearUtils.convertStringTaxYear("2021-22") mustBe 2022
+      TaxYearUtils.convertStringTaxYear("2099-00") mustBe 2100
+      TaxYearUtils.convertStringTaxYear("2029-30") mustBe 2030
+    }
   }
-
 }
