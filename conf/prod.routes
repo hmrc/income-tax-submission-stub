@@ -30,8 +30,11 @@ POST   /income-tax/income/employments/:nino/:taxYear/custom                     
 ### DES #1643 ###
 PUT    /income-tax/income/employments/:nino/:taxYear/:employmentId             controllers.IncomeSourcesController.createUpdateEmploymentFinancialData(nino: String, taxYear: String, employmentId: String)
 
-### DES #1662 ###
-DELETE /income-tax/income/employments/:nino/:taxYear/:employmentId             controllers.IncomeSourcesController.deleteEmployment(nino: String, taxYear: String, employmentId: String)
+### DES #1644 ###
+DELETE    /income-tax/income/employments/:nino/:taxYear/:employmentId          controllers.IncomeSourcesController.deleteEmploymentFinancialData(nino: String, taxYear: String, employmentId: String)
+
+### DES #1663 ###
+DELETE   /income-tax/income/employments/:nino/:taxYear/custom/:employmentId    controllers.IncomeSourcesController.deleteEmployment(nino: String, taxYear: String, employmentId: String)
 
 POST    /user                                                                   controllers.UserDataController.postUser
 DELETE  /reset                                                                  controllers.UserDataController.resetUsers
