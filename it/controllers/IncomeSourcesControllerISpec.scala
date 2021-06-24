@@ -830,6 +830,37 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
     }
   }
 
+  "PUT /income-tax/income/employments/AB200900/2021-22/custom/01312" should {
+    s"return $OK with json with valid request body" in {
+
+      val url = "income-tax/income/employments/AB200900/2021-22/custom/01312"
+
+      val res = await(buildClient(url).put(Json.parse(
+        """{
+          |  "employerRef": "123/AZ12334",
+          |  "employerName":  "AMD infotech Ltd",
+          |  "startDate": "2019-01-01",
+          |  "cessationDate":  "2020-06-01",
+          |  "payrollId": "124214112412"
+          |}""".stripMargin)))
+
+      res.status mustBe NO_CONTENT
+    }
+
+    s"return $BAD_REQUEST with json with invalid request body" in {
+      val url = "income-tax/income/employments/AB200900/2021-22/custom/01312"
+
+      val res = await(buildClient(url).put(Json.parse(
+        """{
+          |  "employerRef": "123/AZ12334",
+          |  "cessationDate":  "2020-06-01",
+          |  "payrollId": "124214112412"
+          |}""".stripMargin)))
+
+      res.status mustBe BAD_REQUEST
+      res.json.toString() must include("""{"code":"SCHEMA_ERROR","reason":"The request body provided does not conform to the UpdateEmploymentSchema."}""")
+    }
+  }
 
   "GET /income-tax/income-sources/nino/AA123459A" should {
     s"return ${Status.OK} with json" in {

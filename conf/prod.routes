@@ -33,6 +33,9 @@ PUT    /income-tax/income/employments/:nino/:taxYear/:employmentId             c
 ### DES #1644 ###
 DELETE    /income-tax/income/employments/:nino/:taxYear/:employmentId          controllers.IncomeSourcesController.deleteEmploymentFinancialData(nino: String, taxYear: String, employmentId: String)
 
+### DES #1662 ###
+PUT   /income-tax/income/employments/:nino/:taxYear/custom/:employmentId    controllers.IncomeSourcesController.updateEmployment(nino: String, taxYear: String, employmentId: String)
+
 ### DES #1663 ###
 DELETE   /income-tax/income/employments/:nino/:taxYear/custom/:employmentId    controllers.IncomeSourcesController.deleteEmployment(nino: String, taxYear: String, employmentId: String)
 
