@@ -161,6 +161,23 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
 
   }
 
+  // DES #1662 //
+  def updateEmployment(nino: String, taxYear: String, employmentId: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
+    checkTaxYearIsInValidFormat(taxYear, nino) {
+      implicit val APINumber: Int = 1662
+
+      logger.info(s"Updating Employment for nino: $nino, taxYear: $taxYear, employmentId: $employmentId")
+
+      val outcome = employmentsService.validateUpdateEmployment
+
+      outcome match {
+        case Left(error) =>
+          logger.error(s"[updateEmployment] The request body provided does not conform to the schema. Nino with request: $nino")
+          Future(error)
+        case Right(_) => Future(NoContent)
+      }
+    }
+  }
 
   // DES #1663 //
   def deleteEmployment(nino: String, taxYear: String, employmentId: String): Action[AnyContent] = Action.async { _ =>
