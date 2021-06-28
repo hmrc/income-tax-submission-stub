@@ -862,14 +862,14 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
     }
   }
   "PUT income-tax/income/employments/AB234543A/2021-22/01312/ignore" should {
-    s"return a $NO_CONTENT when endpoint is hit" in {
+    s"return a $CREATED when the endpoint is hit" in {
 
       val url = "income-tax/income/employments/AB234543A/2021-22/01312/ignore"
 
       val res = await(buildClient(url).put(Json.parse(
         """{}"""
       )))
-      res.status mustBe Status.NO_CONTENT
+      res.status mustBe Status.CREATED
     }
   }
 

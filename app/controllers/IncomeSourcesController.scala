@@ -217,7 +217,7 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
   def ignoreEmployment(nino: String, taxYear: String, employmentId: String): Action[AnyContent] = Action.async { _ =>
     checkTaxYearIsInValidFormat(taxYear, nino) {
       logger.info(s"Ignore employment for nino: $nino, taxYear: $taxYear, employmentId: $employmentId")
-      Future(NoContent)
+      Future(Created)
     }
   }
 
