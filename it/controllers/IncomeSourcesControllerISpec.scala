@@ -871,6 +871,18 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
       )))
       res.status mustBe Status.CREATED
     }
+
+    s"return a $BAD_REQUEST with json with an invalid request body" in {
+
+      val url = "income-tax/income/employments/AB234543A/2021-22/01312/ignore"
+
+      val res = await(buildClient(url).put(Json.parse(
+        """{
+          | "employmentId": "1234"
+          |}""".stripMargin
+      )))
+      res.status mustBe Status.BAD_REQUEST
+    }
   }
 
 
