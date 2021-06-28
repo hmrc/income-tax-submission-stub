@@ -861,6 +861,18 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
       res.json.toString() must include("""{"code":"SCHEMA_ERROR","reason":"The request body provided does not conform to the UpdateEmploymentSchema."}""")
     }
   }
+  "PUT income-tax/income/employments/AB234543A/2021-22/01312/ignore" should {
+    s"return a $CREATED when the endpoint is hit" in {
+
+      val url = "income-tax/income/employments/AB234543A/2021-22/01312/ignore"
+
+      val res = await(buildClient(url).put(Json.parse(
+        """{}"""
+      )))
+      res.status mustBe Status.CREATED
+    }
+  }
+
 
   "GET /income-tax/income-sources/nino/AA123459A" should {
     s"return ${Status.OK} with json" in {

@@ -39,6 +39,9 @@ PUT   /income-tax/income/employments/:nino/:taxYear/custom/:employmentId    cont
 ### DES #1663 ###
 DELETE   /income-tax/income/employments/:nino/:taxYear/custom/:employmentId    controllers.IncomeSourcesController.deleteEmployment(nino: String, taxYear: String, employmentId: String)
 
+### DES #1664 ###
+PUT     /income-tax/income/employments/:nino/:taxYear/:employmentId/ignore     controllers.IncomeSourcesController.ignoreEmployment(nino: String, taxYear: String, employmentId: String)
+
 POST    /user                                                                   controllers.UserDataController.postUser
 DELETE  /reset                                                                  controllers.UserDataController.resetUsers
 
