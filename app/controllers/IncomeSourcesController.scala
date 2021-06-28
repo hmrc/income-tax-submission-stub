@@ -214,10 +214,17 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
 
   // DES #1664 //
 
-  def ignoreEmployment(nino: String, taxYear: String, employmentId: String): Action[AnyContent] = Action.async { _ =>
+  def ignoreEmployment(nino: String, taxYear: String, employmentId: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
     checkTaxYearIsInValidFormat(taxYear, nino) {
+
       logger.info(s"Ignore employment for nino: $nino, taxYear: $taxYear, employmentId: $employmentId")
+
+      if(request.body != Json.parse("""{}""")){
+        logger.error(s"[ignoreEmployment] API needs empty json supplied. Nino with request: $nino")
+        Future(BadRequest)
+      } else {
       Future(Created)
+      }
     }
   }
 
