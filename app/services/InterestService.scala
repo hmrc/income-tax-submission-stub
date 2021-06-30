@@ -63,7 +63,14 @@ class InterestService @Inject()(validateRequestService: ValidateRequestService){
           DESInterestDetails(interestSubmissionsForTaxYear)
       }.headOption
 
-      interestIncomeSource.fold(Future(notFound))(incomeSource => Future(Ok(Json.toJson(incomeSource))))
+      interestIncomeSource.fold(Future(notFound)){
+        incomeSource =>
+          if(incomeSource.savingsInterestAnnualIncome.nonEmpty){
+            Future(Ok(Json.toJson(incomeSource)))
+          } else {
+            Future(notFound)
+          }
+      }
   }
 
   def validateCreateUpdateIncomeSource(implicit request: Request[JsValue], APINumber: Int): Either[Result,Boolean] = {

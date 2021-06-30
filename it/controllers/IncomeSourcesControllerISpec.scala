@@ -51,6 +51,15 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
       res.status mustBe Status.OK
       res.json.toString() must include("""{"savingsInterestAnnualIncome":[{"incomeSourceId":"000000000000002","taxedUkInterest":99999999999.99}]}""")
     }
+    s"return ${Status.NOT_FOUND} when different tax year" in {
+
+      val url = s"income-tax/nino/AA123459A/income-source/savings/annual/2023?incomeSourceId=000000000000002"
+
+      val res = await(buildClient(url).get())
+
+      res.status mustBe Status.NOT_FOUND
+      res.json.toString() must include("""{"code":"NOT_FOUND","reason":"The remote endpoint has indicated that no data can be found."}""")
+    }
     s"return ${Status.NOT_FOUND} when the income source id does not exist" in {
 
       val url = s"income-tax/nino/AA123459A/income-source/savings/annual/2022?incomeSourceId=123456789012345"
