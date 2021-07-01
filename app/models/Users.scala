@@ -170,8 +170,8 @@ object Users {
           interestSubmissions = Seq(
             InterestSubmission(
               2021,
-              None,
-              Some(4000)
+              Some(4000),
+              None
             )
           )
         )
