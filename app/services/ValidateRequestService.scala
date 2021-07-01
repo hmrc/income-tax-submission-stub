@@ -34,6 +34,7 @@ class ValidateRequestService @Inject()() extends JsonValidation with Logging {
       case 1661 => "1661_AddEmploymentSchema.json"
       case 1643 => "1643_CreateUpdateEmploymentFinancialData.json"
       case 1662 => "1662_UpdateEmploymentSchema.json"
+      case 1669 => "1669_CreateUpdateEmploymentExpensesSchema.json"
     }
 
     if (isValidJsonAccordingToJsonSchema(request.body, s"/jsonSchemas/$schemaFile")) {

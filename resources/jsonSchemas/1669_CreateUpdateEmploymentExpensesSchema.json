@@ -1,0 +1,51 @@
+{
+ "$schema": "http://json-schema.org/draft-04/schema#",
+ "title": "API#1669 Create/Update Employment Request Schema v1.0.0",
+ "description": "API#1669 Create/Update Employment Request Schema v1.0.0",
+ "type": "object",
+ "properties": {
+    "expenses": {
+         "type": "object",
+         "properties": {
+            "businessTravelCosts": {
+                "$ref": "#/definitions/monetaryPos"
+            },
+            "jobExpenses": {
+                "$ref": "#/definitions/monetaryPos"
+            },
+            "flatRateJobExpenses": {
+                 "$ref": "#/definitions/monetaryPos"
+            },
+            "professionalSubscriptions": {
+                 "$ref": "#/definitions/monetaryPos"
+            },
+            "hotelAndMealExpenses": {
+                  "$ref": "#/definitions/monetaryPos"
+            },
+            "otherAndCapitalAllowances": {
+                  "$ref": "#/definitions/monetaryPos"
+            },
+            "vehicleExpenses": {
+                  "$ref": "#/definitions/monetaryPos"
+            },
+            "mileageAllowanceRelief": {
+                 "$ref": "#/definitions/monetaryPos"
+            }
+         },
+         "additionalProperties":false
+    },
+    "additionalProperties":false
+ },
+ "required": [
+    "expenses"
+ ],
+ "definitions": {
+     "monetaryPos": {
+       "description": "Defines a monetary value (to 2 decimal places), between 0 and 99999999999.99",
+       "type": "number",
+       "minimum": 0,
+       "maximum": 99999999999.99,
+       "multipleOf": 0.01
+     }
+  }
+}
