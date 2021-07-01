@@ -839,6 +839,16 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
     }
   }
 
+  "DELETE income-tax/expenses/employments/AB200900/2021-22" should {
+    s"return $NO_CONTENT when endpoint is hit" in {
+
+      val url = "income-tax/expenses/employments/AB200900/2021-22"
+
+      val res = await(buildClient(url).delete())
+      res.status mustBe Status.NO_CONTENT
+    }
+  }
+
   "PUT /income-tax/income/employments/AB200900/2021-22/custom/01312" should {
     s"return $OK with json with valid request body" in {
 

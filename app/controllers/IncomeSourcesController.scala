@@ -228,4 +228,14 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
     }
   }
 
+  // DES #1670 //
+
+  def deleteEmploymentExpenses(nino: String, taxYear: String): Action[AnyContent] = Action.async { _ =>
+    println
+    checkTaxYearIsInValidFormat(taxYear, nino) {
+      logger.info(s"Delete employment expense data for nino: $nino, taxYear: $taxYear")
+      Future(NoContent)
+    }
+  }
+
 }
