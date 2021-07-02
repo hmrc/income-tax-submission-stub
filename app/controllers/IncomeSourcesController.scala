@@ -141,7 +141,7 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
     }
   }
 
-  // DES #1661 //
+  // DES #1661 v1.0.0 //
   def addEmployment(nino: String, taxYear: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
 
     checkTaxYearIsInValidFormat(taxYear, nino) {
@@ -161,7 +161,7 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
 
   }
 
-  // DES #1662 //
+  // DES #1662 v1.0.0 //
   def updateEmployment(nino: String, taxYear: String, employmentId: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
     checkTaxYearIsInValidFormat(taxYear, nino) {
       implicit val APINumber: Int = 1662
