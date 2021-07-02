@@ -1157,4 +1157,62 @@ class IncomeSourcesControllerISpec extends IntegrationTest with FutureAwaits wit
     }
   }
 
+  "PUT /income-tax/expenses/employments/AA123459A/2019-20" should {
+
+    s"return $NO_CONTENT with valid body type 1" in {
+
+      val url = "income-tax/expenses/employments/AA123459A/2019-20"
+
+      val res = await(buildClient(url).put(Json.parse("""{"ignoreExpenses":true}""")))
+
+      res.status mustBe Status.NO_CONTENT
+    }
+
+    s"return $NO_CONTENT with valid body type 2" in {
+
+      val url = "income-tax/expenses/employments/AA123459A/2019-20"
+
+      val res = await(buildClient(url).put(Json.parse(
+      """{
+          |   "expenses": {
+          |     "businessTravelCosts": 12.23,
+          |     "jobExpenses": 31.22,
+          |     "flatRateJobExpenses": 43.33,
+          |     "professionalSubscriptions": 24.43,
+          |     "hotelAndMealExpenses": 44.21,
+          |     "otherAndCapitalAllowances": 32.88,
+          |     "vehicleExpenses": 123.45,
+          |     "mileageAllowanceRelief": 24.98
+          |   }
+          |
+          |}""".stripMargin
+      )))
+
+      res.status mustBe Status.NO_CONTENT
+    }
+
+    s"return $BAD_REQUEST with invalid body" in {
+
+      val url = "income-tax/expenses/employments/AA123459A/2019-20"
+
+      val res = await(buildClient(url).put(Json.parse(
+        """{
+          |   "expenses": {
+          |     "businessTravelCosts": 12.23,
+          |     "jobExpenses": 31.22,
+          |     "flatRateJobExpenses": "cat",
+          |     "professionalSubscriptions": 24.43,
+          |     "hotelAndMealExpenses": 44.21,
+          |     "otherAndCapitalAllowances": 32.88,
+          |     "vehicleExpenses": 123.45,
+          |     "mileageAllowanceRelief": 24.98
+          |   }
+          |
+          |}""".stripMargin
+      )))
+
+      res.status mustBe Status.BAD_REQUEST
+    }
+  }
+
 }

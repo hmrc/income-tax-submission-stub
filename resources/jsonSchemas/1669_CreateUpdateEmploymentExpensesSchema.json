@@ -1,0 +1,71 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"title": "API#1669 Request schema",
+	"description": "Request schema to submit employments expenses for taxable entity ID and tax year.",
+	"type": "object",
+	"oneOf": [{
+		"title": "Ignore Expenses",
+		"description": "Ignore Employment Expenses",
+		"type": "object",
+		"properties": {
+			"ignoreExpenses": {
+				"type": "boolean",
+				"enum": [true]
+			}
+		},
+		"required": ["ignoreExpenses"],
+		"additionalProperties": false
+	}, {
+		"title": "Expenses",
+		"description": "Override Employment Expenses",
+		"type": "object",
+		"properties": {
+			"expenses": {
+				"$ref": "#/definitions/expensesType"
+			}
+		},
+		"required": ["expenses"],
+		"additionalProperties": false
+	}],
+	"definitions": {
+		"monetaryPos": {
+			"description": "Defines a monetary value (to 2 decimal places) between 0 and 99999999999.99",
+			"type": "number",
+			"minimum": 0,
+			"maximum": 99999999999.99,
+			"multipleOf": 0.01
+		},
+		"expensesType": {
+			"description": "itemised expenses",
+			"type": "object",
+			"minProperties": 1,
+			"properties": {
+				"businessTravelCosts": {
+					"$ref": "#/definitions/monetaryPos"
+				},
+				"jobExpenses": {
+					"$ref": "#/definitions/monetaryPos"
+				},
+				"flatRateJobExpenses": {
+					"$ref": "#/definitions/monetaryPos"
+				},
+				"professionalSubscriptions": {
+					"$ref": "#/definitions/monetaryPos"
+				},
+				"hotelAndMealExpenses": {
+					"$ref": "#/definitions/monetaryPos"
+				},
+				"otherAndCapitalAllowances": {
+					"$ref": "#/definitions/monetaryPos"
+				},
+				"vehicleExpenses": {
+					"$ref": "#/definitions/monetaryPos"
+				},
+				"mileageAllowanceRelief": {
+					"$ref": "#/definitions/monetaryPos"
+				}
+			},
+			"additionalProperties": false
+		}
+	}
+}
