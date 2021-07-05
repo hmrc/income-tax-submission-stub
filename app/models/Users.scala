@@ -152,11 +152,28 @@ object Users {
     ),
     APIUser(
       "AA000002A",
-      dividends = Seq(
-        Dividends(
-          2022,
-          Some(750.50),
-          Some(225.25)
+      interest = Seq(
+        Interest(
+          "Halifax",
+          RandomIdGenerator.randomId,
+          interestSubmissions = Seq(
+            InterestSubmission(
+              2021,
+              None,
+              Some(4000)
+            )
+          )
+        ),
+        Interest(
+          "Nationwide",
+          RandomIdGenerator.randomId,
+          interestSubmissions = Seq(
+            InterestSubmission(
+              2021,
+              Some(4000),
+              None
+            )
+          )
         )
       )
     ),
