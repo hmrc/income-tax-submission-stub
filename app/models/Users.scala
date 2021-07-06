@@ -357,6 +357,76 @@ object Users {
               mileageAllowanceRelief = Some(100.00)
             ))
           ))
+        ),
+        Employment(
+          2021,
+          Seq(
+            EmploymentSource("00000000-0000-1000-8000-000000000003", "Eoy Vera Lynn HMRC", Some("123/abc 001<Q>"), Some("123345657"),
+              Some("2020-06-17T10:53:38Z"), Some("2020-06-17T10:53:38Z"), Some("2020-06-17T10:53:38Z"),
+              employmentData = Some(
+                EmploymentData(
+                  submittedOn = "2020-01-04T05:01:01Z",
+                  source = Some("HMRC-HELD"),
+                  employment = EmploymentDetails(
+                    employmentSequenceNumber = Some("1002"),
+                    payrollId = Some("123456789999"),
+                    companyDirector = Some(false),
+                    closeCompany = Some(true),
+                    directorshipCeasedDate = Some("2020-02-12"),
+                    startDate = Some("2019-04-21"),
+                    cessationDate = Some("2020-03-11"),
+                    occPen = Some(false),
+                    disguisedRemuneration = Some(false),
+                    employer = Employer(Some("223/AB12399"), "maggie"),
+                    pay = Some(Pay(Some(34234.15), Some(6782.92), None, Some("CALENDAR MONTHLY"), Some("2020-04-23"), Some(32))),
+                    deductions = Some(
+                      EmploymentDeductions(
+                        studentLoans = Some(StudentLoans(Some(13343.45), Some(24242.56)))
+                      )
+                    ),
+                    benefitsInKind = Some(
+                      Benefits(
+                        Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),
+                        Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100)
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          ),
+          Seq(
+            EmploymentSource("00000000-0000-1000-8000-000000000004", "Eoy Vera Lynn Customer",
+              Some("123/abc 001<Q>"), Some("123345657"), Some("2020-06-17T10:53:38Z"), Some("2020-06-17T10:53:38Z"), submittedOn = Some("2020-06-17T10:53:38Z"),
+              employmentData = Some(
+                EmploymentData(
+                  submittedOn = "2020-02-04T05:01:01Z",
+                  employment = EmploymentDetails(
+                    employmentSequenceNumber = Some("1002"),
+                    payrollId = Some("123456789999"),
+                    companyDirector = Some(false),
+                    closeCompany = Some(true),
+                    directorshipCeasedDate = Some("2020-02-12"),
+                    startDate = Some("2019-04-21"),
+                    cessationDate = Some("2020-03-11"),
+                    occPen = Some(false),
+                    disguisedRemuneration = Some(false),
+                    employer = Employer(Some("223/AB12399"), "maggie"),
+                    pay = Some(Pay(Some(34234.15), Some(6782.92), Some(67676), Some("CALENDAR MONTHLY"), Some("2020-04-23"), Some(32))),
+                    deductions = Some(
+                      EmploymentDeductions(
+                        studentLoans = Some(StudentLoans(Some(13343.45), Some(24242.56))))),
+                    benefitsInKind = Some(
+                      Benefits(
+                        Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),
+                        Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100)
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
         )
       )
     ),
