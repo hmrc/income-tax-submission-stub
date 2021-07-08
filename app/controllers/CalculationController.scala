@@ -31,7 +31,7 @@ class CalculationController @Inject()(cc: ControllerComponents) extends BackendC
 
     logger.info(s"Generating calculation id for nino: $nino, taxYear: $taxYear")
 
-    if(request.body != Json.parse("{}")){
+    if (request.body != Json.parse("{}")) {
       val message = s"[generateCalculationId] API needs empty json supplied. Nino with request: $nino"
       logger.error(message)
       Future(BadRequest(message))
@@ -40,4 +40,14 @@ class CalculationController @Inject()(cc: ControllerComponents) extends BackendC
     }
   }
 
+  // DES #1416 - v1.0.0 //
+  def declareCrystallisationForTaxYear(nino: String, taxYear: Int, calcId: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
+    if (request.body != Json.parse("{}")) {
+      val message = s"[declareCrystallisationForTaxYear] API needs empty json supplied. Nino with request: $nino"
+      logger.error(message)
+      Future(BadRequest(message))
+    } else {
+      Future(NoContent)
+    }
+  }
 }
