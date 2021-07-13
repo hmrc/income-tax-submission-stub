@@ -45,7 +45,7 @@ case class EmploymentData(submittedOn: String,
                           employment: EmploymentDetails){
 
   def toDESEmploymentData: DESEmploymentData = {
-    DESEmploymentData(submittedOn,customerAdded,source,dateIgnored,employment)
+    DESEmploymentData(submittedOn, customerAdded, source, dateIgnored, employment)
   }
 }
 

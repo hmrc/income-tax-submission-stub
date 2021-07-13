@@ -1,52 +1,52 @@
 # Add all the application routes to the app.routes file
 
-### DES #1392 ###
-GET     /income-tax/income-sources/nino/:nino                                   controllers.IncomeSourcesController.getListOfIncomeSources(nino: String, incomeSourceType: String, taxYear: Option[Int])
-
-### DES #1393 ###
-POST    /income-tax/income-sources/nino/:nino                                   controllers.IncomeSourcesController.createIncomeSource(nino:String)
-
-### DES #1391 ###
-GET     /income-tax/nino/:nino/income-source/:incomeSourceType/annual/:taxYear  controllers.IncomeSourcesController.getIncomeSource(nino: String, incomeSourceType: String, taxYear: Int, incomeSourceId: Option[String])
-
-### DES #1390 ###
+### DES #1390 - v2.0.1 ###
 POST    /income-tax/nino/:nino/income-source/:incomeSourceType/annual/:taxYear  controllers.IncomeSourcesController.createUpdateAnnualIncomeSource(nino: String, incomeSourceType: String, taxYear: Int)
 
-### DES #1426 ###
+### DES #1391 - v1.3.0 ###
+GET     /income-tax/nino/:nino/income-source/:incomeSourceType/annual/:taxYear  controllers.IncomeSourcesController.getIncomeSource(nino: String, incomeSourceType: String, taxYear: Int, incomeSourceId: Option[String])
+
+### DES #1392 - v1.1.0 ###
+GET     /income-tax/income-sources/nino/:nino                                   controllers.IncomeSourcesController.getListOfIncomeSources(nino: String, incomeSourceType: String, taxYear: Option[Int])
+
+### DES #1393 - v1.2.0 ###
+POST    /income-tax/income-sources/nino/:nino                                   controllers.IncomeSourcesController.createIncomeSource(nino:String)
+
+### DES #1426 - v3.0.0 ###
 POST    /income-tax/nino/:nino/taxYear/:taxYear/tax-calculation                 controllers.CalculationController.generateCalculationId(nino:String, taxYear:Int)
 
-### DES #1668 ###
-GET    /income-tax/expenses/employments/:nino/:taxYear                            controllers.IncomeSourcesController.getEmploymentsExpenses(nino: String, taxYear: String, view: String)
+### DES #1643 - v1.0.0 ###
+PUT    /income-tax/income/employments/:nino/:taxYear/:employmentId              controllers.IncomeSourcesController.createUpdateEmploymentFinancialData(nino: String, taxYear: String, employmentId: String)
 
-### DES #1645 ###
+### DES #1644 - v1.0.0 ###
+DELETE    /income-tax/income/employments/:nino/:taxYear/:employmentId           controllers.IncomeSourcesController.deleteEmploymentFinancialData(nino: String, taxYear: String, employmentId: String)
+
+### DES #1645 - v1.2.2 ###
 GET    /income-tax/income/employments/:nino/:taxYear                            controllers.IncomeSourcesController.getEmploymentsList(nino: String, taxYear: String, employmentId: Option[String])
 
-### DES #1647 ###
+### DES #1647 - v1.2.0 ###
 GET    /income-tax/income/employments/:nino/:taxYear/:employmentId              controllers.IncomeSourcesController.getEmploymentData(nino: String, taxYear: String, employmentId: String, view: String)
 
-### DES #1661 ###
+### DES #1661 - v1.3.0 ###
 POST   /income-tax/income/employments/:nino/:taxYear/custom                     controllers.IncomeSourcesController.addEmployment(nino: String, taxYear: String)
 
-### DES #1643 ###
-PUT    /income-tax/income/employments/:nino/:taxYear/:employmentId             controllers.IncomeSourcesController.createUpdateEmploymentFinancialData(nino: String, taxYear: String, employmentId: String)
+### DES #1662 - v1.3.0 ###
+PUT   /income-tax/income/employments/:nino/:taxYear/custom/:employmentId        controllers.IncomeSourcesController.updateEmployment(nino: String, taxYear: String, employmentId: String)
 
-### DES #1644 ###
-DELETE    /income-tax/income/employments/:nino/:taxYear/:employmentId          controllers.IncomeSourcesController.deleteEmploymentFinancialData(nino: String, taxYear: String, employmentId: String)
+### DES #1663 - v1.0.0 ###
+DELETE   /income-tax/income/employments/:nino/:taxYear/custom/:employmentId     controllers.IncomeSourcesController.deleteEmployment(nino: String, taxYear: String, employmentId: String)
 
-### DES #1662 ###
-PUT   /income-tax/income/employments/:nino/:taxYear/custom/:employmentId    controllers.IncomeSourcesController.updateEmployment(nino: String, taxYear: String, employmentId: String)
+### DES #1664 - v2.0.0 ###
+PUT     /income-tax/income/employments/:nino/:taxYear/:employmentId/ignore      controllers.IncomeSourcesController.ignoreEmployment(nino: String, taxYear: String, employmentId: String)
 
-### DES #1663 ###
-DELETE   /income-tax/income/employments/:nino/:taxYear/custom/:employmentId    controllers.IncomeSourcesController.deleteEmployment(nino: String, taxYear: String, employmentId: String)
+### DES #1668 - v1.1.0 ###
+GET    /income-tax/expenses/employments/:nino/:taxYear                          controllers.IncomeSourcesController.getEmploymentsExpenses(nino: String, taxYear: String, view: String)
 
-### DES #1664 ###
-PUT     /income-tax/income/employments/:nino/:taxYear/:employmentId/ignore     controllers.IncomeSourcesController.ignoreEmployment(nino: String, taxYear: String, employmentId: String)
-
-### DES #1669 ###
+### DES #1669  - v1.1.0 ###
 PUT     /income-tax/expenses/employments/:nino/:taxYear                         controllers.IncomeSourcesController.createUpdateEmploymentExpenses(nino: String, taxYear: String)
 
-### DES #1670 ###
-DELETE   /income-tax/expenses/employments/:nino/:taxYear          controllers.IncomeSourcesController.deleteEmploymentExpenses(nino: String, taxYear: String)
+### DES #1670 - v1.0.0 ###
+DELETE   /income-tax/expenses/employments/:nino/:taxYear                        controllers.IncomeSourcesController.deleteEmploymentExpenses(nino: String, taxYear: String)
 
 POST    /user                                                                   controllers.UserDataController.postUser
 DELETE  /reset                                                                  controllers.UserDataController.resetUsers

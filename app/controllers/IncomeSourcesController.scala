@@ -36,7 +36,7 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
                                         userDataService: UserDataService,
                                         cc: ControllerComponents) extends BackendController(cc) with Logging {
 
-  // DES #1390 //
+  // DES #1390 - v2.0.1 //
   def createUpdateAnnualIncomeSource(nino: String,
                                      incomeSourceType: String,
                                      taxYear: Int): Action[JsValue] = Action.async(parse.json) { implicit request =>
@@ -61,7 +61,7 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
     }
   }
 
-  // DES #1391 //
+  // DES #1391 - v1.3.0 //
   def getIncomeSource(nino: String,
                       incomeSourceType: String,
                       taxYear: Int,
@@ -81,7 +81,7 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
     }
   }
 
-  // DES #1392 //
+  // DES #1392 - v1.1.0 //
   def getListOfIncomeSources(nino: String,
                              incomeSourceType: String,
                              taxYear: Option[Int]): Action[AnyContent] = Action.async { _ =>
@@ -100,7 +100,7 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
     }
   }
 
-  // DES #1393 //
+  // DES #1393 - v1.2.0 //
   def createIncomeSource(nino: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
 
     implicit val APINumber: Int = 1393
@@ -117,7 +117,32 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
     }
   }
 
-  // DES #1645 //
+  // DES #1643 - v1.0.0 //
+  def createUpdateEmploymentFinancialData(nino: String, taxYear: String, employmentId: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
+
+    checkTaxYearIsInValidFormat(taxYear, nino) {
+      implicit val APINumber: Int = 1643
+
+      logger.info(s"Creating/Updating annual income source for nino: $nino, taxYear: $taxYear, employmentId:$employmentId")
+
+      employmentsService.validateCreateUpdateIncomeSource match {
+        case Left(error) =>
+          logger.error(s"[createUpdateEmploymentFinancialData] The request body provided does not conform to the schema. Nino with request: $nino")
+          Future(error)
+        case Right(_) => Future(NoContent)
+      }
+    }
+  }
+
+  // DES #1644 - v1.0.0//
+  def deleteEmploymentFinancialData(nino: String, taxYear: String, employmentId: String): Action[AnyContent] = Action.async { _ =>
+    checkTaxYearIsInValidFormat(taxYear, nino) {
+      logger.info(s"Delete employment financial data for nino: $nino, taxYear: $taxYear, employmentID: $employmentId")
+      Future(NoContent)
+    }
+  }
+
+  // DES #1645 - v1.2.2 //
   def getEmploymentsList(nino: String, taxYear: String, employmentId: Option[String]): Action[AnyContent] = Action.async { _ =>
     checkTaxYearIsInValidFormat(taxYear, nino) {
       logger.info(s"Get list of employments for nino: $nino, taxYear: $taxYear, employmentId: ${employmentId.getOrElse("None")}")
@@ -125,15 +150,7 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
     }
   }
 
-  // DES #1668 //
-  def getEmploymentsExpenses(nino: String, taxYear: String, view: String): Action[AnyContent] = Action.async { _ =>
-    checkTaxYearIsInValidFormat(taxYear, nino) {
-      logger.info(s"Get employment expenses for nino: $nino, taxYear: $taxYear, view: $view")
-      userDataService.findUser(nino)(employmentsService.getEmploymentExpenses(convertStringTaxYear(taxYear), view))
-    }
-  }
-
-  // DES #1647 //
+  // DES #1647 - v1.2.0 //
   def getEmploymentData(nino: String, taxYear: String, employmentId: String, view: String): Action[AnyContent] = Action.async { _ =>
     checkTaxYearIsInValidFormat(taxYear, nino) {
       logger.info(s"Get employment data for nino: $nino, taxYear: $taxYear, employmentID: $employmentId, view: $view")
@@ -141,7 +158,7 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
     }
   }
 
-  // DES #1661 //
+  // DES #1661 - v1.3.0 //
   def addEmployment(nino: String, taxYear: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
 
     checkTaxYearIsInValidFormat(taxYear, nino) {
@@ -161,7 +178,7 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
 
   }
 
-  // DES #1662 //
+  // DES #1662 - v1.3.0 //
   def updateEmployment(nino: String, taxYear: String, employmentId: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
     checkTaxYearIsInValidFormat(taxYear, nino) {
       implicit val APINumber: Int = 1662
@@ -179,7 +196,7 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
     }
   }
 
-  // DES #1663 //
+  // DES #1663 - v1.0.0 //
   def deleteEmployment(nino: String, taxYear: String, employmentId: String): Action[AnyContent] = Action.async { _ =>
     checkTaxYearIsInValidFormat(taxYear, nino) {
       logger.info(s"Delete employment for nino: $nino, taxYear: $taxYear, employmentID: $employmentId")
@@ -187,32 +204,7 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
     }
   }
 
-  // DES #1643 //
-  def createUpdateEmploymentFinancialData(nino: String, taxYear: String, employmentId: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
-
-    checkTaxYearIsInValidFormat(taxYear, nino) {
-      implicit val APINumber: Int = 1643
-
-      logger.info(s"Creating/Updating annual income source for nino: $nino, taxYear: $taxYear, employmentId:$employmentId")
-
-      employmentsService.validateCreateUpdateIncomeSource match {
-        case Left(error) =>
-          logger.error(s"[createUpdateEmploymentFinancialData] The request body provided does not conform to the schema. Nino with request: $nino")
-          Future(error)
-        case Right(_) => Future(NoContent)
-      }
-    }
-  }
-
-  // DES #1644 //
-  def deleteEmploymentFinancialData(nino: String, taxYear: String, employmentId: String): Action[AnyContent] = Action.async { _ =>
-    checkTaxYearIsInValidFormat(taxYear, nino) {
-      logger.info(s"Delete employment financial data for nino: $nino, taxYear: $taxYear, employmentID: $employmentId")
-      Future(NoContent)
-    }
-  }
-
-  // DES #1664 //
+  // DES #1664 - v2.0.0 //
 
   def ignoreEmployment(nino: String, taxYear: String, employmentId: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
     checkTaxYearIsInValidFormat(taxYear, nino) {
@@ -228,7 +220,15 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
     }
   }
 
-  // DES #1669 v1.2.0 //
+  // DES #1668 - v1.1.0 //
+  def getEmploymentsExpenses(nino: String, taxYear: String, view: String): Action[AnyContent] = Action.async { _ =>
+    checkTaxYearIsInValidFormat(taxYear, nino) {
+      logger.info(s"Get employment expenses for nino: $nino, taxYear: $taxYear, view: $view")
+      userDataService.findUser(nino)(employmentsService.getEmploymentExpenses(convertStringTaxYear(taxYear), view))
+    }
+  }
+
+  // DES #1669 - v1.1.0 //
 
   def createUpdateEmploymentExpenses(nino: String, taxYear: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
     checkTaxYearIsInValidFormat(taxYear, nino) {
@@ -245,10 +245,9 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
     }
   }
 
-  // DES #1670 //
+  // DES #1670 - v1.0.0 //
 
   def deleteEmploymentExpenses(nino: String, taxYear: String): Action[AnyContent] = Action.async { _ =>
-    println
     checkTaxYearIsInValidFormat(taxYear, nino) {
       logger.info(s"Delete employment expense data for nino: $nino, taxYear: $taxYear")
       Future(NoContent)
