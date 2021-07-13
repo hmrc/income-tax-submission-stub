@@ -27,6 +27,7 @@ import scala.concurrent.Future
 
 class CalculationController @Inject()(cc: ControllerComponents) extends BackendController(cc) with Logging {
 
+  // DES #1426 - v3.0.0 //
   def generateCalculationId(nino: String, taxYear: Int): Action[JsValue] = Action.async(parse.json) { implicit request =>
 
     logger.info(s"Generating calculation id for nino: $nino, taxYear: $taxYear")
