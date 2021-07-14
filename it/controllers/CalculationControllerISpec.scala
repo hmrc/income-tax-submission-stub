@@ -47,5 +47,29 @@ class CalculationControllerISpec extends IntegrationTest with FutureAwaits with 
       result.body must include("""API needs empty json supplied.""")
     }
   }
+
+
+  "POST /income-tax/calculation/nino/AA123456A/2022/041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2/declare-crystallisation" should {
+    s"return ${Status.NO_CONTENT} with json" in {
+
+      val url = "income-tax/calculation/nino/AA123456A/2022/041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2/declare-crystallisation"
+
+      val result = await(buildClient(url).post(Json.parse("""{}""".stripMargin)))
+
+      result.status mustBe Status.NO_CONTENT
+    }
+
+    s"return ${Status.BAD_REQUEST} with json" in {
+
+      val url = "income-tax/calculation/nino/AA123456A/2022/041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2/declare-crystallisation"
+
+      val result = await(buildClient(url).post(Json.parse("""[]""".stripMargin)))
+
+      result.status mustBe Status.BAD_REQUEST
+      result.body must include("""API needs empty json supplied.""")
+    }
+  }
+
+
 }
 
