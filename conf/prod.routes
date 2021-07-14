@@ -13,7 +13,7 @@ GET     /income-tax/income-sources/nino/:nino                                   
 POST    /income-tax/income-sources/nino/:nino                                   controllers.IncomeSourcesController.createIncomeSource(nino:String)
 
 ### DES #1416 - v1.0.0 ###
-POST    /income-tax/calculation/nino/:nino/:taxYear/:calculationId/declare-crystallisation     controllers.CalculationController.declareCrystallisationForTaxYear(nino: String, taxYear: Int, calculationId: String)
+POST    /income-tax/calculation/nino/:nino/:taxYear/:calculationId/crystallise     controllers.CalculationController.declareCrystallisationForTaxYear(nino: String, taxYear: Int, calculationId: String)
 
 ### DES #1426 - v3.0.0 ###
 POST    /income-tax/nino/:nino/taxYear/:taxYear/tax-calculation                 controllers.CalculationController.generateCalculationId(nino:String, taxYear:Int)
