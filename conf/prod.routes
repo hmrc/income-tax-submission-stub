@@ -1,6 +1,6 @@
 # Add all the application routes to the app.routes file
 
-### DES #1390 - v2.0.1 ###
+### DES #1390 - (Currently coded to v1.4.3, latest is 2.0.1) ###
 POST    /income-tax/nino/:nino/income-source/:incomeSourceType/annual/:taxYear  controllers.IncomeSourcesController.createUpdateAnnualIncomeSource(nino: String, incomeSourceType: String, taxYear: Int)
 
 ### DES #1391 - v1.3.0 ###
@@ -9,7 +9,7 @@ GET     /income-tax/nino/:nino/income-source/:incomeSourceType/annual/:taxYear  
 ### DES #1392 - v1.1.0 ###
 GET     /income-tax/income-sources/nino/:nino                                   controllers.IncomeSourcesController.getListOfIncomeSources(nino: String, incomeSourceType: String, taxYear: Option[Int])
 
-### DES #1393 - v1.2.0 ###
+### DES #1393 - (Currently coded to v1.1.0, latest is 1.2.0) ###
 POST    /income-tax/income-sources/nino/:nino                                   controllers.IncomeSourcesController.createIncomeSource(nino:String)
 
 ### DES #1416 - v1.0.0 ###
@@ -45,7 +45,7 @@ PUT     /income-tax/income/employments/:nino/:taxYear/:employmentId/ignore      
 ### DES #1668 - v1.1.0 ###
 GET    /income-tax/expenses/employments/:nino/:taxYear                          controllers.IncomeSourcesController.getEmploymentsExpenses(nino: String, taxYear: String, view: String)
 
-### DES #1669  - v1.1.0 ###
+### DES #1669  - v1.2.0 ###
 PUT     /income-tax/expenses/employments/:nino/:taxYear                         controllers.IncomeSourcesController.createUpdateEmploymentExpenses(nino: String, taxYear: String)
 
 ### DES #1670 - v1.0.0 ###
