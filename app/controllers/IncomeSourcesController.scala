@@ -36,7 +36,7 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
                                         userDataService: UserDataService,
                                         cc: ControllerComponents) extends BackendController(cc) with Logging {
 
-  // DES #1390 - v2.0.1 //
+  // DES #1390 - (Currently coded to v1.4.3, latest is 2.0.1) //
   def createUpdateAnnualIncomeSource(nino: String,
                                      incomeSourceType: String,
                                      taxYear: Int): Action[JsValue] = Action.async(parse.json) { implicit request =>
@@ -100,7 +100,7 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
     }
   }
 
-  // DES #1393 - v1.2.0 //
+  // DES #1393 - (Currently coded to v1.1.0, latest is 1.2.0) //
   def createIncomeSource(nino: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
 
     implicit val APINumber: Int = 1393
@@ -228,7 +228,7 @@ class IncomeSourcesController @Inject()(interestService: InterestService,
     }
   }
 
-  // DES #1669 - v1.1.0 //
+  // DES #1669 - v1.2.0 //
 
   def createUpdateEmploymentExpenses(nino: String, taxYear: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
     checkTaxYearIsInValidFormat(taxYear, nino) {
