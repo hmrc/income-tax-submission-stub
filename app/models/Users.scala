@@ -317,8 +317,8 @@ object Users {
                     ),
                     benefitsInKind = Some(
                       Benefits(
-                        Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),
-                        Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100)
+                        Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100),
+                        Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100)
                       )
                     )
                   )
@@ -349,8 +349,8 @@ object Users {
                         studentLoans = Some(StudentLoans(Some(13343.45), Some(24242.56))))),
                     benefitsInKind = Some(
                       Benefits(
-                        Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),
-                        Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100)
+                        Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100),
+                        Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100)
                       )
                     )
                   )
@@ -403,13 +403,17 @@ object Users {
                     ),
                     benefitsInKind = Some(
                       Benefits(
-                        Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),
-                        Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100)
+                        Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100),
+                        Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100)
                       )
                     )
                   )
                 )
               )
+            ),
+            EmploymentSource("00000000-0000-1000-8000-000000000005", "Eoy Vera Lynn New Employment",
+              Some("123/abc 001<Q>"), Some("123345657"), Some("2020-06-17T10:53:38Z"), Some("2020-06-17T10:53:38Z"), submittedOn = Some("2020-06-17T10:53:38Z"),
+              employmentData = None
             )
           ),
           Seq(
@@ -435,8 +439,8 @@ object Users {
                         studentLoans = Some(StudentLoans(Some(13343.45), Some(24242.56))))),
                     benefitsInKind = Some(
                       Benefits(
-                        Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),
-                        Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100)
+                        Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100),
+                        Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100)
                       )
                     )
                   )
@@ -445,8 +449,7 @@ object Users {
             )
           )
         )
-      )
-    ),
+      )),
     APIUser(DES_500_NINO),
     APIUser(DES_503_NINO),
     APIUser(
@@ -495,7 +498,7 @@ object Users {
           employmentExpenses = Some(EmploymentExpenses(
             source = Some("HMRC-HELD"),
             expenses = Some(ExpensesType(
-              Some(100),Some(99.99),Some(99.98),Some(99.97),Some(99.96),Some(99.95),Some(99.94),Some(99.93)
+              Some(100), Some(99.99), Some(99.98), Some(99.97), Some(99.96), Some(99.95), Some(99.94), Some(99.93)
             ))
           ))
         )
