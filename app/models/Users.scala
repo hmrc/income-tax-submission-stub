@@ -317,8 +317,8 @@ object Users {
                     ),
                     benefitsInKind = Some(
                       Benefits(
-                        Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),
-                        Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100)
+                        Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100),
+                        Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100)
                       )
                     )
                   )
@@ -349,8 +349,8 @@ object Users {
                         studentLoans = Some(StudentLoans(Some(13343.45), Some(24242.56))))),
                     benefitsInKind = Some(
                       Benefits(
-                        Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),
-                        Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100)
+                        Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100),
+                        Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100)
                       )
                     )
                   )
@@ -403,8 +403,8 @@ object Users {
                     ),
                     benefitsInKind = Some(
                       Benefits(
-                        Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),
-                        Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100)
+                        Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100),
+                        Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100)
                       )
                     )
                   )
@@ -435,8 +435,8 @@ object Users {
                         studentLoans = Some(StudentLoans(Some(13343.45), Some(24242.56))))),
                     benefitsInKind = Some(
                       Benefits(
-                        Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),
-                        Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100),Some(100)
+                        Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100),
+                        Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100), Some(100)
                       )
                     )
                   )
@@ -495,7 +495,54 @@ object Users {
           employmentExpenses = Some(EmploymentExpenses(
             source = Some("HMRC-HELD"),
             expenses = Some(ExpensesType(
-              Some(100),Some(99.99),Some(99.98),Some(99.97),Some(99.96),Some(99.95),Some(99.94),Some(99.93)
+              Some(100), Some(99.99), Some(99.98), Some(99.97), Some(99.96), Some(99.95), Some(99.94), Some(99.93)
+            ))
+          ))
+        ),
+        Employment(
+          2021,
+          Seq(
+            EmploymentSource("00000000-5555-0000-0000-000000000001", "Raf Simons Ltd EOY", Some("666/66666"), Some("123456789"),
+              Some("2020-01-04T05:01:01Z"), Some("2020-01-04T05:01:01Z"), Some("2020-01-04T05:01:01Z"),
+              employmentData = Some(
+                EmploymentData(
+                  submittedOn = "2020-03-04T05:01:01Z",
+                  employment = EmploymentDetails(
+                    closeCompany = Some(true),
+                    directorshipCeasedDate = Some("2020-04-20"),
+                    pay = Some(Pay(Some(666.66), Some(666.66), Some(6666.66), Some("CALENDAR MONTHLY"), Some("2020-04-23"), Some(32))),
+                    employer = Employer(Some("666/66666"), "Raf Simons Ltd EOY"),
+                    benefitsInKind = Some(Benefits(
+                      Some(100), Some(200), Some(300), Some(400), Some(500), Some(600), Some(700), Some(800), Some(900), Some(1000), Some(1100), Some(1200), Some(1300), Some(1400), Some(1500),
+                      Some(1600), Some(1700), Some(1800), Some(1900), Some(2000), Some(2100), Some(2200), Some(2300), Some(2400), Some(2500), Some(2600), Some(2700), Some(2800)
+                    ))
+                  )
+                )
+              )
+            ),
+            EmploymentSource("00000000-5555-5555-0000-000000000001", "Rick Owens Ltd EOY", Some("666/66666"), Some("123456789"),
+              Some("2020-01-04T05:01:01Z"), Some("2020-01-04T05:01:01Z"), Some("2020-01-04T05:01:01Z"))
+          ),
+          Seq(
+            EmploymentSource("00000000-5555-0000-0000-000000000001", "Raf Simons Ltd Customer Edition EOY",
+              Some("666/66666"), Some("123456789"), Some("2020-02-04T05:01:01Z"), Some("2020-02-04T05:01:01Z"), submittedOn = Some("2020-02-04T05:01:01Z"),
+              employmentData = Some(
+                EmploymentData(
+                  submittedOn = "2020-02-04T05:01:01Z",
+                  source = Some("CUSTOMER"),
+                  customerAdded = Some("2020-02-04T05:01:01Z"),
+                  employment = EmploymentDetails(
+                    pay = Some(Pay(Some(555.55), Some(555.55), Some(555.55), Some("CALENDAR MONTHLY"), Some("2020-04-23"), Some(32))),
+                    employer = Employer(Some("666/66666"), "Raf Simons Ltd Customer Edition EOY")
+                  )
+                )
+              )
+            )
+          ),
+          employmentExpenses = Some(EmploymentExpenses(
+            source = Some("HMRC-HELD"),
+            expenses = Some(ExpensesType(
+              Some(100), Some(99.99), Some(99.98), Some(99.97), Some(99.96), Some(99.95), Some(99.94), Some(99.93)
             ))
           ))
         )
